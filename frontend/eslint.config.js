@@ -75,18 +75,18 @@ export default [
             "@stylistic/key-spacing": [
                 "error",
                 {
-                    "afterColon": true,
-                    "mode": "strict",
-                }
+                    afterColon: true,
+                    mode: "strict",
+                },
             ],
             "@stylistic/jsx-tag-spacing": [
                 "error",
                 {
-                    "closingSlash": "never",
-                    "beforeSelfClosing": "always",
-                    "afterOpening": "never",
-                    "beforeClosing": "never",
-                }
+                    closingSlash: "never",
+                    beforeSelfClosing: "always",
+                    afterOpening: "never",
+                    beforeClosing: "never",
+                },
             ],
             "@stylistic/eol-last": ["error", "always"],
             "@stylistic/dot-location": ["error", "property"],
@@ -94,36 +94,36 @@ export default [
             "@stylistic/jsx-wrap-multilines": [
                 "error",
                 {
-                    "declaration": "parens-new-line",
-                    "assignment": "parens-new-line",
-                    "return": "parens-new-line",
-                    "arrow": "parens-new-line",
-                    "condition": "parens-new-line",
-                    "logical": "parens-new-line",
-                    "prop": "parens-new-line",
-                    "propertyValue": "parens-new-line"
-                }
+                    declaration: "parens-new-line",
+                    assignment: "parens-new-line",
+                    return: "parens-new-line",
+                    arrow: "parens-new-line",
+                    condition: "parens-new-line",
+                    logical: "parens-new-line",
+                    prop: "parens-new-line",
+                    propertyValue: "parens-new-line",
+                },
             ],
             "@typescript-eslint/naming-convention": [
                 "error",
                 {
-                    "selector": "function",
-                    "format": ["camelCase", "PascalCase"],
-                    "leadingUnderscore": "forbid"
+                    selector: "function",
+                    format: ["camelCase", "PascalCase"],
+                    leadingUnderscore: "forbid",
                 },
                 {
-                    "selector": ["variable", "typeLike", "parameter"],
-                    "format": ["camelCase"],
-                    "leadingUnderscore": "forbid"
+                    selector: ["variable", "typeLike", "parameter"],
+                    format: ["camelCase"],
+                    leadingUnderscore: "forbid",
                 },
                 {
-                    "selector": "variable",
-                    "modifiers": ["const"],
-                    "format": ["UPPER_CASE"],
-                    "filter": {
-                        "regex": "^set",
-                        "match": false
-                    }
+                    selector: "variable",
+                    modifiers: ["const"],
+                    format: ["UPPER_CASE"],
+                    filter: {
+                        regex: "^set",
+                        match: false,
+                    },
                 },
             ],
         },
