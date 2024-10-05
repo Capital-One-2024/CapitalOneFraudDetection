@@ -18,6 +18,8 @@
 
 ## 2. JSX and React
 
+- **Component Names**: Always use `PascalCase` for component names.
+- **Functions, Not Arrow Functions**: Use regular function declarations (`function ComponentName() {....}`) for defining components. Arrow functions (`const ComponentName = () => {...}`) are not allowed for component definitions due to conflict with the `UPPER_CASE` constant naming rule.
 - **JSX Equality Spacing**: Never add spaces around `=` in JSX attributes.
 - **JSX Curly Braces Spacing**: No spaces around curly braces (`{}`) in JSX attributes.
 - **JSX Quotes**: Use double quotes for JSX attributes.
