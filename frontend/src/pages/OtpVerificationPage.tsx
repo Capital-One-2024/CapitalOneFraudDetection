@@ -112,7 +112,7 @@ const OTPInputWithZod = () => {
             justifyContent="center" // Center horizontally
             alignItems="center" // Center vertically
             sx={{
-                background: '#004878',
+                background: '#D22E1E',
                 height: '100vh',
                 width: '100vw',
                 gap: '16px', // Adjust gap value for overall spacing
@@ -146,6 +146,7 @@ const OTPInputWithZod = () => {
             </Link>
             <Grid2 sx={{ textAlign: 'center', mb: 12 }}>
                 <Grid2>
+                    {/*
                     <img
                         src={logo} // Use the imported image
                         alt="Capital One Logo"
@@ -154,6 +155,8 @@ const OTPInputWithZod = () => {
                             height: 'auto', // Maintain aspect ratio
                         }}
                     />
+                    */}
+                    
                 </Grid2>
                 <Grid2 sx={{ mt: 6 }}>
                     <Typography variant='h1' sx={{
@@ -207,7 +210,7 @@ const OTPInputWithZod = () => {
                                                     borderRadius: '10px',
                                                     caretColor: 'transparent', // Hide the cursor
                                                     border: 'none',
-                                                    outline: focusIndex === index ? '3px solid rgba(255, 0, 0, 0.7)' : 'none', // Remove default outline
+                                                    //outline: focusIndex === index ? '#004878' : 'none', // Remove default outline
                                                 }}
                                             />
                                         </div>
