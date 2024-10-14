@@ -24,3 +24,6 @@ tsconfig.node.tsbuildinfo
 *.njsproj
 *.sln
 *.sw?
+
+# Virtual environment
+venv
