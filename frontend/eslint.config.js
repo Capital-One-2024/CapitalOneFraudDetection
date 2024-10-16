@@ -112,18 +112,24 @@ export default [
                     leadingUnderscore: "forbid",
                 },
                 {
-                    selector: ["variable", "typeLike", "parameter"],
+                    selector: ["variable", "parameter"],
                     format: ["camelCase"],
+                    leadingUnderscore: "forbid",
+                },
+                {
+                    selector: ["typeLike"],
+                    format: ["PascalCase"],
                     leadingUnderscore: "forbid",
                 },
                 {
                     selector: "variable",
                     modifiers: ["const"],
                     format: ["UPPER_CASE"],
-                    filter: {
-                        regex: "^set",
-                        match: false,
-                    },
+                },
+                {
+                    selector: "variable",
+                    modifiers: ["deconstructed"],
+                    format: ["camelCase", "UPPER_CASE"],
                 },
             ],
         },
