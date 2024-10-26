@@ -1,4 +1,5 @@
 import { Typography } from "@mui/material";
+import classNames from "classnames";
 import { Link } from "react-router-dom";
 
 interface SplitScreenProps {
@@ -27,11 +28,16 @@ export default function SplitScreen({ leftContent, cta }: SplitScreenProps) {
                 </div>
             </div>
             {/* Right Section - CTA */}
-            <div className="hidden lg:flex flex-1 bg-c1-red items-center justify-center text-white p-5">
+            <div
+                className={classNames(
+                    "hidden flex-1 bg-c1-red items-center justify-center text-white p-5",
+                    "lg:flex"
+                )}
+            >
                 <div className="flex flex-col items-center gap-10">
-                    <Typography variant="h3" textAlign="center">{cta.title}</Typography>
-                    <div className="flex flex-col items-center gap-1">
-                        <Typography variant="h6">{cta.subtitle}</Typography>
+                    <h2 className="text-5xl font-semibold">{cta.title}</h2>
+                    <div className="flex flex-col items-center gap-4">
+                        <h3 className="text-lg font-medium">{cta.subtitle}</h3>
                         <Link to={cta.buttonLink} className="btn btn-white btn-wide">
                             {cta.buttonText}
                         </Link>

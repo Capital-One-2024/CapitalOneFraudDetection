@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { SIGN_UP_SCHEMA } from "../lib/schemas";
 import { SignUpInputs } from "../pages/SignUpPage";
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 
 export default function SignUpForm() {
     const {
@@ -19,7 +19,7 @@ export default function SignUpForm() {
 
     return (
         <Box className="form-box">
-            <Typography variant="h3">Sign Up</Typography>
+            <h1 className="text-3xl font-semibold">Sign Up</h1>
             <form onSubmit={handleSubmit(ON_SUBMIT)} className="form">
                 <TextField
                     {...register("firstName")}

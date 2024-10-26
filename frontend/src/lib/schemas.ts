@@ -19,12 +19,12 @@ export const SIGN_UP_SCHEMA = z.object({
 });
 
 export const OTP_SCHEMA = z.object({
-    otp0: z.string().regex(/^[0-9]$/, 'Must be a digit').optional(),
-    otp1: z.string().regex(/^[0-9]$/, 'Must be a digit').optional(),
-    otp2: z.string().regex(/^[0-9]$/, 'Must be a digit').optional(),
-    otp3: z.string().regex(/^[0-9]$/, 'Must be a digit').optional(),
-    otp4: z.string().regex(/^[0-9]$/, 'Must be a digit').optional(),
-    otp5: z.string().regex(/^[0-9]$/, 'Must be a digit').optional(),
+    otp0: z.string().regex(/^[0-9]$/, "Must be a digit"),
+    otp1: z.string().regex(/^[0-9]$/, "Must be a digit"),
+    otp2: z.string().regex(/^[0-9]$/, "Must be a digit"),
+    otp3: z.string().regex(/^[0-9]$/, "Must be a digit"),
+    otp4: z.string().regex(/^[0-9]$/, "Must be a digit"),
+    otp5: z.string().regex(/^[0-9]$/, "Must be a digit"),
 });
 
 function getNameSchema(name: "First name" | "Last name") {

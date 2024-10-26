@@ -4,8 +4,8 @@ export default {
     theme: {
         extend: {
             colors: {
-                "c1-red": "#D22E1E"
-            }
+                "c1-red": "#D22E1E",
+            },
         },
     },
     plugins: [],

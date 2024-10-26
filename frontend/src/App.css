@@ -14,8 +14,12 @@
     @apply py-3 px-4 rounded-lg shadow-lg;
 }
 
-.btn:active {
+.btn:not(:disabled):active {
     @apply shadow-none transform scale-95;
+}
+
+.btn:disabled {
+    @apply bg-gray-300 text-gray-500 cursor-not-allowed shadow-none;
 }
 
 .btn-white {
@@ -24,6 +28,14 @@
 
 .btn-red {
     @apply bg-c1-red text-white;
+}
+
+.bg-white-ghost {
+    @apply bg-white bg-opacity-50;
+}
+
+.btn-white-ghost {
+    @apply bg-white-ghost text-black border border-black;
 }
 
 .btn-wide {
