@@ -4,7 +4,7 @@ from sklearn.ensemble import IsolationForest
 import joblib
 
 # Step 1: Load and preprocess the dataset
-transactions_df = pd.read_csv("student_transactions.csv")
+transactions_df = pd.read_csv("../dataset/student_transactions.csv")
 
 # Convert 'DateTime' to 'day_of_week' and 'hour_of_day'
 transactions_df['DateTime'] = pd.to_datetime(transactions_df['DateTime'])
