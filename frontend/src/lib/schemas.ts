@@ -1,21 +1,18 @@
 import { z } from "zod";
 
-export const PHONE_SCHEMA = z
+export const EMAIL_SCHEMA = z
     .string()
-    .min(1, "Phone number is required")
-    .regex(
-        /^(\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}|\d{10})$/,
-        "Invalid phone number format. Please enter a valid US phone number"
-    );
+    .min(1, "Email is required")
+    .email("Invalid email format. Please enter a valid email address");
 
 export const LOGIN_SCHEMA = z.object({
-    phoneNumber: PHONE_SCHEMA,
+    email: EMAIL_SCHEMA,
 });
 
 export const SIGN_UP_SCHEMA = z.object({
     firstName: getNameSchema("First name"),
     lastName: getNameSchema("Last name"),
-    phoneNumber: PHONE_SCHEMA,
+    email: EMAIL_SCHEMA,
 });
 
 export const OTP_SCHEMA = z.object({
