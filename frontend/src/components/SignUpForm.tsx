@@ -1,16 +1,23 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { SIGN_UP_SCHEMA } from "../lib/schemas";
-import { SignUpInputs } from "../pages/SignUpPage";
 import { Box, TextField } from "@mui/material";
+import { z } from "zod";
 
 export default function SignUpForm() {
+    type SignUpInputs = z.infer<typeof SIGN_UP_SCHEMA>;
+
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<SignUpInputs>({
         resolver: zodResolver(SIGN_UP_SCHEMA),
+        defaultValues: {
+            firstName: "",
+            lastName: "",
+            email: "",
+        },
     });
 
     const ON_SUBMIT = (data: SignUpInputs) => {
@@ -54,14 +61,14 @@ export default function SignUpForm() {
                 />
 
                 <TextField
-                    {...register("phoneNumber")}
-                    type="tel"
-                    label="Phone Number"
+                    {...register("email")}
+                    type="email"
+                    label="Email"
                     variant="outlined"
                     fullWidth
-                    error={!!errors.phoneNumber}
-                    helperText={errors.phoneNumber?.message}
-                    placeholder="(XXX) XXX-XXXX"
+                    error={!!errors.email}
+                    helperText={errors.email?.message}
+                    placeholder="janedoe@example.com"
                     sx={{
                         "& .MuiOutlinedInput-root": {
                             borderRadius: "8px",

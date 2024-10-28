@@ -1,10 +1,6 @@
-import { z } from "zod";
 import Page from "../components/Page";
 import SignUpForm from "../components/SignUpForm";
 import SplitScreen from "../components/SplitScreen";
-import { SIGN_UP_SCHEMA } from "../lib/schemas";
-
-export type SignUpInputs = z.infer<typeof SIGN_UP_SCHEMA>;
 
 function SignUpPage() {
     return (
