@@ -1,12 +1,11 @@
-import globals from "globals";
 import js from "@eslint/js";
-import tseslint from "typescript-eslint";
+import stylistic from "@stylistic/eslint-plugin";
 import eslintConfigPrettier from "eslint-config-prettier";
-import * as parser from "@typescript-eslint/parser";
+import accessibility from "eslint-plugin-jsx-a11y";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
-import accessibility from "eslint-plugin-jsx-a11y";
-import stylistic from "@stylistic/eslint-plugin";
+import globals from "globals";
+import tseslint from "typescript-eslint";
 
 export default [
     { files: ["**/*.{ts,tsx}"] },
@@ -16,7 +15,7 @@ export default [
             ecmaVersion: 2023,
             sourceType: "module",
             globals: globals.browser,
-            parser: parser,
+            parser: tseslint.parser,
             parserOptions: {
                 ecmaFeatures: { jsx: true },
             },
@@ -112,18 +111,24 @@ export default [
                     leadingUnderscore: "forbid",
                 },
                 {
-                    selector: ["variable", "typeLike", "parameter"],
+                    selector: ["variable", "parameter"],
                     format: ["camelCase"],
+                    leadingUnderscore: "forbid",
+                },
+                {
+                    selector: ["typeLike"],
+                    format: ["PascalCase"],
                     leadingUnderscore: "forbid",
                 },
                 {
                     selector: "variable",
                     modifiers: ["const"],
                     format: ["UPPER_CASE"],
-                    filter: {
-                        regex: "^set",
-                        match: false,
-                    },
+                },
+                {
+                    selector: "variable",
+                    modifiers: ["destructured"],
+                    format: ["camelCase", "UPPER_CASE"],
                 },
             ],
         },
