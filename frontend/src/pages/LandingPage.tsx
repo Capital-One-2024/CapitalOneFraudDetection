@@ -8,10 +8,15 @@ import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrow
 function LandingPage() {
     return (
         <Page title="Protect Your Finances">
-            <div className="flex-1 flex flex-col gap-5">
+            <div className="flex-1 flex flex-col">
                 <Navbar />
                 {/* Hero Part */}
-                <div className="flex-1 flex flex-col min-h-screen items-center">
+                <div
+                    className={classNames(
+                        "flex-1 flex flex-col min-h-screen items-center justify-center",
+                        "gap-24"
+                    )}
+                >
                     <LandingHero
                         title="Secure Transactions, Simplified"
                         subtitle={

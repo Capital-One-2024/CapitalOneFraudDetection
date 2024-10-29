@@ -10,12 +10,9 @@ interface LandingHeroProps {
 export default function LandingHero({ title, subtitle, background = "default" }: LandingHeroProps) {
     return (
         <div
-            className={classNames(
-                "flex-1 flex flex-col justify-center items-center gap-5 p-10 w-full",
-                {
-                    "bg-c1-red text-white": background === "red",
-                }
-            )}
+            className={classNames("flex flex-col justify-center items-center gap-5 p-10 w-full", {
+                "bg-c1-red text-white": background === "red",
+            })}
         >
             <h1 className="text-xl lg:text-4xl font-semibold text-center">{title}</h1>
             <p className="text-base text-center">{subtitle}</p>
