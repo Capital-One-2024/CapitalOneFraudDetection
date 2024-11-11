@@ -6,12 +6,40 @@ adding a new "isDone" field as a boolean. The authorization rule below
 specifies that any unauthenticated user can "create", "read", "update", 
 and "delete" any "Todo" records.
 =========================================================================*/
+
+// a.schema: this is the whole db, acts as the container for all the models (tables)
+// a.model: this is the table when translating to DynamoDB. 
+// a.model: Provides create, read, update, delete, subscription API
+// a.model: adds in all the appsync resolvers so you don't have to do it
 const schema = a.schema({
-  Todo: a
+  User: a
     .model({
-      content: a.string(),
+      userID: a.id(),
+      firstName: a.string(),
+      lastName: a.string(),
+      email: a.string(), // should be unique
+      password: a.string(), // should be hashed
+      accounts: a.hasMany('Account', 'user') // User has multiple accounts
+    }),
+
+  Account: a
+    .model({
+      accountID: a.id(),
+      type: a.enum(['CHECKINGS', 'SAVINGS']), // or maybe a.string()?
+      user: a.belongsTo('User', 'accounts'), // foreign key reference
+      transactions: a.hasMany('Transaction', 'account') // account has multiple transactions
+    }),
+
+  Transaction: a
+    .model({
+      transactionID: a.id(),
+      account: a.belongsTo('Account', 'transactions'), // foreign key reference
+      vendor: a.string(),
+      category: a.string(),
+      dateTime: a.datetime(), // or maybe a.string()?
+      amount: a.float(),
+      status: a.boolean()
     })
-    .authorization((allow) => [allow.guest()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
