@@ -21,7 +21,8 @@ const schema = a.schema({
       password: a.string(), // should be hashed
       accounts: a.hasMany('Account', 'user') // User has multiple accounts
     }),
-
+ 
+ 
   Account: a
     .model({
       accountID: a.id(),
@@ -29,7 +30,8 @@ const schema = a.schema({
       user: a.belongsTo('User', 'accounts'), // foreign key reference
       transactions: a.hasMany('Transaction', 'account') // account has multiple transactions
     }),
-
+ 
+ 
   Transaction: a
     .model({
       transactionID: a.id(),
@@ -38,9 +40,13 @@ const schema = a.schema({
       category: a.string(),
       dateTime: a.datetime(), // or maybe a.string()?
       amount: a.float(),
-      status: a.boolean()
+      distanceFromLastTransaction: a.float(),
+      timeFromLastTransaction: a.float(),
+      prediction: a.integer(), // Prediction of fraud (-1, 1)
+      predictionAccurate: a.integer().default(0) // Accuracy of prediction (1, -1) 0 by default
     })
-});
+ });
+ 
 
 export type Schema = ClientSchema<typeof schema>;
 
