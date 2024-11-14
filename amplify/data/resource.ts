@@ -27,7 +27,7 @@ const schema = a.schema({
       userID: a.belongsTo("User", "userID"),
       vendor: a.string(),
       category: a.string(),
-      dateTime: a.datetime(), // or maybe a.string()?
+      dateTime: a.string(),
       amount: a.float(),
       distanceFromLastTransaction: a.float(),
       timeFromLastTransaction: a.float(),
