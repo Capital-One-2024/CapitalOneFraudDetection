@@ -19,13 +19,12 @@ const schema = a.schema({
       lastName: a.string(),
       email: a.string(), // should be unique
       password: a.string(), // should be hashed
-      transactions: a.hasMany('Transaction', 'user')
     }),
  
   Transaction: a
     .model({
       transactionID: a.id(),
-      user: a.belongsTo("User", "transactions"),
+      userID: a.belongsTo("User", "userID"),
       vendor: a.string(),
       category: a.string(),
       dateTime: a.datetime(), // or maybe a.string()?
