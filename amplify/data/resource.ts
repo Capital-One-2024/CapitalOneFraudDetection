@@ -17,7 +17,7 @@ const schema = a.schema({
       userID: a.id(),
       firstName: a.string(),
       lastName: a.string(),
-      email: a.string(), // should be unique
+      email: a.email(),
       password: a.string(), // should be hashed
     }),
  
