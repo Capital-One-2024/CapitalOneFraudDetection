@@ -19,23 +19,13 @@ const schema = a.schema({
       lastName: a.string(),
       email: a.string(), // should be unique
       password: a.string(), // should be hashed
-      accounts: a.hasMany('Account', 'user') // User has multiple accounts
+      transactions: a.hasMany('Transaction', 'user')
     }),
- 
- 
-  Account: a
-    .model({
-      accountID: a.id(),
-      type: a.enum(['CHECKINGS', 'SAVINGS']), // or maybe a.string()?
-      user: a.belongsTo('User', 'accounts'), // foreign key reference
-      transactions: a.hasMany('Transaction', 'account') // account has multiple transactions
-    }),
- 
  
   Transaction: a
     .model({
       transactionID: a.id(),
-      account: a.belongsTo('Account', 'transactions'), // foreign key reference
+      user: a.belongsTo("User", "transactions"),
       vendor: a.string(),
       category: a.string(),
       dateTime: a.datetime(), // or maybe a.string()?
