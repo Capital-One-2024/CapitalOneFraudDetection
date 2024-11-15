@@ -1,23 +1,26 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Authenticator } from "@aws-amplify/ui-react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
-import LoginPage from "./pages/LoginPage";
-import SignUpPage from "./pages/SignUpPage";
-import OtpVerificationPage from "./pages/OtpVerificationPage";
+import AuthPage from "./pages/AuthPage";
 import LandingPage from "./pages/LandingPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import outputs from "../amplify_outputs.json";
+import { Amplify } from "aws-amplify";
+
+Amplify.configure(outputs);
 
 function App() {
     return (
-        <Router>
-            <Routes>
-                <Route index element={<LandingPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignUpPage />} />
-                <Route path="/otp" element={<OtpVerificationPage />} />
-                {/* Catch all route -> defaults to 404 page */}
-                <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-        </Router>
+        <Authenticator.Provider>
+            <Router>
+                <Routes>
+                    <Route index element={<LandingPage />} />
+                    <Route path="/auth" element={<AuthPage />} />
+                    {/* Catch all route -> defaults to 404 page */}
+                    <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+            </Router>
+        </Authenticator.Provider>
     );
 }
 

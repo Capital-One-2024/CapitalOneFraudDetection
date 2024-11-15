@@ -9,7 +9,7 @@ import tseslint from "typescript-eslint";
 
 export default [
     { files: ["**/*.{ts,tsx}"] },
-    { ignores: ["node_modules", "dist"] },
+    { ignores: ["node_modules", "dist", ".amplify"] },
     {
         languageOptions: {
             ecmaVersion: 2023,
