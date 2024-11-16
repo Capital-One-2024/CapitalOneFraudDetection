@@ -12,19 +12,11 @@ and "delete" any "Todo" records.
 // a.model: Provides create, read, update, delete, subscription API
 // a.model: adds in all the appsync resolvers so you don't have to do it
 const schema = a.schema({
-  User: a
-    .model({
-      userID: a.id(),
-      firstName: a.string(),
-      lastName: a.string(),
-      email: a.email(),
-      password: a.string(), // should be hashed
-    }),
  
   Transaction: a
     .model({
       transactionID: a.id(),
-      userID: a.belongsTo("User", "userID"),
+      userID: a.string(),
       vendor: a.string(),
       category: a.string(),
       dateTime: a.string(),
