@@ -1,6 +1,10 @@
 import { Authenticator, ThemeProvider, useAuthenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import Navbar from "../components/Navbar";
+import { Navigate, useSearchParams } from "react-router-dom";
+import { AUTH_PAGE_ACTIONS_SCHEMA } from "../lib/schemas";
+import { useEffect } from "react";
+import { SEARCH_PARAMS_KEYS, SITE_MAP } from "../lib/constants";
 
 const FORM_FIELDS = {
     signIn: {
@@ -77,10 +81,32 @@ export default function AuthPage() {
         },
     };
 
+    // Get the validated action from the URL
+    // Default to "signIn" if not present
+    const [SEARCH_PARAMS] = useSearchParams();
+    const ACTION =
+        AUTH_PAGE_ACTIONS_SCHEMA.safeParse(
+            SEARCH_PARAMS.get(SEARCH_PARAMS_KEYS.initialAction) || undefined
+        ).data || "signIn";
+
     const AUTH = useAuthenticator();
 
-    if (AUTH.authStatus !== "unauthenticated") {
+    useEffect(() => {
+        // Set the authenticator to the action from the URL
+        if (ACTION === "signUp") {
+            AUTH.toSignUp();
+        } else {
+            AUTH.toSignIn();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ACTION]);
+
+    if (AUTH.authStatus === "configuring") {
+        // Return null if the authenticator is still configuring
         return null;
+    } else if (AUTH.authStatus === "authenticated") {
+        // Redirect to the dashboard if authenticated
+        return <Navigate to={SITE_MAP.dashboard()} replace={true} />;
     }
 
     return (
@@ -89,7 +115,6 @@ export default function AuthPage() {
             <div className="flex-1 flex items-center justify-center">
                 <ThemeProvider theme={THEME}>
                     <Authenticator
-                        initialState={"signIn"}
                         signUpAttributes={["given_name", "family_name"]}
                         formFields={FORM_FIELDS}
                     />

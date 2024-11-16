@@ -16,6 +16,7 @@ public/
 
 # Ignore Amplify artifacts
 .amplify/
+amplify_outputs.json
 
 # Ignore lockfiles
 package-lock.json

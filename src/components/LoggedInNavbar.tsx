@@ -33,7 +33,7 @@ export default function LoggedInNavbar() {
                             key={link.to}
                             to={link.to}
                             className={({ isActive }) =>
-                                classNames("text-white font-normal text-lg", {
+                                classNames("text-white font-normal text-base", {
                                     "!font-bold": isActive,
                                 })
                             }

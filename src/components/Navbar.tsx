@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { Link } from "react-router-dom";
+import { SITE_MAP } from "../lib/constants";
 
 export default function Navbar() {
     return (
@@ -13,7 +14,7 @@ export default function Navbar() {
                 Capital One
             </Link>
             <div className="flex gap-4">
-                <Link to="/auth" className="btn btn-white">
+                <Link to={SITE_MAP.auth({ initialAction: "signIn" })} className="btn btn-white">
                     Sign In
                 </Link>
             </div>
