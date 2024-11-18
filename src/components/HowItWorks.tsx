@@ -7,11 +7,17 @@ import {
     TimelineSeparator,
 } from "@mui/lab";
 import { HOW_IT_WORKS_STEPS } from "../lib/constants";
+import classNames from "classnames";
 
 export default function HowItWorks() {
     return (
         <div className="flex flex-col items-center gap-8 py-10">
-            <h1 className="text-xl lg:text-4xl font-semibold border-b-4 border-b-c1-red py-4 px-20">
+            <h1
+                className={classNames(
+                    "text-xl lg:text-4xl font-semibold border-b-4",
+                    "border-b-c1-blue py-4 px-20"
+                )}
+            >
                 How It Works
             </h1>
             <Timeline position="alternate">
@@ -19,7 +25,7 @@ export default function HowItWorks() {
                     <TimelineItem key={index}>
                         <TimelineSeparator>
                             <TimelineSeparator />
-                            <TimelineDot color="error" />
+                            <TimelineDot color="primary" />
                             <TimelineConnector />
                         </TimelineSeparator>
                         <TimelineContent>

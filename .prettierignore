@@ -1,0 +1,33 @@
+# Ignore logs
+logs
+*.log
+npm-debug.log*
+
+# Ignore build artifacts
+node_modules
+dist
+dist-ssr
+*.local
+tsconfig.app.tsbuildinfo
+tsconfig.node.tsbuildinfo
+
+# Ignore assets
+public/
+
+# Ignore Amplify artifacts
+.amplify/
+amplify_outputs.json
+
+# Ignore lockfiles
+package-lock.json
+
+# Ignore editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

@@ -1,12 +1,10 @@
-import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Page from "../components/Page";
 import classNames from "classnames";
+import { Link } from "react-router-dom";
+import Page from "../components/Page";
 
 export default function NotFoundPage() {
     return (
         <Page title="Not Found">
-            <Navbar />
             <div
                 className={classNames(
                     "flex-1 flex flex-col-reverse items-center",
@@ -19,7 +17,7 @@ export default function NotFoundPage() {
                     <p className="font-medium text-lg text-center md:text-2xl">
                         We could not find the page you are looking for.
                     </p>
-                    <Link to="/" className="btn btn-red btn-wide">
+                    <Link to="/" className="btn btn-blue btn-wide">
                         Go back to homepage
                     </Link>
                 </div>
