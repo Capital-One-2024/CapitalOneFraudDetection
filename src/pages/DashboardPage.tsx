@@ -5,12 +5,11 @@ import { useEffect, useState } from "react";
 import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 
-import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useAuthenticator } from "@aws-amplify/ui-react";
 
 const client = generateClient<Schema>();
 
 function DashboardPage() {
-
     const { user } = useAuthenticator();
 
     const [transactions, setTransactions] = useState<Array<Schema["Transaction"]["type"]>>([]);
@@ -18,7 +17,7 @@ function DashboardPage() {
     useEffect(() => {
         if (user) {
             console.log(user.userId);
-            
+
             client.models.Transaction.observeQuery().subscribe({
                 next: (data) => setTransactions([...data.items]),
             });
@@ -32,7 +31,7 @@ function DashboardPage() {
             category: "Food",
             amount: 25000,
             distanceFromLastTransaction: 20,
-            isFraudulent: false
+            isFraudulent: false,
         });
     }
 
@@ -50,7 +49,7 @@ function DashboardPage() {
                     <th>isFraudulent</th>
                     <th>isUserValidated</th>
                 </tr>
-            
+
                 {transactions.map((transaction) => (
                     <tr key={transaction.id}>
                         <td>{transaction.userID}</td>
