@@ -1,14 +1,12 @@
+import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 import classNames from "classnames";
 import HowItWorks from "../components/HowItWorks";
 import LandingHero from "../components/LandingHero";
-import Navbar from "../components/Navbar";
 import Page from "../components/Page";
-import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 
 function LandingPage() {
     return (
         <Page title="Protect Your Finances">
-            <Navbar />
             {/* Hero Part */}
             <div
                 className={classNames(
@@ -25,7 +23,7 @@ function LandingPage() {
                 />
                 <KeyboardDoubleArrowDownIcon
                     fontSize="large"
-                    className={classNames("animate animate-bounce mb-12 text-c1-red")}
+                    className={classNames("animate animate-bounce mb-12 text-c1-blue")}
                 />
             </div>
             {/* Body */}
@@ -34,7 +32,7 @@ function LandingPage() {
                 <LandingHero
                     title="Create an Account"
                     subtitle="Join other students protecting their finances effortlessly."
-                    background="red"
+                    background="blue"
                 />
             </div>
         </Page>
