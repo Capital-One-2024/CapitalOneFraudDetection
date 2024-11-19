@@ -7,11 +7,13 @@ import { generateClient } from "aws-amplify/data";
 
 import { useAuthenticator } from "@aws-amplify/ui-react";
 
+// eslint-disable-next-line
 const client = generateClient<Schema>();
 
 function DashboardPage() {
     const { user } = useAuthenticator();
 
+    // eslint-disable-next-line
     const [transactions, setTransactions] = useState<Array<Schema["Transaction"]["type"]>>([]);
 
     useEffect(() => {
@@ -58,7 +60,9 @@ function DashboardPage() {
                         <td>{transaction.vendor}</td>
                         <td>{transaction.category}</td>
                         <td>{transaction.amount}</td>
-                        <td>{transaction.latitude}, {transaction.longitude}</td>
+                        <td>
+                            {transaction.latitude}, {transaction.longitude}
+                        </td>
                         <td>{transaction.isFraudulent ? "Yes" : "No"}</td>
                         <td>{transaction.isUserValidated ? "Yes" : "No"}</td>
                     </tr>
