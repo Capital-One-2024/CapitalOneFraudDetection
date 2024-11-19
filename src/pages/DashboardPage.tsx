@@ -30,8 +30,10 @@ function DashboardPage() {
             vendor: "Chipotle",
             category: "Food",
             amount: 25000,
-            distanceFromLastTransaction: 20,
+            latitude: 20,
+            longitude: 20,
             isFraudulent: false,
+            isUserValidated: false,
         });
     }
 
@@ -45,7 +47,7 @@ function DashboardPage() {
                     <th>Vendor</th>
                     <th>Category</th>
                     <th>Amount</th>
-                    <th>Distance From Last Transaction</th>
+                    <th>Location</th>
                     <th>isFraudulent</th>
                     <th>isUserValidated</th>
                 </tr>
@@ -56,7 +58,7 @@ function DashboardPage() {
                         <td>{transaction.vendor}</td>
                         <td>{transaction.category}</td>
                         <td>{transaction.amount}</td>
-                        <td>{transaction.distanceFromLastTransaction}</td>
+                        <td>{transaction.latitude}, {transaction.longitude}</td>
                         <td>{transaction.isFraudulent ? "Yes" : "No"}</td>
                         <td>{transaction.isUserValidated ? "Yes" : "No"}</td>
                     </tr>
