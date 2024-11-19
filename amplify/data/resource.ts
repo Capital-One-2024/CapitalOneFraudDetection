@@ -8,26 +8,18 @@ const schema = a.schema({
 
   Transaction: a
     .model({
-      id: a.id(),
+      id: a.id(), // the transaction id
       userID: a.string(),
+      vendor: a.string(),
       category: a.string(),
       amount: a.float(),
-      location: a.string(),
+      // longitude and latitude are for location
+      longitude: a.float(),
+      latitude: a.float(),
       isFraudulent: a.boolean().required().default(true),
       isUserValidated: a.boolean().required().default(false),
-      // 1. Reference field for Vendor
-      vendorID: a.id(),
-      // 2. Create relationship field with the reference field
-      vendor: a.belongsTo('Vendor', 'vendorID'),
-    }).authorization((allow) => [allow.owner()]),
-
-    Vendor: a.model({
-      id: a.id(), // Unique ID for the vendor
-      name: a.string().required(), // Vendor name
-      category: a.string().required(), // Category of the vendor
-      // 3. Create a hasMany relationship with the reference field
-      transactions: a.hasMany("Transaction", "vendorID")
-    }),
+    })
+    .authorization((allow) => [allow.owner()]),
 
  });
  
@@ -37,6 +29,6 @@ export type Schema = ClientSchema<typeof schema>;
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: 'iam',
+    defaultAuthorizationMode: 'userPool',
   },
 });
