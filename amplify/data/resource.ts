@@ -1,31 +1,34 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 
-/*== STEP 1 ===============================================================
-The section below creates a Todo database table with a "content" field. Try
-adding a new "isDone" field as a boolean. The authorization rule below
-specifies that any unauthenticated user can "create", "read", "update", 
-and "delete" any "Todo" records.
-=========================================================================*/
-
 // a.schema: this is the whole db, acts as the container for all the models (tables)
 // a.model: this is the table when translating to DynamoDB. 
 // a.model: Provides create, read, update, delete, subscription API
 // a.model: adds in all the appsync resolvers so you don't have to do it
 const schema = a.schema({
- 
+
   Transaction: a
     .model({
-      transactionID: a.id(),
+      id: a.id(),
       userID: a.string(),
-      vendor: a.string(),
       category: a.string(),
-      dateTime: a.string(),
       amount: a.float(),
-      distanceFromLastTransaction: a.float(),
-      timeFromLastTransaction: a.float(),
-      prediction: a.integer(), // Prediction of fraud (-1, 1)
-      predictionAccurate: a.integer().default(0) // Accuracy of prediction (1, -1) 0 by default
-    })
+      location: a.string(),
+      isFraudulent: a.boolean().required().default(true),
+      isUserValidated: a.boolean().required().default(false),
+      // 1. Reference field for Vendor
+      vendorID: a.id(),
+      // 2. Create relationship field with the reference field
+      vendor: a.belongsTo('Vendor', 'vendorID'),
+    }).authorization((allow) => [allow.owner()]),
+
+    Vendor: a.model({
+      id: a.id(), // Unique ID for the vendor
+      name: a.string().required(), // Vendor name
+      category: a.string().required(), // Category of the vendor
+      // 3. Create a hasMany relationship with the reference field
+      transactions: a.hasMany("Transaction", "vendorID")
+    }),
+
  });
  
 
@@ -37,32 +40,3 @@ export const data = defineData({
     defaultAuthorizationMode: 'iam',
   },
 });
-
-/*== STEP 2 ===============================================================
-Go to your frontend source code. From your client-side code, generate a
-Data client to make CRUDL requests to your table. (THIS SNIPPET WILL ONLY
-WORK IN THE FRONTEND CODE FILE.)
-
-Using JavaScript or Next.js React Server Components, Middleware, Server 
-Actions or Pages Router? Review how to generate Data clients for those use
-cases: https://docs.amplify.aws/gen2/build-a-backend/data/connect-to-API/
-=========================================================================*/
-
-/*
-"use client"
-import { generateClient } from "aws-amplify/data";
-import type { Schema } from "@/amplify/data/resource";
-
-const client = generateClient<Schema>() // use this Data client for CRUDL requests
-*/
-
-/*== STEP 3 ===============================================================
-Fetch records from the database and use them in your frontend component.
-(THIS SNIPPET WILL ONLY WORK IN THE FRONTEND CODE FILE.)
-=========================================================================*/
-
-/* For example, in a React component, you can use this snippet in your
-  function's RETURN statement */
-// const { data: todos } = await client.models.Todo.list()
-
-// return <ul>{todos.map(todo => <li key={todo.id}>{todo.content}</li>)}</ul>
