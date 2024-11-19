@@ -11,9 +11,11 @@ const schema = a.schema({
             vendor: a.string(),
             category: a.string(),
             amount: a.float(),
-            distanceFromLastTransaction: a.float(),
-            isFraudulent: a.boolean().default(true),
-            isUserValidated: a.boolean().default(false),
+            // longitude and latitude are for location
+            longitude: a.float(),
+            latitude: a.float(),
+            isFraudulent: a.boolean().required().default(true),
+            isUserValidated: a.boolean().required().default(false),
         })
         .authorization((allow) => [allow.owner()]),
 });
