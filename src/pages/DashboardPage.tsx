@@ -1,6 +1,7 @@
 import Page from "../components/Page";
 
 import { useEffect, useState } from "react";
+import { fetchUserAttributes, FetchUserAttributesOutput } from 'aws-amplify/auth';
 
 import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
@@ -16,9 +17,15 @@ function DashboardPage() {
     // eslint-disable-next-line
     const [transactions, setTransactions] = useState<Array<Schema["Transaction"]["type"]>>([]);
 
+    const [userDetails, setUserDetails] = useState<FetchUserAttributesOutput>();
+
     useEffect(() => {
         if (user) {
-            console.log(user.userId);
+            console.log(user);
+
+            fetchUserAttributes().then(result => {
+                setUserDetails(result);
+            });
 
             client.models.Transaction.observeQuery().subscribe({
                 next: (data) => setTransactions([...data.items]),
@@ -76,6 +83,8 @@ function DashboardPage() {
     return (
         <Page title="Dashboard" isProtected={true}>
             <div className="p-8 font-sans">
+
+                <h2 className="text-lg font-semibold mb-4">Welcome, {userDetails?.given_name} {userDetails?.family_name}!</h2>
 
                 {/* Create Transaction Button */}
                 <div className="mb-8">
