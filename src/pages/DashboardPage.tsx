@@ -39,37 +39,98 @@ function DashboardPage() {
         });
     }
 
+    // Mihir's default return
+    // return (
+    //     <Page title="Dashboard" isProtected={true}>
+    //         <h1>Dashboard</h1>
+    //         <button onClick={createTransaction}>+ new</button>
+    //         <table>
+    //             <tr>
+    //                 <th>UserID</th>
+    //                 <th>Vendor</th>
+    //                 <th>Category</th>
+    //                 <th>Amount</th>
+    //                 <th>Location</th>
+    //                 <th>isFraudulent</th>
+    //                 <th>isUserValidated</th>
+    //             </tr>
+
+    //             {transactions.map((transaction) => (
+    //                 <tr key={transaction.id}>
+    //                     <td>{transaction.userID}</td>
+    //                     <td>{transaction.vendor}</td>
+    //                     <td>{transaction.category}</td>
+    //                     <td>{transaction.amount}</td>
+    //                     <td>
+    //                         {transaction.latitude}, {transaction.longitude}
+    //                     </td>
+    //                     <td>{transaction.isFraudulent ? "Yes" : "No"}</td>
+    //                     <td>{transaction.isUserValidated ? "Yes" : "No"}</td>
+    //                 </tr>
+    //             ))}
+    //         </table>
+    //     </Page>
+    // );
+
+    // my draft return
     return (
         <Page title="Dashboard" isProtected={true}>
-            <h1>Dashboard</h1>
-            <button onClick={createTransaction}>+ new</button>
-            <table>
-                <tr>
-                    <th>UserID</th>
-                    <th>Vendor</th>
-                    <th>Category</th>
-                    <th>Amount</th>
-                    <th>Location</th>
-                    <th>isFraudulent</th>
-                    <th>isUserValidated</th>
-                </tr>
+            <div className="p-8 font-sans">
 
-                {transactions.map((transaction) => (
-                    <tr key={transaction.id}>
-                        <td>{transaction.userID}</td>
-                        <td>{transaction.vendor}</td>
-                        <td>{transaction.category}</td>
-                        <td>{transaction.amount}</td>
-                        <td>
-                            {transaction.latitude}, {transaction.longitude}
-                        </td>
-                        <td>{transaction.isFraudulent ? "Yes" : "No"}</td>
-                        <td>{transaction.isUserValidated ? "Yes" : "No"}</td>
-                    </tr>
-                ))}
-            </table>
+                {/* Create Transaction Button */}
+                <div className="mb-8">
+                    <button
+                        onClick={createTransaction}
+                        className="
+                        px-4 py-2
+                        bg-blue-500
+                        text-white
+                        rounded-lg
+                        hover:bg-blue-600"
+                    >
+                        + New Transaction
+                    </button>
+                </div>
+
+                {/* Transactions Section */}
+                <section>
+                    <h2 className="text-lg font-semibold mb-4">My Transactions</h2>
+                    <div className="flex flex-col gap-4">
+                        {transactions.map((transaction) => (
+                            <div
+                                key={transaction.id}
+                                className="flex justify-between items-center
+                                bg-white
+                                shadow-md
+                                rounded-lg p-4 border
+                                border-gray-200"
+                            >
+                                <div>
+                                    <div className="text-sm
+                                    font-semibold">
+                                        {transaction.vendor}
+                                    </div>
+                                    <div className="text-xs text-gray-500">
+                                        {new Date(transaction.createdAt).toLocaleString()}
+                                    </div>
+                                </div>
+                                <div className="text-red-500 font-bold">
+                                    {transaction.isFraudulent ? (
+                                        // eslint-disable-next-line
+                                        <span className="text-orange-500">- ${transaction.amount?.toFixed(2)}</span>
+                                    ) : (
+                                        <span>- ${transaction.amount?.toFixed(2)}</span>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            </div>
         </Page>
     );
+
+
 }
 
 export default DashboardPage;
