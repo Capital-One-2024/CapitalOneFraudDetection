@@ -30,6 +30,10 @@
     @apply bg-c1-red text-white;
 }
 
+.btn-blue {
+    @apply bg-c1-blue text-white;
+}
+
 .bg-white-ghost {
     @apply bg-white bg-opacity-50;
 }

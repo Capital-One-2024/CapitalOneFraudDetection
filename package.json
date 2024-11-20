@@ -13,6 +13,7 @@
         "prettier:fix": "npx prettier --write --config .prettierrc --ignore-path .prettierignore \"**/*.+(js|ts|tsx|jsx|json)\""
     },
     "dependencies": {
+        "@aws-amplify/ui-react": "^6.5.5",
         "@emotion/react": "^11.13.3",
         "@emotion/styled": "^11.13.0",
         "@hookform/resolvers": "^3.9.0",
