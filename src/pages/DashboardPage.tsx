@@ -1,7 +1,7 @@
 import Page from "../components/Page";
 
 import { useEffect, useState } from "react";
-import { fetchUserAttributes, FetchUserAttributesOutput } from 'aws-amplify/auth';
+import { fetchUserAttributes, FetchUserAttributesOutput } from "aws-amplify/auth";
 
 import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
@@ -17,13 +17,14 @@ function DashboardPage() {
     // eslint-disable-next-line
     const [transactions, setTransactions] = useState<Array<Schema["Transaction"]["type"]>>([]);
 
+    // eslint-disable-next-line
     const [userDetails, setUserDetails] = useState<FetchUserAttributesOutput>();
 
     useEffect(() => {
         if (user) {
             console.log(user);
 
-            fetchUserAttributes().then(result => {
+            fetchUserAttributes().then((result) => {
                 setUserDetails(result);
             });
 
@@ -49,8 +50,14 @@ function DashboardPage() {
     return (
         <Page title="Dashboard" isProtected={true}>
             <div className="p-8 font-sans">
-
-                <h2 className="text-lg font-semibold mb-4">Welcome, {userDetails?.given_name} {userDetails?.family_name}!</h2>
+                {/* Welcome Section */}
+                <div className="mb-8">
+                    <div className="p-4 rounded-lg border bg-c1-blue shadow-md">
+                        <h2 className="text-lg font-semibold text-white">
+                            Welcome, {userDetails?.given_name} {userDetails?.family_name}!
+                        </h2>
+                    </div>
+                </div>
 
                 {/* Create Transaction Button */}
                 <div className="mb-8">
@@ -81,8 +88,10 @@ function DashboardPage() {
                                 border-gray-200"
                             >
                                 <div>
-                                    <div className="text-sm
-                                    font-semibold">
+                                    <div
+                                        className="text-sm
+                                    font-semibold"
+                                    >
                                         {transaction.vendor}
                                     </div>
                                     <div className="text-xs text-gray-500">
@@ -91,8 +100,9 @@ function DashboardPage() {
                                 </div>
                                 <div className="text-red-500 font-bold">
                                     {transaction.isFraudulent ? (
-                                        // eslint-disable-next-line
-                                        <span className="text-orange-500">- ${transaction.amount?.toFixed(2)}</span>
+                                        <span className="text-orange-500">
+                                            - ${transaction.amount?.toFixed(2)}
+                                        </span>
                                     ) : (
                                         <span>- ${transaction.amount?.toFixed(2)}</span>
                                     )}
@@ -104,7 +114,6 @@ function DashboardPage() {
             </div>
         </Page>
     );
-
 }
 
 export default DashboardPage;
