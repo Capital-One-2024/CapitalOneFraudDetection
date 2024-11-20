@@ -46,40 +46,6 @@ function DashboardPage() {
         });
     }
 
-    // Mihir's default return
-    // return (
-    //     <Page title="Dashboard" isProtected={true}>
-    //         <h1>Dashboard</h1>
-    //         <button onClick={createTransaction}>+ new</button>
-    //         <table>
-    //             <tr>
-    //                 <th>UserID</th>
-    //                 <th>Vendor</th>
-    //                 <th>Category</th>
-    //                 <th>Amount</th>
-    //                 <th>Location</th>
-    //                 <th>isFraudulent</th>
-    //                 <th>isUserValidated</th>
-    //             </tr>
-
-    //             {transactions.map((transaction) => (
-    //                 <tr key={transaction.id}>
-    //                     <td>{transaction.userID}</td>
-    //                     <td>{transaction.vendor}</td>
-    //                     <td>{transaction.category}</td>
-    //                     <td>{transaction.amount}</td>
-    //                     <td>
-    //                         {transaction.latitude}, {transaction.longitude}
-    //                     </td>
-    //                     <td>{transaction.isFraudulent ? "Yes" : "No"}</td>
-    //                     <td>{transaction.isUserValidated ? "Yes" : "No"}</td>
-    //                 </tr>
-    //             ))}
-    //         </table>
-    //     </Page>
-    // );
-
-    // my draft return
     return (
         <Page title="Dashboard" isProtected={true}>
             <div className="p-8 font-sans">
@@ -138,7 +104,6 @@ function DashboardPage() {
             </div>
         </Page>
     );
-
 
 }
 
