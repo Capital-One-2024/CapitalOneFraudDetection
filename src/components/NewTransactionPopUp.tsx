@@ -30,7 +30,7 @@ export default function NewTransactionPopUp({ show, type, message, onClose }: Po
             <div className="bg-white p-6 rounded-lg shadow-lg">
                 <h2 className={`text-xl font-bold ${TEXTCOLOR}`}>{TITLE}</h2>
                 <p>{message}</p>
-                <button onClick={onClose} className={`mt-4 px-4 py-2 ${BTN} text-white rounded-lg`}>
+                <button onClick={onClose} className={`mt-4 px-4 py-2 btn ${BTN}`}>
                     Close
                 </button>
             </div>

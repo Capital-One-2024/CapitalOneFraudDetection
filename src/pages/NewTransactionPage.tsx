@@ -49,8 +49,8 @@ export default function NewTransactionPage() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    SETLONGITUDE(position.coords.LONGITUDE);
-                    SETLATITUDE(position.coords.LATITUDE);
+                    SETLONGITUDE(position.coords.longitude);
+                    SETLATITUDE(position.coords.latitude);
                 },
                 (error) => {
                     console.error("Error getting geolocation:", error);
@@ -181,17 +181,17 @@ export default function NewTransactionPage() {
 
                         <div
                             className={`
-                            p-4 
-                            border-2 
-                            border-c1-blue 
-                            rounded-lg 
-                            shadow-lg 
-                            flex 
-                            flex-col 
-                            sm:flex-row 
-                            items-center 
-                            justify-between
-                        `}
+                                p-4 
+                                border-2 
+                                border-c1-blue 
+                                rounded-lg 
+                                shadow-lg 
+                                flex 
+                                flex-col 
+                                sm:flex-row 
+                                items-center 
+                                justify-between
+                            `}
                         >
                             <div className="pl-3 text-c1-blue w-full sm:w-1/2 mb-4 sm:mb-0">
                                 <h2 className="text-c1-blue w-full sm:w-1/2 text-xl font-bold">
@@ -267,14 +267,10 @@ export default function NewTransactionPage() {
                         type="submit"
                         disabled={ISLOADING} // Disable button during loading
                         className={`
+                            my-4
                             w-2/3 
-                            ${ISLOADING ? "bg-gray-400" : ""} 
+                            btn
                             btn-blue 
-                            font-bold 
-                            p-3 
-                            rounded-lg
-                            my-4 
-                            ${ISLOADING ? "" : "hover:shadow-lg"}
                         `}
                     >
                         {ISLOADING ? (
