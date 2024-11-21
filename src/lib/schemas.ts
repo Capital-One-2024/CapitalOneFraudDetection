@@ -8,7 +8,7 @@ export type AuthPageAction = z.infer<typeof AUTH_PAGE_ACTIONS_SCHEMA>;
 export const DOLLAR_SCHEMA = z.coerce
     .number({ message: "Value must be a number" })
     .positive({ message: "Amount must be greater than 0" })
-    .max(999999999, { message: "Amount cannot exceed 999,999,999" })
+    .max(Number.MAX_SAFE_INTEGER, { message: "Amount cannot exceed 999,999,999" })
     .refine(
         (num: number) => {
             // Convert number to string and check for decimal places using regex
