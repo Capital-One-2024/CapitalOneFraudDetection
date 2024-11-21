@@ -8,13 +8,11 @@ import { generateClient } from "aws-amplify/data";
 
 import { useAuthenticator } from "@aws-amplify/ui-react";
 
-// eslint-disable-next-line
 const client = generateClient<Schema>();
 
 function DashboardPage() {
     const { user } = useAuthenticator();
 
-    // eslint-disable-next-line
     const [transactions, setTransactions] = useState<Array<Schema["Transaction"]["type"]>>([]);
 
     // eslint-disable-next-line

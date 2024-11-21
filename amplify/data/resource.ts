@@ -4,7 +4,6 @@ import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 // a.model: this is the table when translating to DynamoDB.
 // a.model: Provides create, read, update, delete, subscription API
 // a.model: adds in all the appsync resolvers so you don't have to do it
-// eslint-disable-next-line
 const schema = a.schema({
     Transaction: a
         .model({
@@ -23,7 +22,6 @@ const schema = a.schema({
 
 export type Schema = ClientSchema<typeof schema>;
 
-// eslint-disable-next-line
 export const data = defineData({
     schema,
     authorizationModes: {
