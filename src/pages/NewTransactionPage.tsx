@@ -11,11 +11,11 @@ import { generateClient } from "aws-amplify/data";
 import NewTransactionPopup from "../components/NewTransactionPopUp";
 import { FORMATDATE } from "../lib/utils";
 
-const CLIENT = generateClient<Schema>();
+const client = generateClient<Schema>();
 
 type TransactionInputs = z.infer<typeof TRANSACTION_SCHEMA>;
 
-const VENDORS = [
+const vendors = [
     { name: "Uber", category: "Transport" },
     { name: "Lyft", category: "Transport" },
     { name: "Amazon", category: "Retail" },
@@ -37,29 +37,29 @@ const VENDORS = [
 
 export default function NewTransactionPage() {
     const { user } = useAuthenticator();
-    const [ISLOADING, SETISLOADING] = useState(false);
-    const [SHOWSUCCESS, SETSHOWSUCCESS] = useState(false);
-    const [SHOWFAILURE, SETSHOWFAILURE] = useState(false);
-    const [LONGITUDE, SETLONGITUDE] = useState<number | null>(null);
-    const [LATITUDE, SETLATITUDE] = useState<number | null>(null);
-    const [HASLOCATIONACCESS, SETHASLOCATIONACCESS] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [showFailure, setShowFailure] = useState(false);
+    const [longitude, setLongitude] = useState<number | null>(null);
+    const [latitude, setLatitude] = useState<number | null>(null);
+    const [hasLocationAccess, setHasLocationAccess] = useState(true);
 
     // Obtain user position
     useEffect(() => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    SETLONGITUDE(position.coords.longitude);
-                    SETLATITUDE(position.coords.latitude);
+                    setLongitude(position.coords.longitude);
+                    setLatitude(position.coords.latitude);
                 },
                 (error) => {
                     console.error("Error getting geolocation:", error);
-                    SETHASLOCATIONACCESS(false); // SET location access to false if error occurs
+                    setHasLocationAccess(false); // SET location access to false if error occurs
                 }
             );
         } else {
             console.error("Geolocation is not supported by this browser.");
-            SETHASLOCATIONACCESS(false);
+            setHasLocationAccess(false);
         }
     }, []);
 
@@ -78,31 +78,31 @@ export default function NewTransactionPage() {
 
     const ON_SUBMIT = async (data: TransactionInputs) => {
         try {
-            SETISLOADING(true);
-            const [VENDOR, CATEGORY] = data.vendor.split("|");
-            await CLIENT.models.Transaction.create({
+            setIsLoading(true);
+            const [vendor, category] = data.vendor.split("|");
+            await client.models.Transaction.create({
                 userID: user.userId,
-                vendor: VENDOR,
-                category: CATEGORY,
+                vendor: vendor,
+                category: category,
                 amount: data.amount,
-                LATITUDE: LATITUDE,
-                LONGITUDE: LONGITUDE,
+                latitude: latitude,
+                longitude: longitude,
                 isFraudulent: false,
                 isUserValidated: false,
             });
-            SETISLOADING(false);
-            SETSHOWSUCCESS(true);
+            setIsLoading(false);
+            setShowSuccess(true);
             reset();
         } catch (error) {
-            SETISLOADING(false);
+            setIsLoading(false);
             console.log("Unable to process transaction:", error);
-            SETSHOWFAILURE(true);
+            setShowFailure(true);
             reset();
         }
     };
 
     // Display location requirement
-    if (!HASLOCATIONACCESS) {
+    if (!hasLocationAccess) {
         return (
             <Page title="New Transaction" isProtected={true}>
                 <div className="text-center mt-10">
@@ -116,7 +116,7 @@ export default function NewTransactionPage() {
     }
 
     // Display loading location
-    if (LONGITUDE === null || LATITUDE === null) {
+    if (longitude === null || latitude === null) {
         return (
             <Page title="New Transaction" isProtected={true}>
                 <div className="text-center mt-10">
@@ -216,7 +216,7 @@ export default function NewTransactionPage() {
                                     <option value="" disabled>
                                         Select a vendor
                                     </option>
-                                    {VENDORS.map((v) => (
+                                    {vendors.map((v) => (
                                         <option
                                             key={v.name}
                                             value={`${v.name}|${v.category}`}
@@ -265,7 +265,7 @@ export default function NewTransactionPage() {
 
                     <button
                         type="submit"
-                        disabled={ISLOADING} // Disable button during loading
+                        disabled={isLoading} // Disable button during loading
                         className={`
                             my-4
                             w-2/3 
@@ -285,16 +285,16 @@ export default function NewTransactionPage() {
             </div>
 
             <NewTransactionPopup
-                show={SHOWSUCCESS}
+                show={showSuccess}
                 type="success"
                 message="Your transaction was successfully submitted."
-                onClose={() => SETSHOWSUCCESS(false)}
+                onClose={() => setShowSuccess(false)}
             />
             <NewTransactionPopup
-                show={SHOWFAILURE}
+                show={showFailure}
                 type="failure"
                 message="Your transaction was unable to be submitted."
-                onClose={() => SETSHOWFAILURE(false)}
+                onClose={() => setShowFailure(false)}
             />
         </Page>
     );
