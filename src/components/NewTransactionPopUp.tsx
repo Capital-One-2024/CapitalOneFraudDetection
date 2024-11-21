@@ -8,9 +8,9 @@ interface PopupProps {
 export default function NewTransactionPopUp({ show, type, message, onClose }: PopupProps) {
     if (!show) return null;
 
-    const TITLE = type === "success" ? "Success!" : "Error!";
-    const BTN = type === "success" ? "btn-blue" : "btn-red";
-    const TEXTCOLOR = type === "success" ? "text-c1-blue" : "text-c1-red";
+    const title = type === "success" ? "Success!" : "Error!";
+    const btn = type === "success" ? "btn-blue" : "btn-red";
+    const textColor = type === "success" ? "text-c1-blue" : "text-c1-red";
 
     return (
         <div
@@ -28,9 +28,9 @@ export default function NewTransactionPopUp({ show, type, message, onClose }: Po
           `}
         >
             <div className="bg-white p-6 rounded-lg shadow-lg">
-                <h2 className={`text-xl font-bold ${TEXTCOLOR}`}>{TITLE}</h2>
+                <h2 className={`text-xl font-bold ${textColor}`}>{title}</h2>
                 <p>{message}</p>
-                <button onClick={onClose} className={`mt-4 px-4 py-2 btn ${BTN}`}>
+                <button onClick={onClose} className={`mt-4 px-4 py-2 btn ${btn}`}>
                     Close
                 </button>
             </div>

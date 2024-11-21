@@ -9,7 +9,7 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import NewTransactionPopup from "../components/NewTransactionPopUp";
-import { FORMATDATE } from "../lib/utils";
+import { formatDate } from "../lib/utils";
 
 const client = generateClient<Schema>();
 
@@ -174,7 +174,7 @@ export default function NewTransactionPage() {
                             `}
                             >
                                 <h2 className="text-c1-blue text-xl font-bold">
-                                    {FORMATDATE(new Date())}
+                                    {formatDate(new Date())}
                                 </h2>
                             </div>
                         </div>
@@ -273,7 +273,7 @@ export default function NewTransactionPage() {
                             btn-blue 
                         `}
                     >
-                        {ISLOADING ? (
+                        {isLoading ? (
                             <div className="flex justify-center">
                                 <CircularProgress size={25} />
                             </div>

@@ -5,7 +5,7 @@
  * @example
  * new Date() => Nov 20, 11:57 PM
  */
-export const FORMATDATE = (date: Date) => {
+export const formatDate = (date: Date) => {
     return date.toLocaleString("en-US", {
         month: "short",
         day: "numeric",
