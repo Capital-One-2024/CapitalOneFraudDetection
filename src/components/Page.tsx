@@ -3,7 +3,6 @@ import classNames from "classnames";
 import useTitle from "../hooks/useTitle";
 import AuthPage from "../pages/AuthPage";
 import Navbar from "./Navbar";
-import LoggedInNavbar from "./LoggedInNavbar";
 
 interface PageProps {
     title?: string;
@@ -27,7 +26,7 @@ export default function Page({
 
     return (
         <>
-            {AUTH.authStatus === "authenticated" ? <LoggedInNavbar /> : <Navbar />}
+            <Navbar variant={AUTH.authStatus === "authenticated" ? "loggedIn" : "loggedOut"} />
             <main
                 className={classNames("flex-1 flex", {
                     "flex-col": orientation === "vertical",
