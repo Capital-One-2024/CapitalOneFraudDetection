@@ -10,6 +10,7 @@ import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import NewTransactionPopup from "../components/NewTransactionPopUp";
 import { formatDate } from "../lib/utils";
+import classNames from "classnames";
 
 const client = generateClient<Schema>();
 
@@ -53,12 +54,12 @@ export default function NewTransactionPage() {
                     setLatitude(position.coords.latitude);
                 },
                 (error) => {
-                    console.error("Error getting geolocation:", error);
+                    //console.error("Error getting geolocation:", error);
                     setHasLocationAccess(false); // SET location access to false if error occurs
                 }
             );
         } else {
-            console.error("Geolocation is not supported by this browser.");
+            //console.error("Geolocation is not supported by this browser.");
             setHasLocationAccess(false);
         }
     }, []);
@@ -108,7 +109,7 @@ export default function NewTransactionPage() {
                 <div className="text-center mt-10">
                     <h2 className="text-2xl font-bold text-c1-blue">Location Access Required</h2>
                     <p className="text-lg text-gray-600 mt-4">
-                        Please enable location access in your browser SETtings to use this form.
+                        Please enable location access in your browser settings to use this form.
                     </p>
                 </div>
             </Page>
@@ -136,26 +137,27 @@ export default function NewTransactionPage() {
                 </h1>
                 <form
                     onSubmit={handleSubmit(ON_SUBMIT)}
-                    className={`
-                    items-center 
-                    flex 
-                    flex-col 
-                    justify-center
-                `}
+                    className={classNames(
+                        'items-center',
+                        'flex',
+                        'flex-col',
+                        'justify-center',
+                    )}
                 >
                     <div className="space-y-8 w-full">
                         <div
-                            className={`
-                            p-6 border-2
-                            border-c1-blue
-                            rounded-lg
-                            shadow-lg
-                            flex
-                            flex-col
-                            sm:flex-row 
-                            items-center
-                            sm:items-start
-                        `}
+                            className={classNames(
+                                'p-6',
+                                'border-2',
+                                'border-c1-blue',
+                                'rounded-lg',
+                                'shadow-lg',
+                                'flex',
+                                'flex-col',
+                                'sm:flex-row',
+                                'items-center',
+                                'sm:items-start'
+                              )}
                         >
                             {/* "Date & Time" always on the left */}
                             <div className="pl-1 text-c1-blue w-full sm:w-auto sm:flex-1">
@@ -165,13 +167,14 @@ export default function NewTransactionPage() {
                             </div>
 
                             <div
-                                className={`
-                                text-c1-blue w-full 
-                                sm:w-auto 
-                                sm:flex-1 
-                                text-center 
-                                sm:text-left
-                            `}
+                                className={classNames(
+                                    'text-c1-blue w-full',
+                                    'sm:w-auto',
+                                    'sm:flex-1',
+                                    'text-center',
+                                    'sm:text-left',
+                                )}
+                                
                             >
                                 <h2 className="text-c1-blue text-xl font-bold">
                                     {formatDate(new Date())}
@@ -180,18 +183,18 @@ export default function NewTransactionPage() {
                         </div>
 
                         <div
-                            className={`
-                                p-4 
-                                border-2 
-                                border-c1-blue 
-                                rounded-lg 
-                                shadow-lg 
-                                flex 
-                                flex-col 
-                                sm:flex-row 
-                                items-center 
-                                justify-between
-                            `}
+                            className={classNames(
+                                'p-4', 
+                                'border-2', 
+                                'border-c1-blue', 
+                                'rounded-lg',
+                                'shadow-lg',
+                                'flex',
+                                'flex-col', 
+                                'sm:flex-row', 
+                                'items-center',
+                                'justify-between',
+                            )}
                         >
                             <div className="pl-3 text-c1-blue w-full sm:w-1/2 mb-4 sm:mb-0">
                                 <h2 className="text-c1-blue w-full sm:w-1/2 text-xl font-bold">
@@ -203,15 +206,15 @@ export default function NewTransactionPage() {
                                     id="vendor"
                                     {...register("vendor")}
                                     defaultValue="" // SET the default value to an empty string
-                                    className={`
-                                        w-full 
-                                        p-2 
-                                        border-2 
-                                        border-c1-blue 
-                                        rounded-md 
-                                        text-gray-500 
-                                        invalid:text-gray-500
-                                    `}
+                                    className={classNames(
+                                        'w-full', 
+                                        'p-2', 
+                                        'border-2',
+                                        'border-c1-blue ',
+                                        'rounded-md',
+                                        'text-gray-500', 
+                                        'invalid:text-gray-500',
+                                    )}
                                 >
                                     <option value="" disabled>
                                         Select a vendor
@@ -233,18 +236,18 @@ export default function NewTransactionPage() {
                         </div>
 
                         <div
-                            className={`
-                            p-4 
-                            border-2 
-                            border-c1-blue 
-                            rounded-lg 
-                            shadow-lg 
-                            flex
-                            flex-col 
-                            sm:flex-row 
-                            items-center 
-                            justify-between
-                        `}
+                            className={classNames(
+                                'p-4',
+                                'border-2',
+                                'border-c1-blue', 
+                                'rounded-lg',
+                                'shadow-lg',
+                                'flex',
+                                'flex-col',
+                                'sm:flex-row',
+                                'justify-between',
+                            )}
+                            
                         >
                             <div className="pl-3 text-c1-blue w-full sm:w-1/2 mb-4 sm:mb-0">
                                 <h2 className="text-c1-blue w-1/2 text-xl font-bold">Amount:</h2>
@@ -266,12 +269,12 @@ export default function NewTransactionPage() {
                     <button
                         type="submit"
                         disabled={isLoading} // Disable button during loading
-                        className={`
-                            my-4
-                            w-2/3 
-                            btn
-                            btn-blue 
-                        `}
+                        className={classNames(
+                            'my-4',
+                            'w-2/3', 
+                            'btn',
+                            'btn-blue',
+                        )}
                     >
                         {isLoading ? (
                             <div className="flex justify-center">
