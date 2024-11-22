@@ -1,12 +1,10 @@
 import Page from "../components/Page";
-
 import { useEffect, useState } from "react";
 import { fetchUserAttributes, FetchUserAttributesOutput } from "aws-amplify/auth";
-
 import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
-
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import Transaction from "../components/Transaction";
 
 const client = generateClient<Schema>();
 
@@ -14,8 +12,6 @@ function DashboardPage() {
     const { user } = useAuthenticator();
 
     const [transactions, setTransactions] = useState<Array<Schema["Transaction"]["type"]>>([]);
-
-    // eslint-disable-next-line
     const [userDetails, setUserDetails] = useState<FetchUserAttributesOutput>();
 
     useEffect(() => {
@@ -77,35 +73,11 @@ function DashboardPage() {
                     <h2 className="text-lg font-semibold mb-4">My Transactions</h2>
                     <div className="flex flex-col gap-4">
                         {transactions.map((transaction) => (
-                            <div
-                                key={transaction.id}
-                                className="flex justify-between items-center
-                                bg-white
-                                shadow-md
-                                rounded-lg p-4 border
-                                border-gray-200"
-                            >
-                                <div>
-                                    <div
-                                        className="text-sm
-                                    font-semibold"
-                                    >
-                                        {transaction.vendor}
-                                    </div>
-                                    <div className="text-xs text-gray-500">
-                                        {new Date(transaction.createdAt).toLocaleString()}
-                                    </div>
-                                </div>
-                                <div className="text-red-500 font-bold">
-                                    {transaction.isFraudulent ? (
-                                        <span className="text-orange-500">
-                                            - ${transaction.amount?.toFixed(2)}
-                                        </span>
-                                    ) : (
-                                        <span>- ${transaction.amount?.toFixed(2)}</span>
-                                    )}
-                                </div>
-                            </div>
+
+                            // for clarity:
+                            // left side transaction is property defined in interface
+                            // right side of transaction is the transaction object itself
+                            <Transaction key={transaction.id} transaction={transaction} />
                         ))}
                     </div>
                 </section>
