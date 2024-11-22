@@ -13,21 +13,34 @@ function DashboardPage() {
 
     const [transactions, setTransactions] = useState<Array<Schema["Transaction"]["type"]>>([]);
     const [userDetails, setUserDetails] = useState<FetchUserAttributesOutput>();
+    const [loading, setLoading] = useState(true); // Step 1: Loading state
 
     useEffect(() => {
         if (user) {
             console.log(user);
 
-            fetchUserAttributes().then((result) => {
-                setUserDetails(result);
-            });
+            // gets user details for welcome section
+            fetchUserAttributes()
+                .then((result) => {
+                    setUserDetails(result);
+                })
+                .catch((err) => console.error(err));
 
+            // Fetch transactions
             client.models.Transaction.observeQuery().subscribe({
-                next: (data) => setTransactions([...data.items]),
+                next: (data) => {
+                    setTransactions([...data.items]);
+                    setLoading(false); // once everything is loaded, loading will stop
+                },
+                error: (err) => {
+                    console.error(err);
+                    setLoading(false); // Ensure loading ends even on error
+                },
             });
         }
     }, [user]);
 
+    // temporary create transaction, will remove once New Transaction is merged with main
     function createTransaction() {
         client.models.Transaction.create({
             userID: user.userId,
@@ -41,13 +54,43 @@ function DashboardPage() {
         });
     }
 
+    // loading signal
+    if (loading) {
+        return (
+            <div className="
+             flex items-center
+             justify-center
+             min-h-screen
+             bg-gray-100">
+                <div
+                    className="
+                        animate-spin
+                        rounded-full
+                        h-16
+                        w-16
+                        border-t-4
+                        border-c1-blue"
+                ></div>
+
+            </div>
+        );
+    }
+
     return (
         <Page title="Dashboard" isProtected={true}>
             <div className="p-8 font-sans">
                 {/* Welcome Section */}
                 <div className="mb-8">
-                    <div className="p-4 rounded-lg border bg-c1-blue shadow-md">
-                        <h2 className="text-lg font-semibold text-white">
+                    <div className="p-4
+                    rounded-lg
+                    border
+                    bg-c1-blue
+                    shadow-md"
+                    >
+                        <h2 className="text-lg
+                         font-semibold
+                         text-white"
+                        >
                             Welcome, {userDetails?.given_name} {userDetails?.family_name}!
                         </h2>
                     </div>
@@ -73,10 +116,6 @@ function DashboardPage() {
                     <h2 className="text-lg font-semibold mb-4">My Transactions</h2>
                     <div className="flex flex-col gap-4">
                         {transactions.map((transaction) => (
-
-                            // for clarity:
-                            // left side transaction is property defined in interface
-                            // right side of transaction is the transaction object itself
                             <Transaction key={transaction.id} transaction={transaction} />
                         ))}
                     </div>
@@ -87,3 +126,4 @@ function DashboardPage() {
 }
 
 export default DashboardPage;
+
