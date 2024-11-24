@@ -39,33 +39,6 @@ function DashboardPage() {
         }
     }, [user]);
 
-    // will later delete
-    function createTransaction() {
-        client.models.Transaction.create({
-            userID: user.userId,
-            vendor: "Chipotle",
-            category: "Food",
-            amount: 25,
-            latitude: 20,
-            longitude: 20,
-            isFraudulent: false,
-            isUserValidated: false,
-        });
-    }
-
-    // will later delete
-    function createFraudulentTransaction() {
-        client.models.Transaction.create({
-            userID: user.userId,
-            vendor: "Chipotle",
-            category: "Food",
-            amount: 25000,
-            latitude: 20,
-            longitude: 20,
-            isFraudulent: true,
-            isUserValidated: false,
-        });
-    }
     return (
         <Page title="Dashboard" isProtected={true}>
             <div className="p-8 font-sans">
