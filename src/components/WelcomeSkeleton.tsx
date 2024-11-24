@@ -18,7 +18,6 @@ const welcomeInfo = classNames(
     "mb-2"
 );
 
-// eslint-disable-next-line
 const WelcomeSkeleton: React.FC = () => {
     return (
         <div className={welcomeDiv}>

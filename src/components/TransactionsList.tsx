@@ -6,7 +6,6 @@ import TransactionCardSkeleton from "../components/TransactionCardSkeleton";
 
 const client = generateClient<Schema>();
 
-// eslint-disable-next-line
 const TransactionsList: React.FC = () => {
     const [transactions, setTransactions] = useState<Array<Schema["Transaction"]["type"]>>([]);
     const [loading, setLoading] = useState(true);

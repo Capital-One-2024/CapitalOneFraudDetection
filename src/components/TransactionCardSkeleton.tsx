@@ -14,7 +14,6 @@ const skeletonClass = classNames(
     "border-gray-300"
 );
 
-// eslint-disable-next-line
 const TransactionCardSkeleton: React.FC = () => {
     return (
         <div className={skeletonClass}>

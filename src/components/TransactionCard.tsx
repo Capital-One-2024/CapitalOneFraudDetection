@@ -20,7 +20,6 @@ const cardClass = classNames(
 );
 
 // Transaction component will use TransactionProps for type checking
-// eslint-disable-next-line
 const TransactionCard: React.FC<TransactionProps> = ({ transaction }) => {
 
     const statusLabel = transaction.isFraudulent
