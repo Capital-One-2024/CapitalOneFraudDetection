@@ -82,22 +82,6 @@ function DashboardPage() {
                     )}
                 </div>
 
-                {/* Transaction Buttons will later delete*/}
-                <div className="mb-8 flex gap-4">
-                    <button
-                        onClick={createTransaction}
-                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                    >
-                        + Add Transaction
-                    </button>
-                    <button
-                        onClick={createFraudulentTransaction}
-                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                    >
-                        + Add Fraudulent Transaction
-                    </button>
-                </div>
-
                 {/* Transactions Section */}
                 <section>
                     <h2 className="text-lg font-semibold mb-4">My Transactions</h2>
