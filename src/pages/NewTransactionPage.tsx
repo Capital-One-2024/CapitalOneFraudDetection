@@ -54,12 +54,12 @@ export default function NewTransactionPage() {
                     setLatitude(position.coords.latitude);
                 },
                 (error) => {
-                    //console.error("Error getting geolocation:", error);
+                    console.error("Error getting geolocation:", error);
                     setHasLocationAccess(false); // SET location access to false if error occurs
                 }
             );
         } else {
-            //console.error("Geolocation is not supported by this browser.");
+            // console.error("Geolocation is not supported by this browser.");
             setHasLocationAccess(false);
         }
     }, []);
@@ -137,27 +137,22 @@ export default function NewTransactionPage() {
                 </h1>
                 <form
                     onSubmit={handleSubmit(ON_SUBMIT)}
-                    className={classNames(
-                        'items-center',
-                        'flex',
-                        'flex-col',
-                        'justify-center',
-                    )}
+                    className={classNames("items-center", "flex", "flex-col", "justify-center")}
                 >
                     <div className="space-y-8 w-full">
                         <div
                             className={classNames(
-                                'p-6',
-                                'border-2',
-                                'border-c1-blue',
-                                'rounded-lg',
-                                'shadow-lg',
-                                'flex',
-                                'flex-col',
-                                'sm:flex-row',
-                                'items-center',
-                                'sm:items-start'
-                              )}
+                                "p-6",
+                                "border-2",
+                                "border-c1-blue",
+                                "rounded-lg",
+                                "shadow-lg",
+                                "flex",
+                                "flex-col",
+                                "sm:flex-row",
+                                "items-center",
+                                "sm:items-start"
+                            )}
                         >
                             {/* "Date & Time" always on the left */}
                             <div className="pl-1 text-c1-blue w-full sm:w-auto sm:flex-1">
@@ -168,13 +163,12 @@ export default function NewTransactionPage() {
 
                             <div
                                 className={classNames(
-                                    'text-c1-blue w-full',
-                                    'sm:w-auto',
-                                    'sm:flex-1',
-                                    'text-center',
-                                    'sm:text-left',
+                                    "text-c1-blue w-full",
+                                    "sm:w-auto",
+                                    "sm:flex-1",
+                                    "text-center",
+                                    "sm:text-left"
                                 )}
-                                
                             >
                                 <h2 className="text-c1-blue text-xl font-bold">
                                     {formatDate(new Date())}
@@ -184,16 +178,16 @@ export default function NewTransactionPage() {
 
                         <div
                             className={classNames(
-                                'p-4', 
-                                'border-2', 
-                                'border-c1-blue', 
-                                'rounded-lg',
-                                'shadow-lg',
-                                'flex',
-                                'flex-col', 
-                                'sm:flex-row', 
-                                'items-center',
-                                'justify-between',
+                                "p-4",
+                                "border-2",
+                                "border-c1-blue",
+                                "rounded-lg",
+                                "shadow-lg",
+                                "flex",
+                                "flex-col",
+                                "sm:flex-row",
+                                "items-center",
+                                "justify-between"
                             )}
                         >
                             <div className="pl-3 text-c1-blue w-full sm:w-1/2 mb-4 sm:mb-0">
@@ -207,13 +201,13 @@ export default function NewTransactionPage() {
                                     {...register("vendor")}
                                     defaultValue="" // SET the default value to an empty string
                                     className={classNames(
-                                        'w-full', 
-                                        'p-2', 
-                                        'border-2',
-                                        'border-c1-blue ',
-                                        'rounded-md',
-                                        'text-gray-500', 
-                                        'invalid:text-gray-500',
+                                        "w-full",
+                                        "p-2",
+                                        "border-2",
+                                        "border-c1-blue ",
+                                        "rounded-md",
+                                        "text-gray-500",
+                                        "invalid:text-gray-500"
                                     )}
                                 >
                                     <option value="" disabled>
@@ -237,17 +231,16 @@ export default function NewTransactionPage() {
 
                         <div
                             className={classNames(
-                                'p-4',
-                                'border-2',
-                                'border-c1-blue', 
-                                'rounded-lg',
-                                'shadow-lg',
-                                'flex',
-                                'flex-col',
-                                'sm:flex-row',
-                                'justify-between',
+                                "p-4",
+                                "border-2",
+                                "border-c1-blue",
+                                "rounded-lg",
+                                "shadow-lg",
+                                "flex",
+                                "flex-col",
+                                "sm:flex-row",
+                                "justify-between"
                             )}
-                            
                         >
                             <div className="pl-3 text-c1-blue w-full sm:w-1/2 mb-4 sm:mb-0">
                                 <h2 className="text-c1-blue w-1/2 text-xl font-bold">Amount:</h2>
@@ -269,12 +262,7 @@ export default function NewTransactionPage() {
                     <button
                         type="submit"
                         disabled={isLoading} // Disable button during loading
-                        className={classNames(
-                            'my-4',
-                            'w-2/3', 
-                            'btn',
-                            'btn-blue',
-                        )}
+                        className={classNames("my-4", "w-2/3", "btn", "btn-blue")}
                     >
                         {isLoading ? (
                             <div className="flex justify-center">
