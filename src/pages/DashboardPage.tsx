@@ -7,7 +7,6 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import WelcomeSkeleton from "../components/WelcomeSkeleton";
 import TransactionsList from "../components/TransactionsList";
 
-
 const client = generateClient<Schema>();
 
 function DashboardPage() {
@@ -66,4 +65,3 @@ function DashboardPage() {
 }
 
 export default DashboardPage;
-

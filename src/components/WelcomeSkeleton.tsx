@@ -10,19 +10,12 @@ const welcomeDiv = classNames(
     "shadow-md"
 );
 
-const welcomeInfo = classNames(
-    "h-6",
-    "bg-gray-300",
-    "rounded",
-    "w-1/4",
-    "mb-2"
-);
+const welcomeInfo = classNames("h-6", "bg-gray-300", "rounded", "w-1/4", "mb-2");
 
 const WelcomeSkeleton: React.FC = () => {
     return (
         <div className={welcomeDiv}>
-            <div className={welcomeInfo}>
-            </div>
+            <div className={welcomeInfo}></div>
         </div>
     );
 };

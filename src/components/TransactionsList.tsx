@@ -29,9 +29,11 @@ const TransactionsList: React.FC = () => {
         return (
             <div className="flex flex-col gap-4">
                 {/* need item in order to properly load the transactions skeleton */}
-                {Array(4).fill(null).map((item, index) => (
-                    <TransactionCardSkeleton key={index} />
-                ))}
+                {Array(4)
+                    .fill(null)
+                    .map((item, index) => (
+                        <TransactionCardSkeleton key={index} />
+                    ))}
             </div>
         );
     }

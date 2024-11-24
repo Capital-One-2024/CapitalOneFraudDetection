@@ -21,21 +21,14 @@ const cardClass = classNames(
 
 // Transaction component will use TransactionProps for type checking
 const TransactionCard: React.FC<TransactionProps> = ({ transaction }) => {
+    const statusLabel = transaction.isFraudulent ? "Blocked - Possible Fraud" : "Processed";
 
-    const statusLabel = transaction.isFraudulent
-        ? "Blocked - Possible Fraud"
-        : "Processed";
-
-    const statusClass = transaction.isFraudulent
-        ? "text-red-500"
-        : "text-green-700";
+    const statusClass = transaction.isFraudulent ? "text-red-500" : "text-green-700";
 
     return (
         <div className={cardClass}>
             <div>
-                <div className="text-sm font-semibold">
-                    {transaction.vendor}
-                </div>
+                <div className="text-sm font-semibold">{transaction.vendor}</div>
                 <div className="text-xs text-gray-500">
                     {new Date(transaction.createdAt).toLocaleString()}
                 </div>
