@@ -6,10 +6,12 @@ import classNames from "classnames";
 import ProfileDetail from "../components/ProfileDetail";
 import { signOut } from "aws-amplify/auth";
 import Avatar from "@mui/material/Avatar";
+import { useNavigate } from "react-router-dom";
 
 export default function ProfilePage() {
     const [userDetails, setUserDetails] = useState<FetchUserAttributesOutput>();
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     // Function to fetch user attributes
     const fetchUserDetails = () => {
@@ -29,6 +31,12 @@ export default function ProfilePage() {
     useEffect(() => {
         fetchUserDetails();
     }, []);
+
+    // Function to handle sign out
+    const handleSignOut = () => {
+        signOut();
+        navigate('/');
+    }
 
     return (
         <Page title="Profile" isProtected={true}>
@@ -71,7 +79,7 @@ export default function ProfilePage() {
                         <button
                             type="button"
                             className="btn btn-blue w-1/3"
-                            onClick={() => signOut()}
+                            onClick={handleSignOut}
                         >
                             Sign Out
                         </button>
