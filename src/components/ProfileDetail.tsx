@@ -42,9 +42,13 @@ export default function ProfileDetail({
     const [isEditing, setIsEditing] = useState(false);
     const [editValue, setEditValue] = useState(attribute);
     const [isConfirmationRequired, setIsConfirmationRequired] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleUpdateAttribute = async () => {
         try {
+            if (editValue.length === 0) {
+                throw new Error;
+            }
             const output = await updateUserAttribute({
                 userAttribute: {
                     attributeKey,
@@ -53,6 +57,7 @@ export default function ProfileDetail({
             });
             handleNextSteps(output);
         } catch (error) {
+            setError("Invalid attribute entry, please try again.");
             console.log("Failed to update attribute:", error);
         }
     };
@@ -70,12 +75,14 @@ export default function ProfileDetail({
     };
 
     const handleDone = () => {
+        setError(null);
         setIsConfirmationRequired(false);
         setIsEditing(false);
         onUpdateComplete();
     };
 
     const handleCancel = () => {
+        setError(null);
         setEditValue(attribute);
         setIsEditing(false);
     };
@@ -107,7 +114,9 @@ export default function ProfileDetail({
                             >
                                 <ClearIcon />
                             </button>
+
                         </div>
+
                     </div>
                 ) : (
                     <div className="w-full flex items-center gap-2">
@@ -121,6 +130,7 @@ export default function ProfileDetail({
                         </button>
                     </div>
                 )}
+                {error && <div className="text-c1-red text-sm">{error}</div>}
             </div>
             <AttributeConfirmationPopUp
                 show={isConfirmationRequired}
