@@ -18,7 +18,6 @@ const TransactionsList: React.FC = () => {
                     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
                 );
                 setTransactions(sortedTransactions);
-                // setTransactions([...data.items]);
                 setLoading(false);
             },
             error: (err) => {
