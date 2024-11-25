@@ -97,6 +97,11 @@ export default function ProfileDetail({
                             type="text"
                             value={editValue}
                             onChange={(e) => setEditValue(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleUpdateAttribute();
+                                }
+                            }}
                             className="inputClass flex-1 min-w-0"
                         />
                         <div className="flex gap-2 shrink-0">
