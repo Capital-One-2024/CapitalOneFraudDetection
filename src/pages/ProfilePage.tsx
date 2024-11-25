@@ -47,8 +47,8 @@ export default function ProfilePage() {
                 ) : (
                     <>
                         <Avatar sx={{ bgcolor: "#004878", width: 95, height: 95 }}>
-                            {userDetails.given_name.charAt(0)}
-                            {userDetails.family_name.charAt(0)}
+                            {userDetails.given_name?.charAt(0)}
+                            {userDetails.family_name?.charAt(0)}
                         </Avatar>
                         <ProfileDetail
                             description="Email"
