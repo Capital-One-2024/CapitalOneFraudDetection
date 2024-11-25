@@ -239,11 +239,14 @@ export default function NewTransactionPage() {
                                 "flex",
                                 "flex-col",
                                 "sm:flex-row",
+                                "items-center",
                                 "justify-between"
                             )}
                         >
                             <div className="pl-3 text-c1-blue w-full sm:w-1/2 mb-4 sm:mb-0">
-                                <h2 className="text-c1-blue w-1/2 text-xl font-bold">Amount:</h2>
+                                <h2 className="text-c1-blue w-full sm:w-1/2 text-xl font-bold">
+                                    Amount:
+                                </h2>
                             </div>
                             <div className="w-full sm:w-1/2">
                                 <input
