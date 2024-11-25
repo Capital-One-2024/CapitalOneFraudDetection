@@ -13,7 +13,11 @@ const TransactionsList: React.FC = () => {
     useEffect(() => {
         const subscription = client.models.Transaction.observeQuery().subscribe({
             next: (data) => {
-                setTransactions([...data.items]);
+                // descending order
+                const sortedTransactions = [...data.items].sort(
+                    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                );
+                setTransactions(sortedTransactions);
                 setLoading(false);
             },
             error: (err) => {
