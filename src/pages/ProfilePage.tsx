@@ -35,8 +35,8 @@ export default function ProfilePage() {
     // Function to handle sign out
     const handleSignOut = () => {
         signOut();
-        navigate('/');
-    }
+        navigate("/");
+    };
 
     return (
         <Page title="Profile" isProtected={true}>
