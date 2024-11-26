@@ -72,7 +72,7 @@ export default function NewTransactionPage() {
     } = useForm<TransactionInputs>({
         resolver: zodResolver(TRANSACTION_SCHEMA),
         defaultValues: {
-            amount: "",
+            amount: undefined,
             vendor: "",
         },
     });
