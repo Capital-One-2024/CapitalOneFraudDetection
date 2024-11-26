@@ -145,11 +145,9 @@ export default function TransactionDetailsPage() {
             <NewTransactionPopup
                 show={showSuccess}
                 type="success"
-                message={
-                    `The transaction was reported as 
+                message={`The transaction was reported as 
                     ${transaction?.isFraudulent ? "fraudlent" : "not fraudulent"} 
-                    successfully.`
-                }
+                    successfully.`}
                 onClose={() => setShowSuccess(false)}
             />
             <NewTransactionPopup
