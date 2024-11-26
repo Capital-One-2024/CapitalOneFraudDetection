@@ -13,7 +13,11 @@ const TransactionsList: React.FC = () => {
     useEffect(() => {
         const subscription = client.models.Transaction.observeQuery().subscribe({
             next: (data) => {
-                setTransactions([...data.items]);
+                // descending order
+                const sortedTransactions = [...data.items].sort(
+                    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                );
+                setTransactions(sortedTransactions);
                 setLoading(false);
             },
             error: (err) => {
@@ -31,7 +35,8 @@ const TransactionsList: React.FC = () => {
                 {/* need item in order to properly load the transactions skeleton */}
                 {Array(4)
                     .fill(null)
-                    .map((item, index) => (
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    .map((_, index) => (
                         <TransactionCardSkeleton key={index} />
                     ))}
             </div>

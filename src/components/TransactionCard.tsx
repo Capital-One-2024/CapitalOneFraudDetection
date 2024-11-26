@@ -2,6 +2,8 @@ import React from "react";
 import type { Schema } from "../../amplify/data/resource";
 import classNames from "classnames";
 
+import { useNavigate } from "react-router-dom";
+
 // interface describing the shape of the transaction prop
 interface TransactionProps {
     transaction: Schema["Transaction"]["type"];
@@ -25,10 +27,16 @@ const TransactionCard: React.FC<TransactionProps> = ({ transaction }) => {
 
     const statusClass = transaction.isFraudulent ? "text-red-500" : "text-green-700";
 
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate("/transaction-details", { state: transaction });
+    };
+
     return (
-        <div className={cardClass}>
+        <button className={cardClass} onClick={handleClick}>
             <div>
-                <div className="text-sm font-semibold">{transaction.vendor}</div>
+                <div className="text-sm font-semibold text-left">{transaction.vendor}</div>
                 <div className="text-xs text-gray-500">
                     {new Date(transaction.createdAt).toLocaleString()}
                 </div>
@@ -36,7 +44,7 @@ const TransactionCard: React.FC<TransactionProps> = ({ transaction }) => {
             <div className={`text-sm font-bold ${statusClass}`}>
                 - ${transaction.amount?.toFixed(2)} <span>({statusLabel})</span>
             </div>
-        </div>
+        </button>
     );
 };
 
