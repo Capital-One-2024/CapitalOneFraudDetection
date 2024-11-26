@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
-import Page from "../components/Page";
-import { useForm } from "react-hook-form";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CircularProgress from "@mui/material/CircularProgress";
-import { TRANSACTION_SCHEMA } from "../lib/schemas";
-import { z } from "zod";
-import { useAuthenticator } from "@aws-amplify/ui-react";
-import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
-import NewTransactionPopup from "../components/NewTransactionPopUp";
-import { formatDate } from "../lib/utils";
 import classNames from "classnames";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import type { Schema } from "../../amplify/data/resource";
+import NewTransactionPopup from "../components/NewTransactionPopUp";
+import Page from "../components/Page";
+import { TRANSACTION_SCHEMA } from "../lib/schemas";
+import { formatDate } from "../lib/utils";
 
 const client = generateClient<Schema>();
 
@@ -72,7 +72,7 @@ export default function NewTransactionPage() {
     } = useForm<TransactionInputs>({
         resolver: zodResolver(TRANSACTION_SCHEMA),
         defaultValues: {
-            amount: "",
+            amount: undefined,
             vendor: "",
         },
     });
@@ -81,7 +81,7 @@ export default function NewTransactionPage() {
         try {
             setIsLoading(true);
             const [vendor, category] = data.vendor.split("|");
-            await client.models.Transaction.create({
+            const creationResult = await client.models.Transaction.create({
                 userID: user.userId,
                 vendor: vendor,
                 category: category,
@@ -91,6 +91,21 @@ export default function NewTransactionPage() {
                 isFraudulent: false,
                 isUserValidated: false,
             });
+
+            if (!creationResult.data) {
+                throw new Error("Unable to create transaction");
+            }
+
+            try {
+                const r = await client.queries.queueTransaction({
+                    transactionID: creationResult.data.id,
+                });
+
+                console.log(r);
+            } catch (error) {
+                console.error("Error checking transaction:", error);
+            }
+
             setIsLoading(false);
             setShowSuccess(true);
             reset();
