@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import Page from "../components/Page";
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import type { Schema } from "../../amplify/data/resource";
 
 import NewTransactionPopup from "../components/NewTransactionPopUp";
@@ -15,6 +15,7 @@ export default function TransactionDetailsPage() {
     const [showFailure, setShowFailure] = useState(false);
 
     const location = useLocation();
+    const navigate = useNavigate();
 
     const client = generateClient<Schema>();
 
@@ -93,9 +94,27 @@ export default function TransactionDetailsPage() {
                     <div
                         className={classNames(
                             "sm:w-3/5 w-full bg-red p-5 ",
-                            "border border-2 border-c1-blue rounded-xl"
+                            "border border-2 border-c1-blue rounded-xl relative"
                         )}
                     >
+                        {/* Close Button */}
+                        <button
+                            onClick={() => navigate("/dashboard")}
+                            className={classNames(
+                                "absolute top-4 right-4 w-10 h-10 rounded-full",
+                                "bg-c1-red",
+                                "text-white",
+                                "font-extrabold",
+                                "text-xl flex items-center justify-center",
+                                "hover:bg-red-700",
+                                "hover:scale-105",
+                                "transition-transform duration-200 shadow-md"
+                            )}
+                            aria-label="Close"
+                        >
+                            &times;
+                        </button>
+
                         <div className="mb-8 text-center text-c1-blue text-xl">
                             Transaction: {transaction.id}
                         </div>
