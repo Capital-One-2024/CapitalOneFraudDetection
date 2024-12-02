@@ -95,27 +95,55 @@ export default function NewTransactionPage() {
         try {
             setIsLoading(true);
             const [vendor, category] = data.vendor.split("|");
-            await client.models.Transaction.create({
-                userID: user.userId,
-                accountID: data.accountID,
-                vendor: vendor,
-                category: category,
-                amount: data.amount,
-                latitude: latitude,
-                longitude: longitude,
-                isFraudulent: false,
-                isUserValidated: false,
-            });
+    
+            // Fetch the selected account
+            const account = accounts.find((acc) => acc.id === data.accountID);
+            if (!account) {
+                throw new Error("Account not found");
+            }
+
+            // Ensure balance is defined
+            if (account.balance === null || account.balance === undefined) {
+                throw new Error("Account balance is not available");
+            }
+    
+            // Ensure sufficient balance
+            if (account.balance < data.amount) {
+                throw new Error("Insufficient funds");
+            }
+    
+            // Deduct transaction amount from account balance
+            const updatedBalance = account.balance - data.amount;
+    
+            await Promise.all([
+                client.models.Transaction.create({
+                    userID: user.userId,
+                    accountID: data.accountID,
+                    vendor: vendor,
+                    category: category,
+                    amount: data.amount,
+                    latitude: latitude,
+                    longitude: longitude,
+                    isFraudulent: false,
+                    isUserValidated: false,
+                }),
+                client.models.Account.update({
+                    id: data.accountID,
+                    balance: updatedBalance,
+                }),
+            ]);
+    
             setIsLoading(false);
             setShowSuccess(true);
             reset();
         } catch (error) {
             setIsLoading(false);
-            console.log("Unable to process transaction:", error);
+            console.error("Unable to process transaction:", error);
             setShowFailure(true);
             reset();
         }
     };
+    
 
     // Display location requirement
     if (!hasLocationAccess) {
