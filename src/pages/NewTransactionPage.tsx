@@ -201,7 +201,7 @@ export default function NewTransactionPage() {
                     </div>
 
                     <div className="mb-2">
-                        Account:
+                        Account ID:
                         <select
                             id="accountID"
                             {...register("accountID")}
