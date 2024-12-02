@@ -10,16 +10,23 @@ const schema = a
     .schema({
         Transaction: a
             .model({
-                userID: a.string(),
+                type: a.string().default("Transaction").required(),
+                userID: a.string().required(),
                 vendor: a.string(),
                 category: a.string(),
                 amount: a.float(),
                 // longitude and latitude are for location
-                longitude: a.float(),
-                latitude: a.float(),
+                longitude: a.float().required(),
+                latitude: a.float().required(),
                 isFraudulent: a.boolean().required().default(true),
                 isUserValidated: a.boolean().required().default(false),
+                isProcessed: a.boolean().required().default(false),
+                createdAt: a.timestamp().required(),
+                updatedAt: a.timestamp().required(),
             })
+            .secondaryIndexes((index) => [
+                index("type").sortKeys(["createdAt"]).queryField("listByCreationDate"),
+            ])
             .authorization((allow) => [allow.owner()]),
         checkTransaction: a
             .query()

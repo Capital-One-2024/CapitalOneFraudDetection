@@ -18,10 +18,12 @@ export const onCreateTransaction = /* GraphQL */ `subscription OnCreateTransacti
     createdAt
     id
     isFraudulent
+    isProcessed
     isUserValidated
     latitude
     longitude
     owner
+    type
     updatedAt
     userID
     vendor
@@ -42,10 +44,12 @@ export const onDeleteTransaction = /* GraphQL */ `subscription OnDeleteTransacti
     createdAt
     id
     isFraudulent
+    isProcessed
     isUserValidated
     latitude
     longitude
     owner
+    type
     updatedAt
     userID
     vendor
@@ -66,10 +70,12 @@ export const onUpdateTransaction = /* GraphQL */ `subscription OnUpdateTransacti
     createdAt
     id
     isFraudulent
+    isProcessed
     isUserValidated
     latitude
     longitude
     owner
+    type
     updatedAt
     userID
     vendor

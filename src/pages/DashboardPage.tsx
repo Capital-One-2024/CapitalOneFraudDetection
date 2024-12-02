@@ -16,8 +16,6 @@ function DashboardPage() {
 
     useEffect(() => {
         if (user) {
-            console.log(user);
-
             // gets user details for welcome section
             fetchUserAttributes()
                 .then((result) => {

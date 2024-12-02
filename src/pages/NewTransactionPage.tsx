@@ -41,8 +41,8 @@ export default function NewTransactionPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
-    const [longitude, setLongitude] = useState<number | null>(null);
-    const [latitude, setLatitude] = useState<number | null>(null);
+    const [longitude, setLongitude] = useState<number>();
+    const [latitude, setLatitude] = useState<number>();
     const [hasLocationAccess, setHasLocationAccess] = useState(true);
 
     // Obtain user position
@@ -82,14 +82,19 @@ export default function NewTransactionPage() {
             setIsLoading(true);
             const [vendor, category] = data.vendor.split("|");
             const creationResult = await client.models.Transaction.create({
+                type: "Transaction",
                 userID: user.userId,
                 vendor: vendor,
                 category: category,
                 amount: data.amount,
-                latitude: latitude,
-                longitude: longitude,
+                latitude: latitude!,
+                longitude: longitude!,
                 isFraudulent: false,
                 isUserValidated: false,
+                isProcessed: false,
+                // timestamps (numbers) not datetime (strings)
+                createdAt: Date.now(),
+                updatedAt: Date.now(),
             });
 
             if (!creationResult.data) {
@@ -97,11 +102,9 @@ export default function NewTransactionPage() {
             }
 
             try {
-                const r = await client.queries.queueTransaction({
+                await client.queries.queueTransaction({
                     transactionID: creationResult.data.id,
                 });
-
-                console.log(r);
             } catch (error) {
                 console.error("Error checking transaction:", error);
             }

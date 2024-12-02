@@ -9,7 +9,11 @@ type GeneratedQuery<InputType, OutputType> = string & {
 };
 
 export const checkTransaction = /* GraphQL */ `query CheckTransaction($transactionID: String!) {
-  checkTransaction(transactionID: $transactionID)
+  checkTransaction(transactionID: $transactionID) {
+    message
+    statusCode
+    __typename
+  }
 }
 ` as GeneratedQuery<
   APITypes.CheckTransactionQueryVariables,
@@ -22,10 +26,12 @@ export const getTransaction = /* GraphQL */ `query GetTransaction($id: ID!) {
     createdAt
     id
     isFraudulent
+    isProcessed
     isUserValidated
     latitude
     longitude
     owner
+    type
     updatedAt
     userID
     vendor
@@ -35,6 +41,47 @@ export const getTransaction = /* GraphQL */ `query GetTransaction($id: ID!) {
 ` as GeneratedQuery<
   APITypes.GetTransactionQueryVariables,
   APITypes.GetTransactionQuery
+>;
+export const listByCreationDate = /* GraphQL */ `query ListByCreationDate(
+  $createdAt: ModelIntKeyConditionInput
+  $filter: ModelTransactionFilterInput
+  $limit: Int
+  $nextToken: String
+  $sortDirection: ModelSortDirection
+  $type: String!
+) {
+  listByCreationDate(
+    createdAt: $createdAt
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    sortDirection: $sortDirection
+    type: $type
+  ) {
+    items {
+      amount
+      category
+      createdAt
+      id
+      isFraudulent
+      isProcessed
+      isUserValidated
+      latitude
+      longitude
+      owner
+      type
+      updatedAt
+      userID
+      vendor
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListByCreationDateQueryVariables,
+  APITypes.ListByCreationDateQuery
 >;
 export const listTransactions = /* GraphQL */ `query ListTransactions(
   $filter: ModelTransactionFilterInput
@@ -48,10 +95,12 @@ export const listTransactions = /* GraphQL */ `query ListTransactions(
       createdAt
       id
       isFraudulent
+      isProcessed
       isUserValidated
       latitude
       longitude
       owner
+      type
       updatedAt
       userID
       vendor
@@ -64,4 +113,15 @@ export const listTransactions = /* GraphQL */ `query ListTransactions(
 ` as GeneratedQuery<
   APITypes.ListTransactionsQueryVariables,
   APITypes.ListTransactionsQuery
+>;
+export const queueTransaction = /* GraphQL */ `query QueueTransaction($transactionID: String!) {
+  queueTransaction(transactionID: $transactionID) {
+    message
+    statusCode
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.QueueTransactionQueryVariables,
+  APITypes.QueueTransactionQuery
 >;

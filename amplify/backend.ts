@@ -29,10 +29,22 @@ backend.queueTransaction.addEnvironment("CAPITAL_ONE_QUEUE_URL", capitalOneQueue
 // Grant the queueTransaction function permission to send messages to the queue
 capitalOneQueue.grantSendMessages(backend.queueTransaction.resources.lambda.role!);
 
+// Add the user pool ID to the checkTransaction function environment variables
+backend.checkTransaction.addEnvironment(
+    "CAPITAL_ONE_USER_POOL_ID",
+    backend.auth.resources.userPool.userPoolId
+);
+
 // Add the Amplify Lambda Invoke policy to the checkTransaction function
 // to allow it to invoke the python-predictor function
 backend.checkTransaction.resources.lambda.role?.addManagedPolicy({
     managedPolicyArn: "arn:aws:iam::412381780180:policy/Capital-One-Amplify-Lambda-Invoke-Policy",
+});
+
+// Add the Amplify Cognito policy to the checkTransaction function
+// to allow it to access the user pool
+backend.checkTransaction.resources.lambda.role?.addManagedPolicy({
+    managedPolicyArn: "arn:aws:iam::412381780180:policy/Capital-One-Amplify-Cognito-Policy",
 });
 
 // Trigger the checkTransaction function when a message is sent to the queue

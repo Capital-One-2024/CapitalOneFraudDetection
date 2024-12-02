@@ -18,10 +18,12 @@ export const createTransaction = /* GraphQL */ `mutation CreateTransaction(
     createdAt
     id
     isFraudulent
+    isProcessed
     isUserValidated
     latitude
     longitude
     owner
+    type
     updatedAt
     userID
     vendor
@@ -42,10 +44,12 @@ export const deleteTransaction = /* GraphQL */ `mutation DeleteTransaction(
     createdAt
     id
     isFraudulent
+    isProcessed
     isUserValidated
     latitude
     longitude
     owner
+    type
     updatedAt
     userID
     vendor
@@ -66,10 +70,12 @@ export const updateTransaction = /* GraphQL */ `mutation UpdateTransaction(
     createdAt
     id
     isFraudulent
+    isProcessed
     isUserValidated
     latitude
     longitude
     owner
+    type
     updatedAt
     userID
     vendor
