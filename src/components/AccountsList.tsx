@@ -33,13 +33,12 @@ const AccountsList: React.FC = () => {
         return () => subscription.unsubscribe(); // Cleanup subscription on unmount
     }, [user.userId]);
 
-    
-
     if (isLoading) {
         return (
             <div className="flex flex-wrap gap-4">
                 {Array(2)
                     .fill(null)
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
                     .map((_, index) => (
                         <AccountCardSkeleton key={index} />
                     ))}

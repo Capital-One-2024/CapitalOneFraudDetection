@@ -95,26 +95,20 @@ export default function NewTransactionPage() {
         try {
             setIsLoading(true);
             const [vendor, category] = data.vendor.split("|");
-    
             // Fetch the selected account
             const account = accounts.find((acc) => acc.id === data.accountID);
             if (!account) {
                 throw new Error("Account not found");
             }
-
             // Ensure balance is defined
             if (account.balance === null || account.balance === undefined) {
                 throw new Error("Account balance is not available");
             }
-    
             // Ensure sufficient balance
             if (account.balance < data.amount) {
                 throw new Error("Insufficient funds");
             }
-    
-            // Deduct transaction amount from account balance
-            const updatedBalance = account.balance - data.amount;
-    
+            const updatedBalance = account.balance - data.amount; // updated balance
             await Promise.all([
                 client.models.Transaction.create({
                     userID: user.userId,
@@ -132,18 +126,16 @@ export default function NewTransactionPage() {
                     balance: updatedBalance,
                 }),
             ]);
-    
             setIsLoading(false);
             setShowSuccess(true);
             reset();
         } catch (error) {
             setIsLoading(false);
-            console.error("Unable to process transaction:", error);
+            console.log("Unable to process transaction:", error);
             setShowFailure(true);
             reset();
         }
     };
-    
 
     // Display location requirement
     if (!hasLocationAccess) {
