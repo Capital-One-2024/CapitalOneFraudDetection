@@ -228,9 +228,6 @@ export const handler: SQSHandler = async (event: SQSEvent) => {
         };
     });
 
-    // Log the prepared transactions
-    console.log("Prepared Transactions:", preparedTransactions);
-
     // Will hold the command that will invoke the prediction Lambda function
     let predictionInvokeCommand: InvokeCommand;
 
@@ -239,7 +236,7 @@ export const handler: SQSHandler = async (event: SQSEvent) => {
     // - On failure, quit the execution with an error so SQS retries
     try {
         predictionInvokeCommand = new InvokeCommand({
-            FunctionName: "externalTestingFunction",
+            FunctionName: "myLambda",
             Payload: JSON.stringify({ transactions: preparedTransactions }),
         });
     } catch (error: unknown) {
@@ -273,9 +270,6 @@ export const handler: SQSHandler = async (event: SQSEvent) => {
         predictions = decodeLambdaResponse<PredictionLambdaResponse>(
             predictionLambdaResponse.Payload
         ).predictions;
-
-        // Log the response from the prediction Lambda function -- for debugging
-        console.log("Predictions:", predictions);
     } catch (error: unknown) {
         // Log the error
         console.error(error);
@@ -352,8 +346,6 @@ export const handler: SQSHandler = async (event: SQSEvent) => {
             })
         );
 
-        console.log("Emailer Payload:", emailerPayload);
-
         emailerInvokeCommand = new InvokeCommand({
             FunctionName: "c1EmailerFunction",
             Payload: JSON.stringify({ transactions: emailerPayload }),
@@ -371,13 +363,10 @@ export const handler: SQSHandler = async (event: SQSEvent) => {
     // - On failure, quit the execution with an error so SQS retries
     try {
         // Invoke the emailer Lambda function
-        const emailerRes = await lambdaClient.send(emailerInvokeCommand);
+        await lambdaClient.send(emailerInvokeCommand);
 
         // Log the successful invocation
         console.log("Successfully invoked emailer Lambda function.");
-
-        // Log the response from the emailer Lambda function -- for debugging
-        console.log("Emailer Response:", emailerRes);
     } catch (error: unknown) {
         // Log the error
         console.error("Error invoking emailer Lambda function:", error);
