@@ -19,7 +19,6 @@ export default function TransactionDetailsPage() {
     const client = generateClient<Schema>();
 
     useEffect(() => {
-        console.log(location.state);
         setTransaction(location.state);
     }, [location]);
 
@@ -52,8 +51,6 @@ export default function TransactionDetailsPage() {
         setLoading(true);
 
         if (transaction) {
-            console.log("entered");
-
             const newTransaction = {
                 id: transaction.id,
                 amount: transaction.amount,
@@ -98,6 +95,10 @@ export default function TransactionDetailsPage() {
                     >
                         <div className="mb-8 text-center text-c1-blue text-xl">
                             Transaction: {transaction.id}
+                        </div>
+                        <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
+                            <div className="w-1/2 text-c1-blue">Account:</div>
+                            <div className="w-1/2">{transaction.accountID}</div>
                         </div>
                         <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
                             <div className="w-1/2 text-c1-blue">Amount:</div>
