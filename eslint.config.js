@@ -9,7 +9,9 @@ import tseslint from "typescript-eslint";
 
 export default [
     { files: ["**/*.{ts,tsx}"] },
-    { ignores: ["node_modules", "dist", ".amplify"] },
+    {
+        ignores: ["node_modules", "dist", ".amplify", "amplify/functions/check-transaction/graphql"]
+    },
     {
         languageOptions: {
             ecmaVersion: 2023,
