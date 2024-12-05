@@ -47,7 +47,7 @@ export default function ProfileDetail({
     const handleUpdateAttribute = async () => {
         try {
             if (editValue.length === 0) {
-                throw new Error;
+                throw new Error();
             }
             const output = await updateUserAttribute({
                 userAttribute: {
@@ -98,7 +98,7 @@ export default function ProfileDetail({
                             value={editValue}
                             onChange={(e) => setEditValue(e.target.value)}
                             onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
+                                if (e.key === "Enter") {
                                     handleUpdateAttribute();
                                 }
                             }}
@@ -119,9 +119,7 @@ export default function ProfileDetail({
                             >
                                 <ClearIcon />
                             </button>
-
                         </div>
-
                     </div>
                 ) : (
                     <div className="w-full flex items-center gap-2">
@@ -137,10 +135,7 @@ export default function ProfileDetail({
                 )}
                 {error && <div className="text-c1-red text-sm">{error}</div>}
             </div>
-            <AttributeConfirmationPopUp
-                show={isConfirmationRequired}
-                onClose={handleDone}
-            />
+            <AttributeConfirmationPopUp show={isConfirmationRequired} onClose={handleDone} />
         </div>
     );
 }

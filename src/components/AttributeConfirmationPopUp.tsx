@@ -8,10 +8,7 @@ interface ConfirmationProps {
     show: boolean;
 }
 
-export default function AttributeConfirmationPopUp({
-    onClose,
-    show,
-}: ConfirmationProps) {
+export default function AttributeConfirmationPopUp({ onClose, show }: ConfirmationProps) {
     const [confirmationCode, setConfirmationCode] = useState("");
     const [error, setError] = useState<string | null>(null);
 

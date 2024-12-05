@@ -56,10 +56,7 @@ export default function Navbar({ variant = "loggedOut" }: NavbarProps) {
             </div>
             <div className="flex">
                 {variant === "loggedIn" ? (
-                    <NavLink
-                        to="/profile"
-                        className={classNames("btn btn-blue")}
-                    >
+                    <NavLink to="/profile" className={classNames("btn btn-blue")}>
                         Profile
                     </NavLink>
                 ) : (
