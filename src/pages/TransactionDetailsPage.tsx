@@ -19,7 +19,6 @@ export default function TransactionDetailsPage() {
     const client = generateClient<Schema>();
 
     useEffect(() => {
-        console.log(location.state);
         setTransaction(location.state);
     }, [location]);
 
@@ -52,8 +51,6 @@ export default function TransactionDetailsPage() {
         setLoading(true);
 
         if (transaction) {
-            console.log("entered");
-
             const newTransaction = {
                 id: transaction.id,
                 amount: transaction.amount,

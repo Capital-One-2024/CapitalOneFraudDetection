@@ -69,7 +69,6 @@ export default function NewTransactionPage() {
         client.models.Account.observeQuery().subscribe({
             next: (data) => {
                 setAccounts(data.items); // once everything is loaded, loading will stop
-                console.log(data.items);
             },
             error: (err) => {
                 console.error(err);
