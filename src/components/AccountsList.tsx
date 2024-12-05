@@ -23,7 +23,6 @@ const AccountsList: React.FC = () => {
             filter: { userID: { eq: user.userId } },
         }).subscribe({
             next: (data) => {
-                console.log("Fetched accounts:", data.items);
                 const fetchedAccounts = data.items as Schema["Account"]["type"][];
                 setAccounts(fetchedAccounts);
                 setIsLoading(false);

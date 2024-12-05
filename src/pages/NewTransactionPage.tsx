@@ -97,7 +97,6 @@ export default function NewTransactionPage() {
             // Fetch the selected account
             const account = accounts.find((acc) => acc.id === data.accountID);
             if (!account) {
-                console.log("Error: Account not found");
                 setIsLoading(false);
                 setShowFailure(true);
                 return;
@@ -105,7 +104,6 @@ export default function NewTransactionPage() {
 
             // Ensure balance is defined
             if (account.balance === null || account.balance === undefined) {
-                console.log("Error: Account balance is not available");
                 setIsLoading(false);
                 setShowFailure(true);
                 return;
@@ -113,7 +111,6 @@ export default function NewTransactionPage() {
 
             // Ensure sufficient balance
             if (account.balance < data.amount) {
-                console.log("Error: Insufficient funds");
                 setIsLoading(false);
                 setShowFailure(true);
                 return;
@@ -140,7 +137,6 @@ export default function NewTransactionPage() {
             reset();
         } catch (error) {
             setIsLoading(false);
-            console.log("Unable to process transaction:", error);
             setShowFailure(true);
             reset();
         }

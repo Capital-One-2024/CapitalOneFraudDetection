@@ -67,7 +67,6 @@ export default function TransactionDetailsPage() {
                 await client.models.Transaction.update(newTransaction);
 
             if (errors) {
-                console.log(errors);
                 setShowSuccess(false);
                 setLoading(false);
             } else if (updatedTrans) {
