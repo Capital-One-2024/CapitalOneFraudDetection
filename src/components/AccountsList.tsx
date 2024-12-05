@@ -43,6 +43,7 @@ const AccountsList: React.FC = () => {
             <div className="flex flex-wrap gap-4">
                 {Array(2)
                     .fill(null)
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
                     .map((_, index) => (
                         <AccountCardSkeleton key={index} />
                     ))}
@@ -55,11 +56,7 @@ const AccountsList: React.FC = () => {
     }
 
     if (accounts.length === 0) {
-        return (
-            <p className="text-lg text-gray-600 mt-4">
-                No accounts made yet...
-            </p>
-        );
+        return <p className="text-lg text-gray-600 mt-4">No accounts made yet...</p>;
     }
 
     return (

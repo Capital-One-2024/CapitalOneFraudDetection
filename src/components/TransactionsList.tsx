@@ -44,11 +44,7 @@ const TransactionsList: React.FC = () => {
     }
 
     if (transactions.length === 0) {
-        return (
-            <p className="text-lg text-gray-600 mt-4">
-                No Transactions made yet...
-            </p>
-        );
+        return <p className="text-lg text-gray-600 mt-4">No Transactions made yet...</p>;
     }
 
     return (

@@ -97,18 +97,28 @@ export default function NewTransactionPage() {
             // Fetch the selected account
             const account = accounts.find((acc) => acc.id === data.accountID);
             if (!account) {
-                throw new Error("Account not found");
+                console.log("Error: Account not found");
+                setIsLoading(false);
+                setShowFailure(true);
+                return;
             }
+
             // Ensure balance is defined
             if (account.balance === null || account.balance === undefined) {
-                throw new Error("Account balance is not available");
+                console.log("Error: Account balance is not available");
+                setIsLoading(false);
+                setShowFailure(true);
+                return;
             }
+
             // Ensure sufficient balance
             if (account.balance < data.amount) {
-                throw new Error("Insufficient funds");
+                console.log("Error: Insufficient funds");
+                setIsLoading(false);
+                setShowFailure(true);
+                return;
             }
             const updatedBalance = account.balance - data.amount; // updated balance
-            
             await client.models.Transaction.create({
                 userID: user.userId,
                 accountID: data.accountID,
@@ -120,12 +130,11 @@ export default function NewTransactionPage() {
                 isFraudulent: false,
                 isUserValidated: false,
             });
-    
             await client.models.Account.update({
                 id: data.accountID,
                 balance: updatedBalance,
             });
-            
+
             setIsLoading(false);
             setShowSuccess(true);
             reset();
@@ -201,7 +210,7 @@ export default function NewTransactionPage() {
                     </div>
 
                     <div className="mb-2">
-                        Account ID:
+                        Account:
                         <select
                             id="accountID"
                             {...register("accountID")}
