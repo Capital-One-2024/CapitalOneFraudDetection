@@ -1,40 +1,23 @@
-import Page from "../components/Page";
 import { useEffect, useState } from "react";
+import Page from "../components/Page";
 import { fetchUserAttributes, FetchUserAttributesOutput } from "aws-amplify/auth";
-import type { Schema } from "../../amplify/data/resource";
-import { generateClient } from "aws-amplify/data";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import WelcomeSkeleton from "../components/WelcomeSkeleton";
 import TransactionsList from "../components/TransactionsList";
-
-const client = generateClient<Schema>();
+import AccountsList from "../components/AccountsList";
 
 function DashboardPage() {
     const { user } = useAuthenticator();
     const [userDetails, setUserDetails] = useState<FetchUserAttributesOutput>();
-    const [loading, setLoading] = useState(true); // Step 1: Loading state
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (user) {
-            console.log(user);
-
-            // gets user details for welcome section
+            // get user attributes for welcome section
             fetchUserAttributes()
-                .then((result) => {
-                    setUserDetails(result);
-                })
-                .catch((err) => console.error(err));
-
-            // Fetch transactions
-            client.models.Transaction.observeQuery().subscribe({
-                next: () => {
-                    setLoading(false); // once everything is loaded, loading will stop
-                },
-                error: (err) => {
-                    console.error(err);
-                    setLoading(false); // Ensure loading ends even on error
-                },
-            });
+                .then((result) => setUserDetails(result))
+                .catch((err) => console.error(err))
+                .finally(() => setLoading(false));
         }
     }, [user]);
 
@@ -53,6 +36,12 @@ function DashboardPage() {
                         </div>
                     )}
                 </div>
+
+                {/* Accounts Section */}
+                <section className="mb-8">
+                    <h2 className="text-lg font-semibold mb-4">My Accounts</h2>
+                    <AccountsList />
+                </section>
 
                 {/* Transactions Section */}
                 <section>
