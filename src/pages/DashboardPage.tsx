@@ -42,7 +42,7 @@ function DashboardPage() {
                 {/* Accounts Section */}
                 <section className="mb-8">
                     <h2 className="text-lg font-semibold mb-4">My Accounts</h2>
-                    <AccountsList /> {/* Embedded AccountsList without Page */}
+                    <AccountsList />
                 </section>
 
                 {/* Transactions Section */}
