@@ -30,3 +30,18 @@ export const ACCOUNT_SCHEMA = z.object({
     balance: DOLLAR_SCHEMA, // Reusing the existing dollar schema
     accountName: z.string().min(1, "Account Name is required"),
 });
+
+export const createProfileDetailValidationSchema = (attributeKey: string) => {
+    // Default validation for general attributes
+    let schema = z
+        .string()
+        .min(1, { message: "Attribute cannot be empty." })
+        .max(24, { message: "Attribute must be 24 characters or less." });
+
+    // If the attributeKey is 'email', apply email validation
+    if (attributeKey === "email") {
+        schema = schema.email({ message: "Invalid email format." });
+    }
+
+    return schema;
+};

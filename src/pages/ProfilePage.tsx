@@ -61,19 +61,19 @@ export default function ProfilePage() {
                         <ProfileDetail
                             description="Email"
                             attributeKey="email"
-                            attribute={userDetails.email}
+                            attribute={userDetails.email!}
                             onUpdateComplete={fetchUserDetails}
                         />
                         <ProfileDetail
                             description="First Name"
                             attributeKey="given_name"
-                            attribute={userDetails.given_name}
+                            attribute={userDetails.given_name!}
                             onUpdateComplete={fetchUserDetails}
                         />
                         <ProfileDetail
                             description="Last Name"
                             attributeKey="family_name"
-                            attribute={userDetails.family_name}
+                            attribute={userDetails.family_name!}
                             onUpdateComplete={fetchUserDetails}
                         />
                         <button

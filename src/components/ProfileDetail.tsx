@@ -6,6 +6,8 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { updateUserAttribute } from "aws-amplify/auth";
 import type { UpdateUserAttributeOutput } from "aws-amplify/auth";
 import AttributeConfirmationPopUp from "../components/AttributeConfirmationPopUp";
+import { z } from "zod";
+import { createProfileDetailValidationSchema } from "../lib/schemas";
 
 interface ProfileDetailProps {
     description: string;
@@ -46,19 +48,30 @@ export default function ProfileDetail({
 
     const handleUpdateAttribute = async () => {
         try {
-            if (editValue.length === 0) {
-                throw new Error();
-            }
+            // Get the validation schema based on attributeKey
+            const schema = createProfileDetailValidationSchema(attributeKey);
+
+            // Normalize the input
+            const normalizedInput =
+                editValue.charAt(0).toUpperCase() + editValue.slice(1).toLowerCase();
+            // Validate the input using Zod
+            schema.parse(normalizedInput);
+
             const output = await updateUserAttribute({
                 userAttribute: {
                     attributeKey,
-                    value: editValue,
+                    value: normalizedInput,
                 },
             });
             handleNextSteps(output);
         } catch (error) {
-            setError("Invalid attribute entry, please try again.");
-            console.log("Failed to update attribute:", error);
+            const typedError = error as z.ZodError | Error;
+
+            if (typedError instanceof z.ZodError) {
+                setError(typedError.errors[0]?.message || "Invalid input.");
+            } else {
+                setError("Failed to update attribute, please try again.");
+            }
         }
     };
 

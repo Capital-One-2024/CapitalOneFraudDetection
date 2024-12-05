@@ -3,7 +3,6 @@ import { confirmUserAttribute } from "aws-amplify/auth";
 import classNames from "classnames";
 
 interface ConfirmationProps {
-    attributeKey: string;
     onClose: () => void;
     show: boolean;
 }
