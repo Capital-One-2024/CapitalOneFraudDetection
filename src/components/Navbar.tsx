@@ -15,6 +15,10 @@ const NAV_LINKS = [
         title: "New Transaction",
         to: "/new-transaction",
     },
+    {
+        title: "New Account",
+        to: "/new-account",
+    },
 ];
 
 export default function Navbar({ variant = "loggedOut" }: NavbarProps) {

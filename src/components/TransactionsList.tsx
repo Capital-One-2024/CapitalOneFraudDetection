@@ -35,7 +35,8 @@ const TransactionsList: React.FC = () => {
                 {/* need item in order to properly load the transactions skeleton */}
                 {Array(4)
                     .fill(null)
-                    .map((item, index) => (
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    .map((_, index) => (
                         <TransactionCardSkeleton key={index} />
                     ))}
             </div>

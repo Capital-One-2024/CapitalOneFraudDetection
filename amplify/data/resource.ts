@@ -8,6 +8,7 @@ const schema = a.schema({
     Transaction: a
         .model({
             userID: a.string(),
+            accountID: a.string(),
             vendor: a.string(),
             category: a.string(),
             amount: a.float(),
@@ -16,6 +17,14 @@ const schema = a.schema({
             latitude: a.float(),
             isFraudulent: a.boolean().required().default(true),
             isUserValidated: a.boolean().required().default(false),
+        })
+        .authorization((allow) => [allow.owner()]),
+
+    Account: a
+        .model({
+            accountName: a.string(),
+            userID: a.string(),
+            balance: a.float(),
         })
         .authorization((allow) => [allow.owner()]),
 });
