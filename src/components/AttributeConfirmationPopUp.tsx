@@ -5,11 +5,10 @@ import classNames from "classnames";
 interface ConfirmationProps {
     attributeKey: string;
     onClose: () => void;
-    show: boolean; // Missing prop for visibility control
+    show: boolean;
 }
 
 export default function AttributeConfirmationPopUp({
-    attributeKey,
     onClose,
     show,
 }: ConfirmationProps) {
@@ -19,7 +18,7 @@ export default function AttributeConfirmationPopUp({
     const handleConfirmationCode = async () => {
         try {
             await confirmUserAttribute({
-                userAttributeKey: attributeKey,
+                userAttributeKey: "email",
                 confirmationCode,
             });
             setConfirmationCode("");

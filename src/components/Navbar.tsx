@@ -58,11 +58,7 @@ export default function Navbar({ variant = "loggedOut" }: NavbarProps) {
                 {variant === "loggedIn" ? (
                     <NavLink
                         to="/profile"
-                        className={({ isActive }) =>
-                            classNames("btn btn-blue", {
-                                "!font-bold": isActive,
-                            })
-                        }
+                        className={classNames("btn btn-blue")}
                     >
                         Profile
                     </NavLink>
