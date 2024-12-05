@@ -108,23 +108,24 @@ export default function NewTransactionPage() {
                 throw new Error("Insufficient funds");
             }
             const updatedBalance = account.balance - data.amount; // updated balance
-            await Promise.all([
-                client.models.Transaction.create({
-                    userID: user.userId,
-                    accountID: data.accountID,
-                    vendor: vendor,
-                    category: category,
-                    amount: data.amount,
-                    latitude: latitude,
-                    longitude: longitude,
-                    isFraudulent: false,
-                    isUserValidated: false,
-                }),
-                client.models.Account.update({
-                    id: data.accountID,
-                    balance: updatedBalance,
-                }),
-            ]);
+            
+            await client.models.Transaction.create({
+                userID: user.userId,
+                accountID: data.accountID,
+                vendor: vendor,
+                category: category,
+                amount: data.amount,
+                latitude: latitude,
+                longitude: longitude,
+                isFraudulent: false,
+                isUserValidated: false,
+            });
+    
+            await client.models.Account.update({
+                id: data.accountID,
+                balance: updatedBalance,
+            });
+            
             setIsLoading(false);
             setShowSuccess(true);
             reset();
