@@ -31,23 +31,23 @@ const TransactionCard: React.FC<TransactionProps> = ({ transaction }) => {
     const navigate = useNavigate();
 
     const handleClick = async () => {
-        try {
-            if (!transaction.accountID) {
-                console.error("Transaction is missing accountID.");
-                return;
-            }
-            const { data: accountData } = await client.models.Account.get({
-                id: transaction.accountID,
-            });
-            navigate("/transaction-details", {
-                state: {
-                    transaction,
-                    accountName: accountData?.accountName,
-                },
-            });
-        } catch (error) {
-            console.error("Error fetching account data:", error);
+        if (!transaction.accountID) {
+            console.error("Transaction is missing accountID.");
+            return;
         }
+        const { data: accountData } = await client.models.Account.get({
+            id: transaction.accountID,
+        });   
+        if (!accountData || !accountData.accountName) {
+            console.error("Account name is missing or undefined.");
+            return;
+        }
+            navigate("/transaction-details", {
+            state: {
+                transaction,
+                accountName: accountData.accountName,
+            },
+        });
     };
 
     return (
