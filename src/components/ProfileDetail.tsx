@@ -8,6 +8,7 @@ import type { UpdateUserAttributeOutput } from "aws-amplify/auth";
 import AttributeConfirmationPopUp from "../components/AttributeConfirmationPopUp";
 import { z } from "zod";
 import { createProfileDetailValidationSchema } from "../lib/schemas";
+import { capitalize } from "../lib/utils";
 
 interface ProfileDetailProps {
     description: string;
@@ -51,16 +52,13 @@ export default function ProfileDetail({
             // Get the validation schema based on attributeKey
             const schema = createProfileDetailValidationSchema(attributeKey);
 
-            // Normalize the input
-            const normalizedInput =
-                editValue.charAt(0).toUpperCase() + editValue.slice(1).toLowerCase();
             // Validate the input using Zod
-            schema.parse(normalizedInput);
+            schema.parse(editValue);
 
             const output = await updateUserAttribute({
                 userAttribute: {
                     attributeKey,
-                    value: normalizedInput,
+                    value: editValue,
                 },
             });
             handleNextSteps(output);
@@ -136,7 +134,9 @@ export default function ProfileDetail({
                     </div>
                 ) : (
                     <div className="w-full flex items-center gap-2">
-                        <div className="font-normal truncate flex-1">{attribute}</div>
+                        <div className="font-normal truncate flex-1">
+                            {attributeKey === "email" ? attribute : capitalize(attribute)}
+                        </div>
                         <button
                             onClick={() => setIsEditing(true)}
                             className="shrink-0"

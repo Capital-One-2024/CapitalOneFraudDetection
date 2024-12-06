@@ -55,8 +55,8 @@ export default function ProfilePage() {
                 ) : userDetails ? (
                     <>
                         <Avatar sx={{ bgcolor: "#004878", width: 95, height: 95 }}>
-                            {userDetails.given_name?.charAt(0)}
-                            {userDetails.family_name?.charAt(0)}
+                            {userDetails.given_name?.charAt(0).toUpperCase()}
+                            {userDetails.family_name?.charAt(0).toUpperCase()}
                         </Avatar>
                         <ProfileDetail
                             description="Email"

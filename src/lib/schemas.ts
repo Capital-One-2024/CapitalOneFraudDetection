@@ -43,5 +43,8 @@ export const createProfileDetailValidationSchema = (attributeKey: string) => {
         schema = schema.email({ message: "Invalid email format." });
     }
 
+    // Apply transformation (e.g., to lowercase) after all other validations
+    schema = schema.transform((s) => s.toLowerCase());
+
     return schema;
 };
