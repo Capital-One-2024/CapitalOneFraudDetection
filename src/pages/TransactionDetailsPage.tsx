@@ -10,7 +10,7 @@ import { generateClient } from "aws-amplify/data";
 
 export default function TransactionDetailsPage() {
     const [transaction, setTransaction] = useState<Schema["Transaction"]["type"]>();
-    const [account, setAccount] = useState<Schema["Account"]["type"]>();
+    const [accountName, setAccountName] = useState<string>();
     const [loading, setLoading] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
@@ -19,34 +19,10 @@ export default function TransactionDetailsPage() {
 
     const client = generateClient<Schema>();
 
-    // helper function to get the accountID from transaction
-    async function fetchAccount(accountID: string) {
-        try {
-            const { data: accountData, errors } = await client.models.Account.get({
-                id: accountID,
-            });
-
-            if (!errors && accountData) {
-                setAccount(accountData);
-                console.log(accountData)
-            } else {
-                console.log("Error fetching account:", errors);
-            }
-        } catch (err) {
-            console.log("Error fetching account:", err);
-        }
-    }
-
     useEffect(() => {
-        setTransaction(location.state);
+        setTransaction(location.state.transaction);
+        setAccountName(location.state.accountName);
     }, [location]);
-
-    useEffect(() => {
-        if (transaction?.accountID) {
-            fetchAccount(transaction.accountID);
-        }
-    }, [transaction]);
-    
 
     function formatDateTime() {
         if (transaction) {
@@ -123,7 +99,7 @@ export default function TransactionDetailsPage() {
                         </div>
                         <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
                             <div className="w-1/2 text-c1-blue">Account:</div>
-                            <div className="w-1/2">{account?.accountName}</div>
+                            <div className="w-1/2">{accountName}</div>
                         </div>
                         <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
                             <div className="w-1/2 text-c1-blue">Amount:</div>

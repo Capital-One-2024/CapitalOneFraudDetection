@@ -20,12 +20,9 @@ const TransactionsList: React.FC = () => {
                     setTransactions(sortedTransactions);
                 } catch (error) {
                     console.error("Error sorting transactions:", error);
+                } finally {
+                    setLoading(false);
                 }
-                setLoading(false);
-            },
-            error: (err) => {
-                console.error("Subscription error:", err);
-                setLoading(false);
             },
         });
     
