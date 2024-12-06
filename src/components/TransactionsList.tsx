@@ -25,15 +25,12 @@ const TransactionsList: React.FC = () => {
                 }
             },
         });
-    
         return () => {
             if (subscription) {
                 subscription.unsubscribe();
             }
         };
     }, []);
-    
-
     if (loading) {
         return (
             <div className="flex flex-col gap-4">

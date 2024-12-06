@@ -47,6 +47,7 @@ export default function NewAccountPage() {
             setShowSuccess(true);
             reset();
         } catch (error) {
+            console.error("Error creating account:", error);
             setIsLoading(false);
             setShowFailure(true);
             reset();

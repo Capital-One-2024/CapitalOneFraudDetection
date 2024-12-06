@@ -42,7 +42,7 @@ const TransactionCard: React.FC<TransactionProps> = ({ transaction }) => {
             navigate("/transaction-details", {
                 state: {
                     transaction,
-                    accountName: accountData?.accountName
+                    accountName: accountData?.accountName,
                 },
             });
         } catch (error) {
