@@ -13,26 +13,33 @@ const TransactionsList: React.FC = () => {
     useEffect(() => {
         const subscription = client.models.Transaction.observeQuery().subscribe({
             next: (data) => {
-                // descending order
-                const sortedTransactions = [...data.items].sort(
-                    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-                );
-                setTransactions(sortedTransactions);
+                try {
+                    const sortedTransactions = [...data.items].sort(
+                        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                    );
+                    setTransactions(sortedTransactions);
+                } catch (error) {
+                    console.error("Error sorting transactions:", error);
+                }
                 setLoading(false);
             },
             error: (err) => {
-                console.error(err);
+                console.error("Subscription error:", err);
                 setLoading(false);
             },
         });
-
-        return () => subscription.unsubscribe(); // Cleanup subscription
+    
+        return () => {
+            if (subscription) {
+                subscription.unsubscribe();
+            }
+        };
     }, []);
+    
 
     if (loading) {
         return (
             <div className="flex flex-col gap-4">
-                {/* need item in order to properly load the transactions skeleton */}
                 {Array(4)
                     .fill(null)
                     // eslint-disable-next-line @typescript-eslint/naming-convention
