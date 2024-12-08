@@ -53,12 +53,12 @@ export default function ProfileDetail({
             const schema = createProfileDetailValidationSchema(attributeKey);
 
             // Validate the input using Zod
-            schema.parse(editValue);
+            const validatedValue = schema.parse(editValue);
 
             const output = await updateUserAttribute({
                 userAttribute: {
                     attributeKey,
-                    value: editValue,
+                    value: validatedValue,
                 },
             });
             handleNextSteps(output);

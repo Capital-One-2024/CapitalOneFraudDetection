@@ -35,6 +35,8 @@ export const createProfileDetailValidationSchema = (attributeKey: string) => {
     // Default validation for general attributes
     let schema = z
         .string()
+        .trim()
+        .toLowerCase()
         .min(1, { message: "Attribute cannot be empty." })
         .max(24, { message: "Attribute must be 24 characters or less." });
 
@@ -42,9 +44,6 @@ export const createProfileDetailValidationSchema = (attributeKey: string) => {
     if (attributeKey === "email") {
         schema = schema.email({ message: "Invalid email format." });
     }
-
-    // Apply transformation (e.g., to lowercase) after all other validations
-    schema = schema.transform((s) => s.toLowerCase());
 
     return schema;
 };
