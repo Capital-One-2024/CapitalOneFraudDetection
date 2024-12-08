@@ -9,6 +9,7 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import NewTransactionPopup from "../components/NewTransactionPopUp";
+import LocationSpoof from "../components/LocationSpoof";
 import { formatDate } from "../lib/utils";
 import classNames from "classnames";
 
@@ -41,6 +42,7 @@ export default function NewTransactionPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
+    const [showSpoof, setShowSpoof] = useState(false);
     const [longitude, setLongitude] = useState<number | null>(null);
     const [latitude, setLatitude] = useState<number | null>(null);
     const [hasLocationAccess, setHasLocationAccess] = useState(true);
@@ -255,6 +257,14 @@ export default function NewTransactionPage() {
                         />
                         {errors.amount && <p className="text-red-500">{errors.amount?.message}</p>}
                     </div>
+                    <LocationSpoof
+                        show={showSpoof}
+                        setShow={setShowSpoof}
+                        latitude={latitude}
+                        setLatitude={setLatitude}
+                        longitude={longitude}
+                        setLongitude={setLongitude}
+                    />
                     <button
                         type="submit"
                         disabled={isLoading} // Disable button during loading
