@@ -26,12 +26,8 @@ export const getAccount = /* GraphQL */ `query GetAccount($id: ID!) {
     createdAt
     id
     owner
-    transactions {
-      nextToken
-      __typename
-    }
     updatedAt
-    userID
+    userId
     __typename
   }
 }
@@ -41,17 +37,7 @@ export const getAccount = /* GraphQL */ `query GetAccount($id: ID!) {
 >;
 export const getTransaction = /* GraphQL */ `query GetTransaction($id: ID!) {
   getTransaction(id: $id) {
-    account {
-      accountName
-      balance
-      createdAt
-      id
-      owner
-      updatedAt
-      userID
-      __typename
-    }
-    accountID
+    accountId
     amount
     category
     createdAt
@@ -64,7 +50,7 @@ export const getTransaction = /* GraphQL */ `query GetTransaction($id: ID!) {
     owner
     type
     updatedAt
-    userID
+    userId
     vendor
     __typename
   }
@@ -86,7 +72,7 @@ export const listAccounts = /* GraphQL */ `query ListAccounts(
       id
       owner
       updatedAt
-      userID
+      userId
       __typename
     }
     nextToken
@@ -114,7 +100,7 @@ export const listByCreationDate = /* GraphQL */ `query ListByCreationDate(
     type: $type
   ) {
     items {
-      accountID
+      accountId
       amount
       category
       createdAt
@@ -127,7 +113,7 @@ export const listByCreationDate = /* GraphQL */ `query ListByCreationDate(
       owner
       type
       updatedAt
-      userID
+      userId
       vendor
       __typename
     }
@@ -146,7 +132,7 @@ export const listTransactions = /* GraphQL */ `query ListTransactions(
 ) {
   listTransactions(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
-      accountID
+      accountId
       amount
       category
       createdAt
@@ -159,7 +145,7 @@ export const listTransactions = /* GraphQL */ `query ListTransactions(
       owner
       type
       updatedAt
-      userID
+      userId
       vendor
       __typename
     }

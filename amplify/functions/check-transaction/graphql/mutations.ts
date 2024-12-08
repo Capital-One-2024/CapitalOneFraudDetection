@@ -18,12 +18,8 @@ export const createAccount = /* GraphQL */ `mutation CreateAccount(
     createdAt
     id
     owner
-    transactions {
-      nextToken
-      __typename
-    }
     updatedAt
-    userID
+    userId
     __typename
   }
 }
@@ -36,17 +32,7 @@ export const createTransaction = /* GraphQL */ `mutation CreateTransaction(
   $input: CreateTransactionInput!
 ) {
   createTransaction(condition: $condition, input: $input) {
-    account {
-      accountName
-      balance
-      createdAt
-      id
-      owner
-      updatedAt
-      userID
-      __typename
-    }
-    accountID
+    accountId
     amount
     category
     createdAt
@@ -59,7 +45,7 @@ export const createTransaction = /* GraphQL */ `mutation CreateTransaction(
     owner
     type
     updatedAt
-    userID
+    userId
     vendor
     __typename
   }
@@ -78,12 +64,8 @@ export const deleteAccount = /* GraphQL */ `mutation DeleteAccount(
     createdAt
     id
     owner
-    transactions {
-      nextToken
-      __typename
-    }
     updatedAt
-    userID
+    userId
     __typename
   }
 }
@@ -96,17 +78,7 @@ export const deleteTransaction = /* GraphQL */ `mutation DeleteTransaction(
   $input: DeleteTransactionInput!
 ) {
   deleteTransaction(condition: $condition, input: $input) {
-    account {
-      accountName
-      balance
-      createdAt
-      id
-      owner
-      updatedAt
-      userID
-      __typename
-    }
-    accountID
+    accountId
     amount
     category
     createdAt
@@ -119,7 +91,7 @@ export const deleteTransaction = /* GraphQL */ `mutation DeleteTransaction(
     owner
     type
     updatedAt
-    userID
+    userId
     vendor
     __typename
   }
@@ -138,12 +110,8 @@ export const updateAccount = /* GraphQL */ `mutation UpdateAccount(
     createdAt
     id
     owner
-    transactions {
-      nextToken
-      __typename
-    }
     updatedAt
-    userID
+    userId
     __typename
   }
 }
@@ -156,17 +124,7 @@ export const updateTransaction = /* GraphQL */ `mutation UpdateTransaction(
   $input: UpdateTransactionInput!
 ) {
   updateTransaction(condition: $condition, input: $input) {
-    account {
-      accountName
-      balance
-      createdAt
-      id
-      owner
-      updatedAt
-      userID
-      __typename
-    }
-    accountID
+    accountId
     amount
     category
     createdAt
@@ -179,7 +137,7 @@ export const updateTransaction = /* GraphQL */ `mutation UpdateTransaction(
     owner
     type
     updatedAt
-    userID
+    userId
     vendor
     __typename
   }

@@ -97,11 +97,11 @@ const decodeLambdaResponse = <
 
 /**
  * Get the transaction that was created before the given transaction in the given account.
- * @param {string} accountID - The ID of the account to get the previous transaction for.
+ * @param {string} accountId - The ID of the account to get the previous transaction for.
  * @param {string} currTransactionId - The ID of the current transaction.
  * @returns The previous transaction for the given account.
  */
-const getPreviousTransaction = async (accountID: string, currTransactionId: string) => {
+const getPreviousTransaction = async (accountId: string, currTransactionId: string) => {
     return await dataClient.graphql({
         query: listByCreationDate,
         variables: {
@@ -111,8 +111,8 @@ const getPreviousTransaction = async (accountID: string, currTransactionId: stri
             filter: {
                 and: [
                     {
-                        accountID: {
-                            eq: accountID,
+                        accountId: {
+                            eq: accountId,
                         },
                     },
                     {
@@ -136,13 +136,13 @@ export const handler: SQSHandler = async (event: SQSEvent) => {
     const records = event.Records;
 
     // Extract the transactionIDs from the records
-    const transactionIDs = records.map((record) => {
+    const TRANSACTION_IDS = records.map((record) => {
         const body = JSON.parse(record.body) as Schema["queueTransaction"]["args"];
         return body.transactionID;
     });
 
     // Get the filter rules for the transaction IDs
-    const filterRules = getFilterRules(transactionIDs);
+    const filterRules = getFilterRules(TRANSACTION_IDS);
 
     // Get the transaction with the given id from the db.
     const res = await dataClient.graphql({
@@ -169,16 +169,16 @@ export const handler: SQSHandler = async (event: SQSEvent) => {
     }
 
     // Extract the transactions from the response
-    const transactions = res.data.listTransactions.items;
+    const PARSED_TRANSACTION_LIST = res.data.listTransactions.items;
 
     // For each transaction, get the previous transaction
     // and store the current and previous transactions together: { current, prev }
     // so we can calculate the time and distance difference between them.
     // We use Promise.all to run the async operations concurrently.
-    const transactionsWithPrev = await Promise.all(
-        transactions.map(async (transaction) => {
+    const TRANSACTIONS_WITH_PREVIOUS = await Promise.all(
+        PARSED_TRANSACTION_LIST.map(async (transaction) => {
             const prevTransaction = await getPreviousTransaction(
-                transaction.accountID,
+                transaction.accountId,
                 transaction.id
             );
             return {
@@ -189,7 +189,7 @@ export const handler: SQSHandler = async (event: SQSEvent) => {
     );
 
     // Go over the pairs of transactions and prepare the data for the prediction Lambda function
-    const preparedTransactions = transactionsWithPrev.map(({ current, prev }) => {
+    const TRANSACTION_FEATURES = TRANSACTIONS_WITH_PREVIOUS.map(({ current, prev }) => {
         // Extract the base features from the current transaction
         const features = {
             id: current.id,
@@ -237,7 +237,7 @@ export const handler: SQSHandler = async (event: SQSEvent) => {
     try {
         predictionInvokeCommand = new InvokeCommand({
             FunctionName: "myLambda",
-            Payload: JSON.stringify({ transactions: preparedTransactions }),
+            Payload: JSON.stringify({ transactions: TRANSACTION_FEATURES }),
         });
     } catch (error: unknown) {
         // Log the error
@@ -284,10 +284,17 @@ export const handler: SQSHandler = async (event: SQSEvent) => {
         // We use Promise.all to run the async operations concurrently.
         await Promise.all(
             predictions.map(async ({ id, isFraudulent }) => {
+
+                // Get the account ID for the transaction
+                const transaction = PARSED_TRANSACTION_LIST.find((t) => t.id === id)!;
+
                 // Update the transaction with the prediction
                 await dataClient.graphql({
                     query: updateTransaction,
                     variables: {
+                        condition: {
+                            accountId: { eq: transaction.accountId },
+                        },
                         input: {
                             id: id,
                             isFraudulent: isFraudulent,
@@ -319,18 +326,18 @@ export const handler: SQSHandler = async (event: SQSEvent) => {
         const emailerPayload = await Promise.all(
             predictions.map(async ({ id }) => {
                 // Get the transaction with the given id
-                const transaction = transactions.find((t) => t.id === id)!;
+                const transaction = PARSED_TRANSACTION_LIST.find((t) => t.id === id)!;
                 const prediction = predictions.find((p) => p.id === id)!;
 
                 // Get the user associated with the transaction
                 console.log("transaction owner", transaction.owner);
-                console.log("transaction account ID", transaction.accountID);
+                console.log("transaction account ID", transaction.accountId);
 
                 const result = await cognitoClient.send(
                     new ListUsersCommand({
                         UserPoolId: process.env.CAPITAL_ONE_USER_POOL_ID,
                         AttributesToGet: ["email"],
-                        Filter: `sub = "${transaction.userID}"`,
+                        Filter: `sub = "${transaction.userId}"`,
                     })
                 );
 

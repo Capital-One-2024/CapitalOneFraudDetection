@@ -15,21 +15,13 @@ export type Account = {
   createdAt: string,
   id: string,
   owner?: string | null,
-  transactions?: ModelTransactionConnection | null,
   updatedAt: string,
-  userID: string,
-};
-
-export type ModelTransactionConnection = {
-  __typename: "ModelTransactionConnection",
-  items:  Array<Transaction | null >,
-  nextToken?: string | null,
+  userId: string,
 };
 
 export type Transaction = {
   __typename: "Transaction",
-  account?: Account | null,
-  accountID?: string | null,
+  accountId: string,
   amount: number,
   category: string,
   createdAt: number,
@@ -42,7 +34,7 @@ export type Transaction = {
   owner?: string | null,
   type: string,
   updatedAt: number,
-  userID: string,
+  userId: string,
   vendor: string,
 };
 
@@ -56,7 +48,7 @@ export type ModelAccountFilterInput = {
   or?: Array< ModelAccountFilterInput | null > | null,
   owner?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  userID?: ModelStringInput | null,
+  userId?: ModelStringInput | null,
 };
 
 export type ModelStringInput = {
@@ -143,7 +135,7 @@ export type ModelIntKeyConditionInput = {
 };
 
 export type ModelTransactionFilterInput = {
-  accountID?: ModelIDInput | null,
+  accountId?: ModelIDInput | null,
   amount?: ModelFloatInput | null,
   and?: Array< ModelTransactionFilterInput | null > | null,
   category?: ModelStringInput | null,
@@ -159,7 +151,7 @@ export type ModelTransactionFilterInput = {
   owner?: ModelStringInput | null,
   type?: ModelStringInput | null,
   updatedAt?: ModelIntInput | null,
-  userID?: ModelIDInput | null,
+  userId?: ModelIDInput | null,
   vendor?: ModelStringInput | null,
 };
 
@@ -188,6 +180,12 @@ export enum ModelSortDirection {
 }
 
 
+export type ModelTransactionConnection = {
+  __typename: "ModelTransactionConnection",
+  items:  Array<Transaction | null >,
+  nextToken?: string | null,
+};
+
 export type QueueTransactionReturnType = {
   __typename: "QueueTransactionReturnType",
   message?: string | null,
@@ -203,18 +201,18 @@ export type ModelAccountConditionInput = {
   or?: Array< ModelAccountConditionInput | null > | null,
   owner?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  userID?: ModelStringInput | null,
+  userId?: ModelStringInput | null,
 };
 
 export type CreateAccountInput = {
   accountName: string,
   balance: number,
   id?: string | null,
-  userID: string,
+  userId: string,
 };
 
 export type ModelTransactionConditionInput = {
-  accountID?: ModelIDInput | null,
+  accountId?: ModelIDInput | null,
   amount?: ModelFloatInput | null,
   and?: Array< ModelTransactionConditionInput | null > | null,
   category?: ModelStringInput | null,
@@ -229,12 +227,12 @@ export type ModelTransactionConditionInput = {
   owner?: ModelStringInput | null,
   type?: ModelStringInput | null,
   updatedAt?: ModelIntInput | null,
-  userID?: ModelIDInput | null,
+  userId?: ModelIDInput | null,
   vendor?: ModelStringInput | null,
 };
 
 export type CreateTransactionInput = {
-  accountID?: string | null,
+  accountId: string,
   amount: number,
   category: string,
   createdAt: number,
@@ -246,7 +244,7 @@ export type CreateTransactionInput = {
   longitude: number,
   type: string,
   updatedAt: number,
-  userID: string,
+  userId: string,
   vendor: string,
 };
 
@@ -262,11 +260,11 @@ export type UpdateAccountInput = {
   accountName?: string | null,
   balance?: number | null,
   id: string,
-  userID?: string | null,
+  userId?: string | null,
 };
 
 export type UpdateTransactionInput = {
-  accountID?: string | null,
+  accountId?: string | null,
   amount?: number | null,
   category?: string | null,
   createdAt?: number | null,
@@ -278,7 +276,7 @@ export type UpdateTransactionInput = {
   longitude?: number | null,
   type?: string | null,
   updatedAt?: number | null,
-  userID?: string | null,
+  userId?: string | null,
   vendor?: string | null,
 };
 
@@ -291,7 +289,7 @@ export type ModelSubscriptionAccountFilterInput = {
   or?: Array< ModelSubscriptionAccountFilterInput | null > | null,
   owner?: ModelStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  userID?: ModelSubscriptionStringInput | null,
+  userId?: ModelSubscriptionStringInput | null,
 };
 
 export type ModelSubscriptionStringInput = {
@@ -337,7 +335,7 @@ export type ModelSubscriptionIDInput = {
 };
 
 export type ModelSubscriptionTransactionFilterInput = {
-  accountID?: ModelSubscriptionIDInput | null,
+  accountId?: ModelSubscriptionIDInput | null,
   amount?: ModelSubscriptionFloatInput | null,
   and?: Array< ModelSubscriptionTransactionFilterInput | null > | null,
   category?: ModelSubscriptionStringInput | null,
@@ -352,7 +350,7 @@ export type ModelSubscriptionTransactionFilterInput = {
   owner?: ModelStringInput | null,
   type?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionIntInput | null,
-  userID?: ModelSubscriptionIDInput | null,
+  userId?: ModelSubscriptionIDInput | null,
   vendor?: ModelSubscriptionStringInput | null,
 };
 
@@ -397,12 +395,8 @@ export type GetAccountQuery = {
     createdAt: string,
     id: string,
     owner?: string | null,
-    transactions?:  {
-      __typename: "ModelTransactionConnection",
-      nextToken?: string | null,
-    } | null,
     updatedAt: string,
-    userID: string,
+    userId: string,
   } | null,
 };
 
@@ -413,17 +407,7 @@ export type GetTransactionQueryVariables = {
 export type GetTransactionQuery = {
   getTransaction?:  {
     __typename: "Transaction",
-    account?:  {
-      __typename: "Account",
-      accountName: string,
-      balance: number,
-      createdAt: string,
-      id: string,
-      owner?: string | null,
-      updatedAt: string,
-      userID: string,
-    } | null,
-    accountID?: string | null,
+    accountId: string,
     amount: number,
     category: string,
     createdAt: number,
@@ -436,7 +420,7 @@ export type GetTransactionQuery = {
     owner?: string | null,
     type: string,
     updatedAt: number,
-    userID: string,
+    userId: string,
     vendor: string,
   } | null,
 };
@@ -458,7 +442,7 @@ export type ListAccountsQuery = {
       id: string,
       owner?: string | null,
       updatedAt: string,
-      userID: string,
+      userId: string,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -478,7 +462,7 @@ export type ListByCreationDateQuery = {
     __typename: "ModelTransactionConnection",
     items:  Array< {
       __typename: "Transaction",
-      accountID?: string | null,
+      accountId: string,
       amount: number,
       category: string,
       createdAt: number,
@@ -491,7 +475,7 @@ export type ListByCreationDateQuery = {
       owner?: string | null,
       type: string,
       updatedAt: number,
-      userID: string,
+      userId: string,
       vendor: string,
     } | null >,
     nextToken?: string | null,
@@ -509,7 +493,7 @@ export type ListTransactionsQuery = {
     __typename: "ModelTransactionConnection",
     items:  Array< {
       __typename: "Transaction",
-      accountID?: string | null,
+      accountId: string,
       amount: number,
       category: string,
       createdAt: number,
@@ -522,7 +506,7 @@ export type ListTransactionsQuery = {
       owner?: string | null,
       type: string,
       updatedAt: number,
-      userID: string,
+      userId: string,
       vendor: string,
     } | null >,
     nextToken?: string | null,
@@ -554,12 +538,8 @@ export type CreateAccountMutation = {
     createdAt: string,
     id: string,
     owner?: string | null,
-    transactions?:  {
-      __typename: "ModelTransactionConnection",
-      nextToken?: string | null,
-    } | null,
     updatedAt: string,
-    userID: string,
+    userId: string,
   } | null,
 };
 
@@ -571,17 +551,7 @@ export type CreateTransactionMutationVariables = {
 export type CreateTransactionMutation = {
   createTransaction?:  {
     __typename: "Transaction",
-    account?:  {
-      __typename: "Account",
-      accountName: string,
-      balance: number,
-      createdAt: string,
-      id: string,
-      owner?: string | null,
-      updatedAt: string,
-      userID: string,
-    } | null,
-    accountID?: string | null,
+    accountId: string,
     amount: number,
     category: string,
     createdAt: number,
@@ -594,7 +564,7 @@ export type CreateTransactionMutation = {
     owner?: string | null,
     type: string,
     updatedAt: number,
-    userID: string,
+    userId: string,
     vendor: string,
   } | null,
 };
@@ -612,12 +582,8 @@ export type DeleteAccountMutation = {
     createdAt: string,
     id: string,
     owner?: string | null,
-    transactions?:  {
-      __typename: "ModelTransactionConnection",
-      nextToken?: string | null,
-    } | null,
     updatedAt: string,
-    userID: string,
+    userId: string,
   } | null,
 };
 
@@ -629,17 +595,7 @@ export type DeleteTransactionMutationVariables = {
 export type DeleteTransactionMutation = {
   deleteTransaction?:  {
     __typename: "Transaction",
-    account?:  {
-      __typename: "Account",
-      accountName: string,
-      balance: number,
-      createdAt: string,
-      id: string,
-      owner?: string | null,
-      updatedAt: string,
-      userID: string,
-    } | null,
-    accountID?: string | null,
+    accountId: string,
     amount: number,
     category: string,
     createdAt: number,
@@ -652,7 +608,7 @@ export type DeleteTransactionMutation = {
     owner?: string | null,
     type: string,
     updatedAt: number,
-    userID: string,
+    userId: string,
     vendor: string,
   } | null,
 };
@@ -670,12 +626,8 @@ export type UpdateAccountMutation = {
     createdAt: string,
     id: string,
     owner?: string | null,
-    transactions?:  {
-      __typename: "ModelTransactionConnection",
-      nextToken?: string | null,
-    } | null,
     updatedAt: string,
-    userID: string,
+    userId: string,
   } | null,
 };
 
@@ -687,17 +639,7 @@ export type UpdateTransactionMutationVariables = {
 export type UpdateTransactionMutation = {
   updateTransaction?:  {
     __typename: "Transaction",
-    account?:  {
-      __typename: "Account",
-      accountName: string,
-      balance: number,
-      createdAt: string,
-      id: string,
-      owner?: string | null,
-      updatedAt: string,
-      userID: string,
-    } | null,
-    accountID?: string | null,
+    accountId: string,
     amount: number,
     category: string,
     createdAt: number,
@@ -710,7 +652,7 @@ export type UpdateTransactionMutation = {
     owner?: string | null,
     type: string,
     updatedAt: number,
-    userID: string,
+    userId: string,
     vendor: string,
   } | null,
 };
@@ -728,12 +670,8 @@ export type OnCreateAccountSubscription = {
     createdAt: string,
     id: string,
     owner?: string | null,
-    transactions?:  {
-      __typename: "ModelTransactionConnection",
-      nextToken?: string | null,
-    } | null,
     updatedAt: string,
-    userID: string,
+    userId: string,
   } | null,
 };
 
@@ -745,17 +683,7 @@ export type OnCreateTransactionSubscriptionVariables = {
 export type OnCreateTransactionSubscription = {
   onCreateTransaction?:  {
     __typename: "Transaction",
-    account?:  {
-      __typename: "Account",
-      accountName: string,
-      balance: number,
-      createdAt: string,
-      id: string,
-      owner?: string | null,
-      updatedAt: string,
-      userID: string,
-    } | null,
-    accountID?: string | null,
+    accountId: string,
     amount: number,
     category: string,
     createdAt: number,
@@ -768,7 +696,7 @@ export type OnCreateTransactionSubscription = {
     owner?: string | null,
     type: string,
     updatedAt: number,
-    userID: string,
+    userId: string,
     vendor: string,
   } | null,
 };
@@ -786,12 +714,8 @@ export type OnDeleteAccountSubscription = {
     createdAt: string,
     id: string,
     owner?: string | null,
-    transactions?:  {
-      __typename: "ModelTransactionConnection",
-      nextToken?: string | null,
-    } | null,
     updatedAt: string,
-    userID: string,
+    userId: string,
   } | null,
 };
 
@@ -803,17 +727,7 @@ export type OnDeleteTransactionSubscriptionVariables = {
 export type OnDeleteTransactionSubscription = {
   onDeleteTransaction?:  {
     __typename: "Transaction",
-    account?:  {
-      __typename: "Account",
-      accountName: string,
-      balance: number,
-      createdAt: string,
-      id: string,
-      owner?: string | null,
-      updatedAt: string,
-      userID: string,
-    } | null,
-    accountID?: string | null,
+    accountId: string,
     amount: number,
     category: string,
     createdAt: number,
@@ -826,7 +740,7 @@ export type OnDeleteTransactionSubscription = {
     owner?: string | null,
     type: string,
     updatedAt: number,
-    userID: string,
+    userId: string,
     vendor: string,
   } | null,
 };
@@ -844,12 +758,8 @@ export type OnUpdateAccountSubscription = {
     createdAt: string,
     id: string,
     owner?: string | null,
-    transactions?:  {
-      __typename: "ModelTransactionConnection",
-      nextToken?: string | null,
-    } | null,
     updatedAt: string,
-    userID: string,
+    userId: string,
   } | null,
 };
 
@@ -861,17 +771,7 @@ export type OnUpdateTransactionSubscriptionVariables = {
 export type OnUpdateTransactionSubscription = {
   onUpdateTransaction?:  {
     __typename: "Transaction",
-    account?:  {
-      __typename: "Account",
-      accountName: string,
-      balance: number,
-      createdAt: string,
-      id: string,
-      owner?: string | null,
-      updatedAt: string,
-      userID: string,
-    } | null,
-    accountID?: string | null,
+    accountId: string,
     amount: number,
     category: string,
     createdAt: number,
@@ -884,7 +784,7 @@ export type OnUpdateTransactionSubscription = {
     owner?: string | null,
     type: string,
     updatedAt: number,
-    userID: string,
+    userId: string,
     vendor: string,
   } | null,
 };

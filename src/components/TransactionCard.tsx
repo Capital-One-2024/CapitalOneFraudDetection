@@ -23,9 +23,21 @@ const cardClass = classNames(
 
 // Transaction component will use TransactionProps for type checking
 const TransactionCard: React.FC<TransactionProps> = ({ transaction }) => {
-    const statusLabel = transaction.isFraudulent ? "Blocked - Possible Fraud" : "Processed";
+    let statusLabel = "";
+    let statusClass = "";
 
-    const statusClass = transaction.isFraudulent ? "text-red-500" : "text-green-700";
+    if (transaction.isProcessed) {
+        if (transaction.isFraudulent) {
+            statusLabel = "Blocked - Possible Fraud";
+            statusClass = "text-red-500";
+        } else {
+            statusLabel = "Processed";
+            statusClass = "text-green-700";
+        }
+    } else {
+        statusLabel = "Pending";
+        statusClass = "text-yellow-500";
+    }
 
     const navigate = useNavigate();
 

@@ -8,8 +8,7 @@ const schema = a
             .model({
                 type: a.string().default("Transaction").required(),
                 userId: a.id().required(),
-                accountId: a.id(),
-                account: a.belongsTo("Account", "accountId"),
+                accountId: a.id().required(),
                 vendor: a.string().required(),
                 category: a.string().required(),
                 amount: a.float().required(),
@@ -30,7 +29,6 @@ const schema = a
                 accountName: a.string().required(),
                 userId: a.string().required(),
                 balance: a.float().required().default(0),
-                transactions: a.hasMany("Transaction", "accountId"),
             })
             .authorization((allow) => [allow.owner()]),
         checkTransaction: a

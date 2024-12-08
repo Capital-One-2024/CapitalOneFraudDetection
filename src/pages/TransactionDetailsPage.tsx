@@ -89,7 +89,7 @@ export default function TransactionDetailsPage() {
                     <div
                         className={classNames(
                             "sm:w-3/5 w-full bg-red p-5 ",
-                            "border border-2 border-c1-blue rounded-xl"
+                            "border-2 border-c1-blue rounded-xl"
                         )}
                     >
                         <div className="mb-8 text-center text-c1-blue text-xl">
@@ -97,7 +97,7 @@ export default function TransactionDetailsPage() {
                         </div>
                         <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
                             <div className="w-1/2 text-c1-blue">Account:</div>
-                            <div className="w-1/2">{transaction.accountID}</div>
+                            <div className="w-1/2">{transaction.accountId}</div>
                         </div>
                         <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
                             <div className="w-1/2 text-c1-blue">Amount:</div>

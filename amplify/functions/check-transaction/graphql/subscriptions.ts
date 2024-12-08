@@ -18,12 +18,8 @@ export const onCreateAccount = /* GraphQL */ `subscription OnCreateAccount(
     createdAt
     id
     owner
-    transactions {
-      nextToken
-      __typename
-    }
     updatedAt
-    userID
+    userId
     __typename
   }
 }
@@ -36,17 +32,7 @@ export const onCreateTransaction = /* GraphQL */ `subscription OnCreateTransacti
   $owner: String
 ) {
   onCreateTransaction(filter: $filter, owner: $owner) {
-    account {
-      accountName
-      balance
-      createdAt
-      id
-      owner
-      updatedAt
-      userID
-      __typename
-    }
-    accountID
+    accountId
     amount
     category
     createdAt
@@ -59,7 +45,7 @@ export const onCreateTransaction = /* GraphQL */ `subscription OnCreateTransacti
     owner
     type
     updatedAt
-    userID
+    userId
     vendor
     __typename
   }
@@ -78,12 +64,8 @@ export const onDeleteAccount = /* GraphQL */ `subscription OnDeleteAccount(
     createdAt
     id
     owner
-    transactions {
-      nextToken
-      __typename
-    }
     updatedAt
-    userID
+    userId
     __typename
   }
 }
@@ -96,17 +78,7 @@ export const onDeleteTransaction = /* GraphQL */ `subscription OnDeleteTransacti
   $owner: String
 ) {
   onDeleteTransaction(filter: $filter, owner: $owner) {
-    account {
-      accountName
-      balance
-      createdAt
-      id
-      owner
-      updatedAt
-      userID
-      __typename
-    }
-    accountID
+    accountId
     amount
     category
     createdAt
@@ -119,7 +91,7 @@ export const onDeleteTransaction = /* GraphQL */ `subscription OnDeleteTransacti
     owner
     type
     updatedAt
-    userID
+    userId
     vendor
     __typename
   }
@@ -138,12 +110,8 @@ export const onUpdateAccount = /* GraphQL */ `subscription OnUpdateAccount(
     createdAt
     id
     owner
-    transactions {
-      nextToken
-      __typename
-    }
     updatedAt
-    userID
+    userId
     __typename
   }
 }
@@ -156,17 +124,7 @@ export const onUpdateTransaction = /* GraphQL */ `subscription OnUpdateTransacti
   $owner: String
 ) {
   onUpdateTransaction(filter: $filter, owner: $owner) {
-    account {
-      accountName
-      balance
-      createdAt
-      id
-      owner
-      updatedAt
-      userID
-      __typename
-    }
-    accountID
+    accountId
     amount
     category
     createdAt
@@ -179,7 +137,7 @@ export const onUpdateTransaction = /* GraphQL */ `subscription OnUpdateTransacti
     owner
     type
     updatedAt
-    userID
+    userId
     vendor
     __typename
   }

@@ -119,7 +119,7 @@ export default function NewTransactionPage() {
             const creationResult = await client.models.Transaction.create({
                 type: "Transaction",
                 userId: user.userId,
-                accountId: data.accountId,
+                accountId: data.accountID,
                 vendor: vendor,
                 category: category,
                 amount: data.amount,
