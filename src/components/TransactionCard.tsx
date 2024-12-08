@@ -23,20 +23,32 @@ const cardClass = classNames(
 
 // Transaction component will use TransactionProps for type checking
 const TransactionCard: React.FC<TransactionProps> = ({ transaction }) => {
-    const statusLabel = transaction.isFraudulent ? "Blocked - Possible Fraud" : "Processed";
+    let statusLabel = "";
+    let statusClass = "";
 
-    const statusClass = transaction.isFraudulent ? "text-red-500" : "text-green-700";
+    if (transaction.isProcessed) {
+        if (transaction.isFraudulent) {
+            statusLabel = "Blocked - Possible Fraud";
+            statusClass = "text-red-500";
+        } else {
+            statusLabel = "Processed";
+            statusClass = "text-green-700";
+        }
+    } else {
+        statusLabel = "Pending";
+        statusClass = "text-yellow-500";
+    }
 
     const client = generateClient<Schema>();
     const navigate = useNavigate();
 
     const handleClick = async () => {
-        if (!transaction.accountID) {
-            console.error("Transaction is missing accountID.");
+        if (!transaction.accountId) {
+            console.error("Transaction is missing accountId.");
             return;
         }
         const { data: accountData } = await client.models.Account.get({
-            id: transaction.accountID,
+            id: transaction.accountId,
         });
         if (!accountData || !accountData.accountName) {
             console.error("Account name is missing or undefined.");

@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
-import Page from "../components/Page";
-import { useForm } from "react-hook-form";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CircularProgress from "@mui/material/CircularProgress";
-import { TRANSACTION_SCHEMA } from "../lib/schemas";
-import { z } from "zod";
-import { useAuthenticator } from "@aws-amplify/ui-react";
-import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
-import NewTransactionPopup from "../components/NewTransactionPopUp";
-import { formatDate } from "../lib/utils";
 import classNames from "classnames";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import type { Schema } from "../../amplify/data/resource";
+import NewTransactionPopup from "../components/NewTransactionPopUp";
+import Page from "../components/Page";
+import { TRANSACTION_SCHEMA } from "../lib/schemas";
+import { getFormattedDate } from "../lib/utils";
 
 const client = generateClient<Schema>();
 
@@ -41,13 +41,13 @@ export default function NewTransactionPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
-    const [longitude, setLongitude] = useState<number | null>(null);
-    const [latitude, setLatitude] = useState<number | null>(null);
+    const [longitude, setLongitude] = useState<number>();
+    const [latitude, setLatitude] = useState<number>();
     const [hasLocationAccess, setHasLocationAccess] = useState(true);
 
     const [accounts, setAccounts] = useState<Array<Schema["Account"]["type"]>>([]);
 
-    // Obtain user position
+    // Get the user's geolocation
     useEffect(() => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -57,11 +57,11 @@ export default function NewTransactionPage() {
                 },
                 (error) => {
                     console.error("Error getting geolocation:", error);
-                    setHasLocationAccess(false); // SET location access to false if error occurs
+                    setHasLocationAccess(false);
                 }
             );
         } else {
-            // console.error("Geolocation is not supported by this browser.");
+            console.error("Failed to obtain the required geolocation access.");
             setHasLocationAccess(false);
         }
 
@@ -86,7 +86,7 @@ export default function NewTransactionPage() {
         defaultValues: {
             amount: undefined,
             vendor: "",
-            accountID: "",
+            accountId: "",
         },
     });
 
@@ -95,7 +95,7 @@ export default function NewTransactionPage() {
             setIsLoading(true);
             const [vendor, category] = data.vendor.split("|");
             // Fetch the selected account
-            const account = accounts.find((acc) => acc.id === data.accountID);
+            const account = accounts.find((acc) => acc.id === data.accountId);
             if (!account) {
                 setIsLoading(false);
                 setShowFailure(true);
@@ -116,19 +116,36 @@ export default function NewTransactionPage() {
                 return;
             }
             const updatedBalance = account.balance - data.amount; // updated balance
-            await client.models.Transaction.create({
-                userID: user.userId,
-                accountID: data.accountID,
+            const creationResult = await client.models.Transaction.create({
+                type: "Transaction",
+                userId: user.userId,
+                accountId: data.accountId,
                 vendor: vendor,
                 category: category,
                 amount: data.amount,
-                latitude: latitude,
-                longitude: longitude,
+                latitude: latitude!,
+                longitude: longitude!,
                 isFraudulent: false,
                 isUserValidated: false,
+                isProcessed: false,
+                createdAt: Date.now(),
+                updatedAt: Date.now(),
             });
+
+            if (!creationResult.data) {
+                throw new Error("Unable to create transaction");
+            }
+
+            try {
+                await client.queries.queueTransaction({
+                    transactionID: creationResult.data.id,
+                });
+            } catch (error) {
+                console.error("Error checking transaction:", error);
+            }
+
             await client.models.Account.update({
-                id: data.accountID,
+                id: data.accountId,
                 balance: updatedBalance,
             });
 
@@ -192,7 +209,7 @@ export default function NewTransactionPage() {
                     onSubmit={handleSubmit(ON_SUBMIT)}
                     className={classNames(
                         "sm:w-3/5 w-full bg-red p-5 ",
-                        "border border-2 border-c1-blue rounded-xl"
+                        "border-2 border-c1-blue rounded-xl"
                     )}
                 >
                     <div className="mb-8 text-center text-c1-blue text-xl">
@@ -201,15 +218,15 @@ export default function NewTransactionPage() {
                     <div className="mb-3">
                         Date & Time:
                         <div className="w-full p-2 my-1 border border-1 border-c1-blue rounded-md">
-                            {formatDate(new Date())}
+                            {getFormattedDate(new Date())}
                         </div>
                     </div>
 
                     <div className="mb-2">
                         Account:
                         <select
-                            id="accountID"
-                            {...register("accountID")}
+                            id="accountId"
+                            {...register("accountId")}
                             className="w-full p-2 my-1 border border-1 border-c1-blue rounded-md"
                         >
                             <option value="" disabled>
@@ -221,8 +238,8 @@ export default function NewTransactionPage() {
                                 </option>
                             ))}
                         </select>
-                        {errors.accountID && (
-                            <p className="text-red-500">{errors.accountID.message}</p>
+                        {errors.accountId && (
+                            <p className="text-red-500">{errors.accountId.message}</p>
                         )}
                     </div>
 
