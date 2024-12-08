@@ -22,7 +22,6 @@ function DashboardPage() {
         }
     }, [user]);
 
-    console.log(userDetails);
     return (
         <Page title="Dashboard" isProtected={true}>
             <div className="p-8 font-sans">
