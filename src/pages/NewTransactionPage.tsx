@@ -10,7 +10,7 @@ import type { Schema } from "../../amplify/data/resource";
 import NewTransactionPopup from "../components/NewTransactionPopUp";
 import Page from "../components/Page";
 import { TRANSACTION_SCHEMA } from "../lib/schemas";
-import { formatDate } from "../lib/utils";
+import { getFormattedDate } from "../lib/utils";
 
 const client = generateClient<Schema>();
 
@@ -218,7 +218,7 @@ export default function NewTransactionPage() {
                     <div className="mb-3">
                         Date & Time:
                         <div className="w-full p-2 my-1 border border-1 border-c1-blue rounded-md">
-                            {formatDate(new Date())}
+                            {getFormattedDate(new Date())}
                         </div>
                     </div>
 

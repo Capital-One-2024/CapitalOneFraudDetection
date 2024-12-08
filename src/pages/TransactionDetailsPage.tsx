@@ -7,6 +7,8 @@ import type { Schema } from "../../amplify/data/resource";
 import NewTransactionPopup from "../components/NewTransactionPopUp";
 
 import { generateClient } from "aws-amplify/data";
+import { getFormattedCoordinates, getFormattedCurrency, getFormattedDate } from "../lib/utils";
+import TransactionDetailsAttribute from "../components/TransactionDetailsAttribute";
 
 export default function TransactionDetailsPage() {
     const [transaction, setTransaction] = useState<Schema["Transaction"]["type"]>();
@@ -24,49 +26,16 @@ export default function TransactionDetailsPage() {
         setAccountName(location.state.accountName);
     }, [location]);
 
-    function formatDateTime() {
-        if (transaction) {
-            const toFormat = new Date(transaction?.createdAt);
-            const formattedDate = toFormat.toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-            });
-
-            // Format the time part (e.g., "3:06 AM")
-            const formattedTime = toFormat.toLocaleTimeString("en-US", {
-                hour: "numeric",
-                minute: "numeric",
-                hour12: true,
-            });
-
-            // Combine date and time with "at" in between
-            const formattedDateTime = `${formattedDate} at ${formattedTime}`;
-
-            return formattedDateTime;
-        }
-
-        return null;
-    }
-
     async function flipIsFraudulent() {
         setLoading(true);
 
         if (transaction) {
-            const newTransaction = {
+            const { data: updatedTrans, errors } = await client.models.Transaction.update({
                 id: transaction.id,
-                amount: transaction.amount,
-                category: transaction.category,
-                vendor: transaction.vendor,
-                latitude: transaction.latitude,
-                longitude: transaction.longitude,
-                userId: transaction.userId,
                 isFraudulent: !transaction.isFraudulent,
                 isUserValidated: true,
-            };
-
-            const { data: updatedTrans, errors } =
-                await client.models.Transaction.update(newTransaction);
+                updatedAt: Date.now(),
+            });
 
             if (errors) {
                 setShowSuccess(false);
@@ -87,7 +56,7 @@ export default function TransactionDetailsPage() {
                     "justify-center p-5"
                 )}
             >
-                {transaction ? (
+                {transaction && (
                     <div
                         className={classNames(
                             "sm:w-3/5 w-full bg-red p-5 ",
@@ -97,38 +66,31 @@ export default function TransactionDetailsPage() {
                         <div className="mb-8 text-center text-c1-blue text-xl">
                             Transaction: {transaction.id}
                         </div>
-                        <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
-                            <div className="w-1/2 text-c1-blue">Account:</div>
-                            <div className="w-1/2">{accountName}</div>
-                        </div>
-                        <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
-                            <div className="w-1/2 text-c1-blue">Amount:</div>
-                            <div className="w-1/2">${transaction.amount}</div>
-                        </div>
-                        <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
-                            <div className="w-1/2 text-c1-blue">Vendor:</div>
-                            <div className="w-1/2">{transaction.vendor}</div>
-                        </div>
-                        <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
-                            <div className="w-1/2 text-c1-blue">Category:</div>
-                            <div className="w-1/2">{transaction.category}</div>
-                        </div>
-                        <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
-                            <div className="w-1/2 text-c1-blue">Date & Time:</div>
-                            <div className="w-1/2">{formatDateTime()}</div>
-                        </div>
-                        <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
-                            <div className="w-1/2 text-c1-blue">Location:</div>
-                            <div className="w-1/2">
-                                {transaction.latitude}, {transaction.longitude}
-                            </div>
-                        </div>
-                        <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
-                            <div className="w-1/2 text-c1-blue">Prediction:</div>
-                            <div className="w-1/2">
-                                {transaction.isFraudulent ? "Fraudulent" : "Not Fraudulent"}
-                            </div>
-                        </div>
+                        <TransactionDetailsAttribute label="Account">
+                            {accountName}
+                        </TransactionDetailsAttribute>
+                        <TransactionDetailsAttribute label="Amount">
+                            {getFormattedCurrency(transaction.amount)}
+                        </TransactionDetailsAttribute>
+                        <TransactionDetailsAttribute label="Category">
+                            {transaction.category}
+                        </TransactionDetailsAttribute>
+                        <TransactionDetailsAttribute label="Vendor">
+                            {transaction.vendor}
+                        </TransactionDetailsAttribute>
+                        <TransactionDetailsAttribute label="Date & Time">
+                            {getFormattedDate(new Date(transaction.createdAt))}
+                        </TransactionDetailsAttribute>
+                        <TransactionDetailsAttribute label="Location">
+                            {getFormattedCoordinates(transaction.latitude, transaction.longitude)}
+                        </TransactionDetailsAttribute>
+                        <TransactionDetailsAttribute label="Status">
+                            {transaction.isProcessed
+                                ? transaction.isFraudulent
+                                    ? "Blocked - Suspected to be Fraudulent"
+                                    : "Processed"
+                                : "Processing"}
+                        </TransactionDetailsAttribute>
 
                         <button
                             onClick={() => flipIsFraudulent()}
@@ -142,7 +104,7 @@ export default function TransactionDetailsPage() {
                             {transaction.isFraudulent ? "Not Fraudulent" : "Fraudulent"}
                         </button>
                     </div>
-                ) : null}
+                )}
             </div>
             <NewTransactionPopup
                 show={showSuccess}
