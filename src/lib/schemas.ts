@@ -46,4 +46,4 @@ const EMAIL_SCHEMA = z
 // Factory function for attribute validation schema
 export const createProfileDetailValidationSchema = (attributeKey: string) => {
     return attributeKey === "email" ? EMAIL_SCHEMA : DETAIL_SCHEMA;
-}
+};
