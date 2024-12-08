@@ -10,6 +10,7 @@ import { generateClient } from "aws-amplify/data";
 
 export default function TransactionDetailsPage() {
     const [transaction, setTransaction] = useState<Schema["Transaction"]["type"]>();
+    const [accountName, setAccountName] = useState<string>();
     const [loading, setLoading] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
@@ -19,7 +20,8 @@ export default function TransactionDetailsPage() {
     const client = generateClient<Schema>();
 
     useEffect(() => {
-        setTransaction(location.state);
+        setTransaction(location.state.transaction);
+        setAccountName(location.state.accountName);
     }, [location]);
 
     function formatDateTime() {
@@ -97,7 +99,7 @@ export default function TransactionDetailsPage() {
                         </div>
                         <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
                             <div className="w-1/2 text-c1-blue">Account:</div>
-                            <div className="w-1/2">{transaction.accountID}</div>
+                            <div className="w-1/2">{accountName}</div>
                         </div>
                         <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
                             <div className="w-1/2 text-c1-blue">Amount:</div>
