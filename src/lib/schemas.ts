@@ -23,7 +23,7 @@ export const DOLLAR_SCHEMA = z.coerce
 export const TRANSACTION_SCHEMA = z.object({
     amount: DOLLAR_SCHEMA, // Reusing the existing dollar schema
     vendor: z.string().min(1, "Vendor is required"), // Ensure vendor is selected
-    accountID: z.string().min(1, "Account ID is required"),
+    accountId: z.string().min(1, "Account ID is required"),
 });
 
 export const ACCOUNT_SCHEMA = z.object({

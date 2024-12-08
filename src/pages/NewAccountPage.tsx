@@ -38,7 +38,7 @@ export default function NewAccountPage() {
             setIsLoading(true);
 
             await client.models.Account.create({
-                userID: user.userId,
+                userId: user.userId,
                 accountName: data.accountName,
                 balance: data.balance,
             });

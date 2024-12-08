@@ -20,7 +20,7 @@ const AccountsList: React.FC = () => {
         }
 
         const subscription = client.models.Account.observeQuery({
-            filter: { userID: { eq: user.userId } },
+            filter: { userId: { eq: user.userId } },
         }).subscribe({
             next: (data) => {
                 const fetchedAccounts = data.items as Schema["Account"]["type"][];

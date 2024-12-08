@@ -30,8 +30,8 @@ function DashboardPage() {
                     {userDetails ? (
                         <div className="p-4 rounded-lg border bg-c1-blue shadow-md">
                             <h2 className="text-lg font-semibold text-white">
-                                Welcome, {capitalize(userDetails.given_name)}{" "}
-                                {capitalize(userDetails.family_name)}!
+                                Welcome, {capitalize(userDetails.given_name!)}{" "}
+                                {capitalize(userDetails.family_name!)}!
                             </h2>
                         </div>
                     ) : (

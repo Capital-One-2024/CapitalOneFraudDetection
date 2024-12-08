@@ -17,6 +17,7 @@ public/
 # Ignore Amplify artifacts
 .amplify/
 amplify_outputs.json
+amplify/functions/check-transaction/graphql/*
 
 # Ignore lockfiles
 package-lock.json
