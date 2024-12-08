@@ -48,7 +48,6 @@ export default function NewAccountPage() {
             reset();
         } catch (error) {
             setIsLoading(false);
-            console.log("Unable to process transaction:", error);
             setShowFailure(true);
             reset();
         }

@@ -94,6 +94,28 @@ export default function NewTransactionPage() {
         try {
             setIsLoading(true);
             const [vendor, category] = data.vendor.split("|");
+            // Fetch the selected account
+            const account = accounts.find((acc) => acc.id === data.accountID);
+            if (!account) {
+                setIsLoading(false);
+                setShowFailure(true);
+                return;
+            }
+
+            // Ensure balance is defined
+            if (account.balance === null || account.balance === undefined) {
+                setIsLoading(false);
+                setShowFailure(true);
+                return;
+            }
+
+            // Ensure sufficient balance
+            if (account.balance < data.amount) {
+                setIsLoading(false);
+                setShowFailure(true);
+                return;
+            }
+            const updatedBalance = account.balance - data.amount; // updated balance
             await client.models.Transaction.create({
                 userID: user.userId,
                 accountID: data.accountID,
@@ -105,12 +127,16 @@ export default function NewTransactionPage() {
                 isFraudulent: false,
                 isUserValidated: false,
             });
+            await client.models.Account.update({
+                id: data.accountID,
+                balance: updatedBalance,
+            });
+
             setIsLoading(false);
             setShowSuccess(true);
             reset();
         } catch (error) {
             setIsLoading(false);
-            console.log("Unable to process transaction:", error);
             setShowFailure(true);
             reset();
         }

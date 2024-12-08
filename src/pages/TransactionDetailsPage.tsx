@@ -67,7 +67,6 @@ export default function TransactionDetailsPage() {
                 await client.models.Transaction.update(newTransaction);
 
             if (errors) {
-                console.log(errors);
                 setShowSuccess(false);
                 setLoading(false);
             } else if (updatedTrans) {
@@ -125,7 +124,7 @@ export default function TransactionDetailsPage() {
                         <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
                             <div className="w-1/2 text-c1-blue">Prediction:</div>
                             <div className="w-1/2">
-                                {transaction.isFraudulent ? "Fraulent" : "Not Fraudulent"}
+                                {transaction.isFraudulent ? "Fraudulent" : "Not Fraudulent"}
                             </div>
                         </div>
 
