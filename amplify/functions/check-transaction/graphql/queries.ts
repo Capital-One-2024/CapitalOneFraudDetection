@@ -19,8 +19,39 @@ export const checkTransaction = /* GraphQL */ `query CheckTransaction($transacti
   APITypes.CheckTransactionQueryVariables,
   APITypes.CheckTransactionQuery
 >;
+export const getAccount = /* GraphQL */ `query GetAccount($id: ID!) {
+  getAccount(id: $id) {
+    accountName
+    balance
+    createdAt
+    id
+    owner
+    transactions {
+      nextToken
+      __typename
+    }
+    updatedAt
+    userID
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetAccountQueryVariables,
+  APITypes.GetAccountQuery
+>;
 export const getTransaction = /* GraphQL */ `query GetTransaction($id: ID!) {
   getTransaction(id: $id) {
+    account {
+      accountName
+      balance
+      createdAt
+      id
+      owner
+      updatedAt
+      userID
+      __typename
+    }
+    accountID
     amount
     category
     createdAt
@@ -42,6 +73,30 @@ export const getTransaction = /* GraphQL */ `query GetTransaction($id: ID!) {
   APITypes.GetTransactionQueryVariables,
   APITypes.GetTransactionQuery
 >;
+export const listAccounts = /* GraphQL */ `query ListAccounts(
+  $filter: ModelAccountFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listAccounts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      accountName
+      balance
+      createdAt
+      id
+      owner
+      updatedAt
+      userID
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListAccountsQueryVariables,
+  APITypes.ListAccountsQuery
+>;
 export const listByCreationDate = /* GraphQL */ `query ListByCreationDate(
   $createdAt: ModelIntKeyConditionInput
   $filter: ModelTransactionFilterInput
@@ -59,6 +114,7 @@ export const listByCreationDate = /* GraphQL */ `query ListByCreationDate(
     type: $type
   ) {
     items {
+      accountID
       amount
       category
       createdAt
@@ -90,6 +146,7 @@ export const listTransactions = /* GraphQL */ `query ListTransactions(
 ) {
   listTransactions(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
+      accountID
       amount
       category
       createdAt

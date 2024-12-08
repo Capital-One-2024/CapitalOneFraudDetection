@@ -96,12 +96,12 @@ const decodeLambdaResponse = <
 };
 
 /**
- * Get the transaction that was created before the given transaction for the given user.
- * @param {string} userId - The ID of the user to get the previous transaction for.
+ * Get the transaction that was created before the given transaction in the given account.
+ * @param {string} accountID - The ID of the account to get the previous transaction for.
  * @param {string} currTransactionId - The ID of the current transaction.
- * @returns The previous transaction for the given user.
+ * @returns The previous transaction for the given account.
  */
-const getPreviousTransaction = async (userId: string, currTransactionId: string) => {
+const getPreviousTransaction = async (accountID: string, currTransactionId: string) => {
     return await dataClient.graphql({
         query: listByCreationDate,
         variables: {
@@ -111,8 +111,8 @@ const getPreviousTransaction = async (userId: string, currTransactionId: string)
             filter: {
                 and: [
                     {
-                        userID: {
-                            eq: userId,
+                        accountID: {
+                            eq: accountID,
                         },
                     },
                     {
@@ -178,7 +178,7 @@ export const handler: SQSHandler = async (event: SQSEvent) => {
     const transactionsWithPrev = await Promise.all(
         transactions.map(async (transaction) => {
             const prevTransaction = await getPreviousTransaction(
-                transaction.userID,
+                transaction.accountID,
                 transaction.id
             );
             return {
@@ -321,6 +321,10 @@ export const handler: SQSHandler = async (event: SQSEvent) => {
                 // Get the transaction with the given id
                 const transaction = transactions.find((t) => t.id === id)!;
                 const prediction = predictions.find((p) => p.id === id)!;
+
+                // Get the user associated with the transaction
+                console.log("transaction owner", transaction.owner);
+                console.log("transaction account ID", transaction.accountID);
 
                 const result = await cognitoClient.send(
                     new ListUsersCommand({

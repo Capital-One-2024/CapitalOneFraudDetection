@@ -58,7 +58,7 @@ export default function TransactionDetailsPage() {
                 vendor: transaction.vendor,
                 latitude: transaction.latitude,
                 longitude: transaction.longitude,
-                userID: transaction.userID,
+                userId: transaction.userId,
                 isFraudulent: !transaction.isFraudulent,
                 isUserValidated: true,
             };
@@ -67,7 +67,6 @@ export default function TransactionDetailsPage() {
                 await client.models.Transaction.update(newTransaction);
 
             if (errors) {
-                console.log(errors);
                 setShowSuccess(false);
                 setLoading(false);
             } else if (updatedTrans) {
@@ -97,6 +96,10 @@ export default function TransactionDetailsPage() {
                             Transaction: {transaction.id}
                         </div>
                         <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
+                            <div className="w-1/2 text-c1-blue">Account:</div>
+                            <div className="w-1/2">{transaction.accountID}</div>
+                        </div>
+                        <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
                             <div className="w-1/2 text-c1-blue">Amount:</div>
                             <div className="w-1/2">${transaction.amount}</div>
                         </div>
@@ -121,7 +124,7 @@ export default function TransactionDetailsPage() {
                         <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
                             <div className="w-1/2 text-c1-blue">Prediction:</div>
                             <div className="w-1/2">
-                                {transaction.isFraudulent ? "Fraulent" : "Not Fraudulent"}
+                                {transaction.isFraudulent ? "Fraudulent" : "Not Fraudulent"}
                             </div>
                         </div>
 

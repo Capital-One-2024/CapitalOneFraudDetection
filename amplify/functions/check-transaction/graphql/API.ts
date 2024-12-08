@@ -8,10 +8,30 @@ export type CheckTransactionReturnType = {
   statusCode?: number | null,
 };
 
+export type Account = {
+  __typename: "Account",
+  accountName: string,
+  balance: number,
+  createdAt: string,
+  id: string,
+  owner?: string | null,
+  transactions?: ModelTransactionConnection | null,
+  updatedAt: string,
+  userID: string,
+};
+
+export type ModelTransactionConnection = {
+  __typename: "ModelTransactionConnection",
+  items:  Array<Transaction | null >,
+  nextToken?: string | null,
+};
+
 export type Transaction = {
   __typename: "Transaction",
-  amount?: number | null,
-  category?: string | null,
+  account?: Account | null,
+  accountID?: string | null,
+  amount: number,
+  category: string,
   createdAt: number,
   id: string,
   isFraudulent: boolean,
@@ -23,63 +43,21 @@ export type Transaction = {
   type: string,
   updatedAt: number,
   userID: string,
-  vendor?: string | null,
+  vendor: string,
 };
 
-export type ModelIntKeyConditionInput = {
-  between?: Array< number | null > | null,
-  eq?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  le?: number | null,
-  lt?: number | null,
-};
-
-export type ModelTransactionFilterInput = {
-  amount?: ModelFloatInput | null,
-  and?: Array< ModelTransactionFilterInput | null > | null,
-  category?: ModelStringInput | null,
-  createdAt?: ModelIntInput | null,
+export type ModelAccountFilterInput = {
+  accountName?: ModelStringInput | null,
+  and?: Array< ModelAccountFilterInput | null > | null,
+  balance?: ModelFloatInput | null,
+  createdAt?: ModelStringInput | null,
   id?: ModelIDInput | null,
-  isFraudulent?: ModelBooleanInput | null,
-  isProcessed?: ModelBooleanInput | null,
-  isUserValidated?: ModelBooleanInput | null,
-  latitude?: ModelFloatInput | null,
-  longitude?: ModelFloatInput | null,
-  not?: ModelTransactionFilterInput | null,
-  or?: Array< ModelTransactionFilterInput | null > | null,
+  not?: ModelAccountFilterInput | null,
+  or?: Array< ModelAccountFilterInput | null > | null,
   owner?: ModelStringInput | null,
-  type?: ModelStringInput | null,
-  updatedAt?: ModelIntInput | null,
+  updatedAt?: ModelStringInput | null,
   userID?: ModelStringInput | null,
-  vendor?: ModelStringInput | null,
 };
-
-export type ModelFloatInput = {
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  between?: Array< number | null > | null,
-  eq?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ne?: number | null,
-};
-
-export enum ModelAttributeTypes {
-  _null = "_null",
-  binary = "binary",
-  binarySet = "binarySet",
-  bool = "bool",
-  list = "list",
-  map = "map",
-  number = "number",
-  numberSet = "numberSet",
-  string = "string",
-  stringSet = "stringSet",
-}
-
 
 export type ModelStringInput = {
   attributeExists?: boolean | null,
@@ -97,6 +75,20 @@ export type ModelStringInput = {
   size?: ModelSizeInput | null,
 };
 
+export enum ModelAttributeTypes {
+  _null = "_null",
+  binary = "binary",
+  binarySet = "binarySet",
+  bool = "bool",
+  list = "list",
+  map = "map",
+  number = "number",
+  numberSet = "numberSet",
+  string = "string",
+  stringSet = "stringSet",
+}
+
+
 export type ModelSizeInput = {
   between?: Array< number | null > | null,
   eq?: number | null,
@@ -107,7 +99,7 @@ export type ModelSizeInput = {
   ne?: number | null,
 };
 
-export type ModelIntInput = {
+export type ModelFloatInput = {
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
   between?: Array< number | null > | null,
@@ -135,6 +127,54 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
+export type ModelAccountConnection = {
+  __typename: "ModelAccountConnection",
+  items:  Array<Account | null >,
+  nextToken?: string | null,
+};
+
+export type ModelIntKeyConditionInput = {
+  between?: Array< number | null > | null,
+  eq?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  le?: number | null,
+  lt?: number | null,
+};
+
+export type ModelTransactionFilterInput = {
+  accountID?: ModelIDInput | null,
+  amount?: ModelFloatInput | null,
+  and?: Array< ModelTransactionFilterInput | null > | null,
+  category?: ModelStringInput | null,
+  createdAt?: ModelIntInput | null,
+  id?: ModelIDInput | null,
+  isFraudulent?: ModelBooleanInput | null,
+  isProcessed?: ModelBooleanInput | null,
+  isUserValidated?: ModelBooleanInput | null,
+  latitude?: ModelFloatInput | null,
+  longitude?: ModelFloatInput | null,
+  not?: ModelTransactionFilterInput | null,
+  or?: Array< ModelTransactionFilterInput | null > | null,
+  owner?: ModelStringInput | null,
+  type?: ModelStringInput | null,
+  updatedAt?: ModelIntInput | null,
+  userID?: ModelIDInput | null,
+  vendor?: ModelStringInput | null,
+};
+
+export type ModelIntInput = {
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+  between?: Array< number | null > | null,
+  eq?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ne?: number | null,
+};
+
 export type ModelBooleanInput = {
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
@@ -148,19 +188,33 @@ export enum ModelSortDirection {
 }
 
 
-export type ModelTransactionConnection = {
-  __typename: "ModelTransactionConnection",
-  items:  Array<Transaction | null >,
-  nextToken?: string | null,
-};
-
 export type QueueTransactionReturnType = {
   __typename: "QueueTransactionReturnType",
   message?: string | null,
   statusCode?: number | null,
 };
 
+export type ModelAccountConditionInput = {
+  accountName?: ModelStringInput | null,
+  and?: Array< ModelAccountConditionInput | null > | null,
+  balance?: ModelFloatInput | null,
+  createdAt?: ModelStringInput | null,
+  not?: ModelAccountConditionInput | null,
+  or?: Array< ModelAccountConditionInput | null > | null,
+  owner?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+  userID?: ModelStringInput | null,
+};
+
+export type CreateAccountInput = {
+  accountName: string,
+  balance: number,
+  id?: string | null,
+  userID: string,
+};
+
 export type ModelTransactionConditionInput = {
+  accountID?: ModelIDInput | null,
   amount?: ModelFloatInput | null,
   and?: Array< ModelTransactionConditionInput | null > | null,
   category?: ModelStringInput | null,
@@ -175,13 +229,14 @@ export type ModelTransactionConditionInput = {
   owner?: ModelStringInput | null,
   type?: ModelStringInput | null,
   updatedAt?: ModelIntInput | null,
-  userID?: ModelStringInput | null,
+  userID?: ModelIDInput | null,
   vendor?: ModelStringInput | null,
 };
 
 export type CreateTransactionInput = {
-  amount?: number | null,
-  category?: string | null,
+  accountID?: string | null,
+  amount: number,
+  category: string,
   createdAt: number,
   id?: string | null,
   isFraudulent: boolean,
@@ -192,14 +247,26 @@ export type CreateTransactionInput = {
   type: string,
   updatedAt: number,
   userID: string,
-  vendor?: string | null,
+  vendor: string,
+};
+
+export type DeleteAccountInput = {
+  id: string,
 };
 
 export type DeleteTransactionInput = {
   id: string,
 };
 
+export type UpdateAccountInput = {
+  accountName?: string | null,
+  balance?: number | null,
+  id: string,
+  userID?: string | null,
+};
+
 export type UpdateTransactionInput = {
+  accountID?: string | null,
   amount?: number | null,
   category?: string | null,
   createdAt?: number | null,
@@ -215,35 +282,16 @@ export type UpdateTransactionInput = {
   vendor?: string | null,
 };
 
-export type ModelSubscriptionTransactionFilterInput = {
-  amount?: ModelSubscriptionFloatInput | null,
-  and?: Array< ModelSubscriptionTransactionFilterInput | null > | null,
-  category?: ModelSubscriptionStringInput | null,
-  createdAt?: ModelSubscriptionIntInput | null,
+export type ModelSubscriptionAccountFilterInput = {
+  accountName?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionAccountFilterInput | null > | null,
+  balance?: ModelSubscriptionFloatInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
   id?: ModelSubscriptionIDInput | null,
-  isFraudulent?: ModelSubscriptionBooleanInput | null,
-  isProcessed?: ModelSubscriptionBooleanInput | null,
-  isUserValidated?: ModelSubscriptionBooleanInput | null,
-  latitude?: ModelSubscriptionFloatInput | null,
-  longitude?: ModelSubscriptionFloatInput | null,
-  or?: Array< ModelSubscriptionTransactionFilterInput | null > | null,
+  or?: Array< ModelSubscriptionAccountFilterInput | null > | null,
   owner?: ModelStringInput | null,
-  type?: ModelSubscriptionStringInput | null,
-  updatedAt?: ModelSubscriptionIntInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
   userID?: ModelSubscriptionStringInput | null,
-  vendor?: ModelSubscriptionStringInput | null,
-};
-
-export type ModelSubscriptionFloatInput = {
-  between?: Array< number | null > | null,
-  eq?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  in?: Array< number | null > | null,
-  le?: number | null,
-  lt?: number | null,
-  ne?: number | null,
-  notIn?: Array< number | null > | null,
 };
 
 export type ModelSubscriptionStringInput = {
@@ -261,7 +309,7 @@ export type ModelSubscriptionStringInput = {
   notIn?: Array< string | null > | null,
 };
 
-export type ModelSubscriptionIntInput = {
+export type ModelSubscriptionFloatInput = {
   between?: Array< number | null > | null,
   eq?: number | null,
   ge?: number | null,
@@ -288,6 +336,38 @@ export type ModelSubscriptionIDInput = {
   notIn?: Array< string | null > | null,
 };
 
+export type ModelSubscriptionTransactionFilterInput = {
+  accountID?: ModelSubscriptionIDInput | null,
+  amount?: ModelSubscriptionFloatInput | null,
+  and?: Array< ModelSubscriptionTransactionFilterInput | null > | null,
+  category?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionIntInput | null,
+  id?: ModelSubscriptionIDInput | null,
+  isFraudulent?: ModelSubscriptionBooleanInput | null,
+  isProcessed?: ModelSubscriptionBooleanInput | null,
+  isUserValidated?: ModelSubscriptionBooleanInput | null,
+  latitude?: ModelSubscriptionFloatInput | null,
+  longitude?: ModelSubscriptionFloatInput | null,
+  or?: Array< ModelSubscriptionTransactionFilterInput | null > | null,
+  owner?: ModelStringInput | null,
+  type?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionIntInput | null,
+  userID?: ModelSubscriptionIDInput | null,
+  vendor?: ModelSubscriptionStringInput | null,
+};
+
+export type ModelSubscriptionIntInput = {
+  between?: Array< number | null > | null,
+  eq?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  in?: Array< number | null > | null,
+  le?: number | null,
+  lt?: number | null,
+  ne?: number | null,
+  notIn?: Array< number | null > | null,
+};
+
 export type ModelSubscriptionBooleanInput = {
   eq?: boolean | null,
   ne?: boolean | null,
@@ -305,6 +385,27 @@ export type CheckTransactionQuery = {
   } | null,
 };
 
+export type GetAccountQueryVariables = {
+  id: string,
+};
+
+export type GetAccountQuery = {
+  getAccount?:  {
+    __typename: "Account",
+    accountName: string,
+    balance: number,
+    createdAt: string,
+    id: string,
+    owner?: string | null,
+    transactions?:  {
+      __typename: "ModelTransactionConnection",
+      nextToken?: string | null,
+    } | null,
+    updatedAt: string,
+    userID: string,
+  } | null,
+};
+
 export type GetTransactionQueryVariables = {
   id: string,
 };
@@ -312,8 +413,19 @@ export type GetTransactionQueryVariables = {
 export type GetTransactionQuery = {
   getTransaction?:  {
     __typename: "Transaction",
-    amount?: number | null,
-    category?: string | null,
+    account?:  {
+      __typename: "Account",
+      accountName: string,
+      balance: number,
+      createdAt: string,
+      id: string,
+      owner?: string | null,
+      updatedAt: string,
+      userID: string,
+    } | null,
+    accountID?: string | null,
+    amount: number,
+    category: string,
     createdAt: number,
     id: string,
     isFraudulent: boolean,
@@ -325,7 +437,30 @@ export type GetTransactionQuery = {
     type: string,
     updatedAt: number,
     userID: string,
-    vendor?: string | null,
+    vendor: string,
+  } | null,
+};
+
+export type ListAccountsQueryVariables = {
+  filter?: ModelAccountFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListAccountsQuery = {
+  listAccounts?:  {
+    __typename: "ModelAccountConnection",
+    items:  Array< {
+      __typename: "Account",
+      accountName: string,
+      balance: number,
+      createdAt: string,
+      id: string,
+      owner?: string | null,
+      updatedAt: string,
+      userID: string,
+    } | null >,
+    nextToken?: string | null,
   } | null,
 };
 
@@ -343,8 +478,9 @@ export type ListByCreationDateQuery = {
     __typename: "ModelTransactionConnection",
     items:  Array< {
       __typename: "Transaction",
-      amount?: number | null,
-      category?: string | null,
+      accountID?: string | null,
+      amount: number,
+      category: string,
       createdAt: number,
       id: string,
       isFraudulent: boolean,
@@ -356,7 +492,7 @@ export type ListByCreationDateQuery = {
       type: string,
       updatedAt: number,
       userID: string,
-      vendor?: string | null,
+      vendor: string,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -373,8 +509,9 @@ export type ListTransactionsQuery = {
     __typename: "ModelTransactionConnection",
     items:  Array< {
       __typename: "Transaction",
-      amount?: number | null,
-      category?: string | null,
+      accountID?: string | null,
+      amount: number,
+      category: string,
       createdAt: number,
       id: string,
       isFraudulent: boolean,
@@ -386,7 +523,7 @@ export type ListTransactionsQuery = {
       type: string,
       updatedAt: number,
       userID: string,
-      vendor?: string | null,
+      vendor: string,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -404,6 +541,28 @@ export type QueueTransactionQuery = {
   } | null,
 };
 
+export type CreateAccountMutationVariables = {
+  condition?: ModelAccountConditionInput | null,
+  input: CreateAccountInput,
+};
+
+export type CreateAccountMutation = {
+  createAccount?:  {
+    __typename: "Account",
+    accountName: string,
+    balance: number,
+    createdAt: string,
+    id: string,
+    owner?: string | null,
+    transactions?:  {
+      __typename: "ModelTransactionConnection",
+      nextToken?: string | null,
+    } | null,
+    updatedAt: string,
+    userID: string,
+  } | null,
+};
+
 export type CreateTransactionMutationVariables = {
   condition?: ModelTransactionConditionInput | null,
   input: CreateTransactionInput,
@@ -412,8 +571,19 @@ export type CreateTransactionMutationVariables = {
 export type CreateTransactionMutation = {
   createTransaction?:  {
     __typename: "Transaction",
-    amount?: number | null,
-    category?: string | null,
+    account?:  {
+      __typename: "Account",
+      accountName: string,
+      balance: number,
+      createdAt: string,
+      id: string,
+      owner?: string | null,
+      updatedAt: string,
+      userID: string,
+    } | null,
+    accountID?: string | null,
+    amount: number,
+    category: string,
     createdAt: number,
     id: string,
     isFraudulent: boolean,
@@ -425,7 +595,29 @@ export type CreateTransactionMutation = {
     type: string,
     updatedAt: number,
     userID: string,
-    vendor?: string | null,
+    vendor: string,
+  } | null,
+};
+
+export type DeleteAccountMutationVariables = {
+  condition?: ModelAccountConditionInput | null,
+  input: DeleteAccountInput,
+};
+
+export type DeleteAccountMutation = {
+  deleteAccount?:  {
+    __typename: "Account",
+    accountName: string,
+    balance: number,
+    createdAt: string,
+    id: string,
+    owner?: string | null,
+    transactions?:  {
+      __typename: "ModelTransactionConnection",
+      nextToken?: string | null,
+    } | null,
+    updatedAt: string,
+    userID: string,
   } | null,
 };
 
@@ -437,8 +629,19 @@ export type DeleteTransactionMutationVariables = {
 export type DeleteTransactionMutation = {
   deleteTransaction?:  {
     __typename: "Transaction",
-    amount?: number | null,
-    category?: string | null,
+    account?:  {
+      __typename: "Account",
+      accountName: string,
+      balance: number,
+      createdAt: string,
+      id: string,
+      owner?: string | null,
+      updatedAt: string,
+      userID: string,
+    } | null,
+    accountID?: string | null,
+    amount: number,
+    category: string,
     createdAt: number,
     id: string,
     isFraudulent: boolean,
@@ -450,7 +653,29 @@ export type DeleteTransactionMutation = {
     type: string,
     updatedAt: number,
     userID: string,
-    vendor?: string | null,
+    vendor: string,
+  } | null,
+};
+
+export type UpdateAccountMutationVariables = {
+  condition?: ModelAccountConditionInput | null,
+  input: UpdateAccountInput,
+};
+
+export type UpdateAccountMutation = {
+  updateAccount?:  {
+    __typename: "Account",
+    accountName: string,
+    balance: number,
+    createdAt: string,
+    id: string,
+    owner?: string | null,
+    transactions?:  {
+      __typename: "ModelTransactionConnection",
+      nextToken?: string | null,
+    } | null,
+    updatedAt: string,
+    userID: string,
   } | null,
 };
 
@@ -462,8 +687,19 @@ export type UpdateTransactionMutationVariables = {
 export type UpdateTransactionMutation = {
   updateTransaction?:  {
     __typename: "Transaction",
-    amount?: number | null,
-    category?: string | null,
+    account?:  {
+      __typename: "Account",
+      accountName: string,
+      balance: number,
+      createdAt: string,
+      id: string,
+      owner?: string | null,
+      updatedAt: string,
+      userID: string,
+    } | null,
+    accountID?: string | null,
+    amount: number,
+    category: string,
     createdAt: number,
     id: string,
     isFraudulent: boolean,
@@ -475,7 +711,29 @@ export type UpdateTransactionMutation = {
     type: string,
     updatedAt: number,
     userID: string,
-    vendor?: string | null,
+    vendor: string,
+  } | null,
+};
+
+export type OnCreateAccountSubscriptionVariables = {
+  filter?: ModelSubscriptionAccountFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnCreateAccountSubscription = {
+  onCreateAccount?:  {
+    __typename: "Account",
+    accountName: string,
+    balance: number,
+    createdAt: string,
+    id: string,
+    owner?: string | null,
+    transactions?:  {
+      __typename: "ModelTransactionConnection",
+      nextToken?: string | null,
+    } | null,
+    updatedAt: string,
+    userID: string,
   } | null,
 };
 
@@ -487,8 +745,19 @@ export type OnCreateTransactionSubscriptionVariables = {
 export type OnCreateTransactionSubscription = {
   onCreateTransaction?:  {
     __typename: "Transaction",
-    amount?: number | null,
-    category?: string | null,
+    account?:  {
+      __typename: "Account",
+      accountName: string,
+      balance: number,
+      createdAt: string,
+      id: string,
+      owner?: string | null,
+      updatedAt: string,
+      userID: string,
+    } | null,
+    accountID?: string | null,
+    amount: number,
+    category: string,
     createdAt: number,
     id: string,
     isFraudulent: boolean,
@@ -500,7 +769,29 @@ export type OnCreateTransactionSubscription = {
     type: string,
     updatedAt: number,
     userID: string,
-    vendor?: string | null,
+    vendor: string,
+  } | null,
+};
+
+export type OnDeleteAccountSubscriptionVariables = {
+  filter?: ModelSubscriptionAccountFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnDeleteAccountSubscription = {
+  onDeleteAccount?:  {
+    __typename: "Account",
+    accountName: string,
+    balance: number,
+    createdAt: string,
+    id: string,
+    owner?: string | null,
+    transactions?:  {
+      __typename: "ModelTransactionConnection",
+      nextToken?: string | null,
+    } | null,
+    updatedAt: string,
+    userID: string,
   } | null,
 };
 
@@ -512,8 +803,19 @@ export type OnDeleteTransactionSubscriptionVariables = {
 export type OnDeleteTransactionSubscription = {
   onDeleteTransaction?:  {
     __typename: "Transaction",
-    amount?: number | null,
-    category?: string | null,
+    account?:  {
+      __typename: "Account",
+      accountName: string,
+      balance: number,
+      createdAt: string,
+      id: string,
+      owner?: string | null,
+      updatedAt: string,
+      userID: string,
+    } | null,
+    accountID?: string | null,
+    amount: number,
+    category: string,
     createdAt: number,
     id: string,
     isFraudulent: boolean,
@@ -525,7 +827,29 @@ export type OnDeleteTransactionSubscription = {
     type: string,
     updatedAt: number,
     userID: string,
-    vendor?: string | null,
+    vendor: string,
+  } | null,
+};
+
+export type OnUpdateAccountSubscriptionVariables = {
+  filter?: ModelSubscriptionAccountFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnUpdateAccountSubscription = {
+  onUpdateAccount?:  {
+    __typename: "Account",
+    accountName: string,
+    balance: number,
+    createdAt: string,
+    id: string,
+    owner?: string | null,
+    transactions?:  {
+      __typename: "ModelTransactionConnection",
+      nextToken?: string | null,
+    } | null,
+    updatedAt: string,
+    userID: string,
   } | null,
 };
 
@@ -537,8 +861,19 @@ export type OnUpdateTransactionSubscriptionVariables = {
 export type OnUpdateTransactionSubscription = {
   onUpdateTransaction?:  {
     __typename: "Transaction",
-    amount?: number | null,
-    category?: string | null,
+    account?:  {
+      __typename: "Account",
+      accountName: string,
+      balance: number,
+      createdAt: string,
+      id: string,
+      owner?: string | null,
+      updatedAt: string,
+      userID: string,
+    } | null,
+    accountID?: string | null,
+    amount: number,
+    category: string,
     createdAt: number,
     id: string,
     isFraudulent: boolean,
@@ -550,6 +885,6 @@ export type OnUpdateTransactionSubscription = {
     type: string,
     updatedAt: number,
     userID: string,
-    vendor?: string | null,
+    vendor: string,
   } | null,
 };

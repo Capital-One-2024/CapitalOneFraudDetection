@@ -45,7 +45,9 @@ export default function NewTransactionPage() {
     const [latitude, setLatitude] = useState<number>();
     const [hasLocationAccess, setHasLocationAccess] = useState(true);
 
-    // Obtain user position
+    const [accounts, setAccounts] = useState<Array<Schema["Account"]["type"]>>([]);
+
+    // Get the user's geolocation
     useEffect(() => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -55,13 +57,23 @@ export default function NewTransactionPage() {
                 },
                 (error) => {
                     console.error("Error getting geolocation:", error);
-                    setHasLocationAccess(false); // SET location access to false if error occurs
+                    setHasLocationAccess(false);
                 }
             );
         } else {
-            // console.error("Geolocation is not supported by this browser.");
+            console.error("Failed to obtain the required geolocation access.");
             setHasLocationAccess(false);
         }
+
+        // get accounts associated with this user
+        client.models.Account.observeQuery().subscribe({
+            next: (data) => {
+                setAccounts(data.items); // once everything is loaded, loading will stop
+            },
+            error: (err) => {
+                console.error(err);
+            },
+        });
     }, []);
 
     const {
@@ -74,6 +86,7 @@ export default function NewTransactionPage() {
         defaultValues: {
             amount: undefined,
             vendor: "",
+            accountID: "",
         },
     });
 
@@ -81,9 +94,32 @@ export default function NewTransactionPage() {
         try {
             setIsLoading(true);
             const [vendor, category] = data.vendor.split("|");
+            // Fetch the selected account
+            const account = accounts.find((acc) => acc.id === data.accountID);
+            if (!account) {
+                setIsLoading(false);
+                setShowFailure(true);
+                return;
+            }
+
+            // Ensure balance is defined
+            if (account.balance === null || account.balance === undefined) {
+                setIsLoading(false);
+                setShowFailure(true);
+                return;
+            }
+
+            // Ensure sufficient balance
+            if (account.balance < data.amount) {
+                setIsLoading(false);
+                setShowFailure(true);
+                return;
+            }
+            const updatedBalance = account.balance - data.amount; // updated balance
             const creationResult = await client.models.Transaction.create({
                 type: "Transaction",
-                userID: user.userId,
+                userId: user.userId,
+                accountId: data.accountId,
                 vendor: vendor,
                 category: category,
                 amount: data.amount,
@@ -92,7 +128,6 @@ export default function NewTransactionPage() {
                 isFraudulent: false,
                 isUserValidated: false,
                 isProcessed: false,
-                // timestamps (numbers) not datetime (strings)
                 createdAt: Date.now(),
                 updatedAt: Date.now(),
             });
@@ -109,12 +144,16 @@ export default function NewTransactionPage() {
                 console.error("Error checking transaction:", error);
             }
 
+            await client.models.Account.update({
+                id: data.accountID,
+                balance: updatedBalance,
+            });
+
             setIsLoading(false);
             setShowSuccess(true);
             reset();
-        } catch (error) {
+        } catch {
             setIsLoading(false);
-            console.log("Unable to process transaction:", error);
             setShowFailure(true);
             reset();
         }
@@ -145,142 +184,98 @@ export default function NewTransactionPage() {
             </Page>
         );
     }
+    if (accounts === null || (accounts && accounts.length === 0)) {
+        return (
+            <Page title="New Transaction" isProtected={true}>
+                <div className="text-center mt-10">
+                    <p className="text-lg text-gray-600 mt-4">
+                        You need to create a bank account first before creating a transaction...
+                    </p>
+                </div>
+            </Page>
+        );
+    }
 
     // Display new transaction form
     return (
         <Page title="New Transaction" isProtected={true}>
-            <div className="w-full max-w-4xl mx-auto">
-                <h1 className="text-center text-c1-blue font-bold my-6 text-3xl">
-                    New Transaction
-                </h1>
+            <div
+                className={classNames(
+                    "flex-1 flex flex-col-reverse items-center",
+                    "justify-center p-5"
+                )}
+            >
                 <form
                     onSubmit={handleSubmit(ON_SUBMIT)}
-                    className={classNames("items-center", "flex", "flex-col", "justify-center")}
+                    className={classNames(
+                        "sm:w-3/5 w-full bg-red p-5 ",
+                        "border border-2 border-c1-blue rounded-xl"
+                    )}
                 >
-                    <div className="space-y-8 w-full">
-                        <div
-                            className={classNames(
-                                "p-6",
-                                "border-2",
-                                "border-c1-blue",
-                                "rounded-lg",
-                                "shadow-lg",
-                                "flex",
-                                "flex-col",
-                                "sm:flex-row",
-                                "items-center",
-                                "sm:items-start"
-                            )}
-                        >
-                            {/* "Date & Time" always on the left */}
-                            <div className="pl-1 text-c1-blue w-full sm:w-auto sm:flex-1">
-                                <h2 className="text-c1-blue text-xl font-bold text-left">
-                                    Date & Time:
-                                </h2>
-                            </div>
-
-                            <div
-                                className={classNames(
-                                    "text-c1-blue w-full",
-                                    "sm:w-auto",
-                                    "sm:flex-1",
-                                    "text-center",
-                                    "sm:text-left"
-                                )}
-                            >
-                                <h2 className="text-c1-blue text-xl font-bold">
-                                    {formatDate(new Date())}
-                                </h2>
-                            </div>
-                        </div>
-
-                        <div
-                            className={classNames(
-                                "p-4",
-                                "border-2",
-                                "border-c1-blue",
-                                "rounded-lg",
-                                "shadow-lg",
-                                "flex",
-                                "flex-col",
-                                "sm:flex-row",
-                                "items-center",
-                                "justify-between"
-                            )}
-                        >
-                            <div className="pl-3 text-c1-blue w-full sm:w-1/2 mb-4 sm:mb-0">
-                                <h2 className="text-c1-blue w-full sm:w-1/2 text-xl font-bold">
-                                    Vendor:
-                                </h2>
-                            </div>
-                            <div className="w-full sm:w-1/2">
-                                <select
-                                    id="vendor"
-                                    {...register("vendor")}
-                                    defaultValue="" // SET the default value to an empty string
-                                    className={classNames(
-                                        "w-full",
-                                        "p-2",
-                                        "border-2",
-                                        "border-c1-blue ",
-                                        "rounded-md",
-                                        "text-gray-500",
-                                        "invalid:text-gray-500"
-                                    )}
-                                >
-                                    <option value="" disabled>
-                                        Select a vendor
-                                    </option>
-                                    {vendors.map((v) => (
-                                        <option
-                                            key={v.name}
-                                            value={`${v.name}|${v.category}`}
-                                            className="text-black"
-                                        >
-                                            {v.name} ({v.category})
-                                        </option>
-                                    ))}
-                                </select>
-                                {errors.vendor && (
-                                    <p className="text-red-500">{errors.vendor.message}</p>
-                                )}
-                            </div>
-                        </div>
-
-                        <div
-                            className={classNames(
-                                "p-4",
-                                "border-2",
-                                "border-c1-blue",
-                                "rounded-lg",
-                                "shadow-lg",
-                                "flex",
-                                "flex-col",
-                                "sm:flex-row",
-                                "justify-between"
-                            )}
-                        >
-                            <div className="pl-3 text-c1-blue w-full sm:w-1/2 mb-4 sm:mb-0">
-                                <h2 className="text-c1-blue w-1/2 text-xl font-bold">Amount:</h2>
-                            </div>
-                            <div className="w-full sm:w-1/2">
-                                <input
-                                    {...register("amount")}
-                                    type="string"
-                                    className="w-full p-2 border-2 border-c1-blue rounded-md"
-                                    placeholder="Enter dollar amount"
-                                />
-                                {errors.amount && (
-                                    <p className="text-red-500">{errors.amount?.message}</p>
-                                )}
-                            </div>
+                    <div className="mb-8 text-center text-c1-blue text-xl">
+                        Create New Transaction
+                    </div>
+                    <div className="mb-3">
+                        Date & Time:
+                        <div className="w-full p-2 my-1 border border-1 border-c1-blue rounded-md">
+                            {formatDate(new Date())}
                         </div>
                     </div>
 
+                    <div className="mb-2">
+                        Account:
+                        <select
+                            id="accountID"
+                            {...register("accountID")}
+                            className="w-full p-2 my-1 border border-1 border-c1-blue rounded-md"
+                        >
+                            <option value="" disabled>
+                                Select an account
+                            </option>
+                            {accounts.map((account, index) => (
+                                <option key={index} value={account.id}>
+                                    {account.accountName}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.accountID && (
+                            <p className="text-red-500">{errors.accountID.message}</p>
+                        )}
+                    </div>
+
+                    <div className="mb-2">
+                        Vendor:
+                        <select
+                            id="vendor"
+                            {...register("vendor")}
+                            className="w-full p-2 my-1 border border-1 border-c1-blue rounded-md"
+                        >
+                            <option value="" disabled>
+                                Select a vendor
+                            </option>
+                            {vendors.map((v) => (
+                                <option key={v.name} value={`${v.name}|${v.category}`}>
+                                    {v.name} ({v.category})
+                                </option>
+                            ))}
+                        </select>
+                        {errors.vendor && <p className="text-red-500">{errors.vendor.message}</p>}
+                    </div>
+
+                    <div className="mb-2">
+                        Amount:
+                        <input
+                            type="text"
+                            {...register("amount")}
+                            placeholder="Enter Dollar Amount"
+                            className="w-full p-2 my-1 border border-1 border-c1-blue rounded-md"
+                        />
+                        {errors.amount && <p className="text-red-500">{errors.amount?.message}</p>}
+                    </div>
                     <button
                         type="submit"
                         disabled={isLoading} // Disable button during loading
-                        className={classNames("my-4", "w-2/3", "btn", "btn-blue")}
+                        className="w-full border bg-c1-blue p-2 text-white rounded-lg"
                     >
                         {isLoading ? (
                             <div className="flex justify-center">

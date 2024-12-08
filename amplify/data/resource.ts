@@ -2,20 +2,17 @@ import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 import { checkTransaction } from "../functions/check-transaction/resource";
 import { queueTransaction } from "../functions/queue-transaction/resource";
 
-// a.schema: this is the whole db, acts as the container for all the models (tables)
-// a.model: this is the table when translating to DynamoDB.
-// a.model: Provides create, read, update, delete, subscription API
-// a.model: adds in all the appsync resolvers so you don't have to do it
 const schema = a
     .schema({
         Transaction: a
             .model({
                 type: a.string().default("Transaction").required(),
-                userID: a.string().required(),
-                vendor: a.string(),
-                category: a.string(),
-                amount: a.float(),
-                // longitude and latitude are for location
+                userId: a.id().required(),
+                accountId: a.id(),
+                account: a.belongsTo("Account", "accountId"),
+                vendor: a.string().required(),
+                category: a.string().required(),
+                amount: a.float().required(),
                 longitude: a.float().required(),
                 latitude: a.float().required(),
                 isFraudulent: a.boolean().required().default(true),
@@ -27,6 +24,14 @@ const schema = a
             .secondaryIndexes((index) => [
                 index("type").sortKeys(["createdAt"]).queryField("listByCreationDate"),
             ])
+            .authorization((allow) => [allow.owner()]),
+        Account: a
+            .model({
+                accountName: a.string().required(),
+                userId: a.string().required(),
+                balance: a.float().required().default(0),
+                transactions: a.hasMany("Transaction", "accountId"),
+            })
             .authorization((allow) => [allow.owner()]),
         checkTransaction: a
             .query()
