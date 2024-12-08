@@ -91,7 +91,7 @@ export default function TransactionDetailsPage() {
                     <div
                         className={classNames(
                             "sm:w-3/5 w-full bg-red p-5 ",
-                            "border border-2 border-c1-blue rounded-xl"
+                            "border-2 border-c1-blue rounded-xl"
                         )}
                     >
                         <div className="mb-8 text-center text-c1-blue text-xl">
