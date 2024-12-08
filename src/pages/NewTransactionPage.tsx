@@ -135,7 +135,7 @@ export default function NewTransactionPage() {
             setIsLoading(false);
             setShowSuccess(true);
             reset();
-        } catch (error) {
+        } catch {
             setIsLoading(false);
             setShowFailure(true);
             reset();

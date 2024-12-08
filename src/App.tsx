@@ -9,6 +9,7 @@ import LandingPage from "./pages/LandingPage";
 import NewTransactionPage from "./pages/NewTransactionPage";
 import TransactionDetailsPage from "./pages/TransactionDetailsPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import ProfilePage from "./pages/ProfilePage";
 import NewAccountPage from "./pages/NewAccountPage";
 
 Amplify.configure(outputs);
@@ -22,6 +23,7 @@ function App() {
                     <Route path="/auth" element={<AuthPage />} />
                     <Route path="/dashboard" element={<DashboardPage />} />
                     <Route path="/new-transaction" element={<NewTransactionPage />} />
+                    <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/transaction-details" element={<TransactionDetailsPage />} />
                     <Route path="/new-account" element={<NewAccountPage />} />
                     {/* Catch all route -> defaults to 404 page */}
