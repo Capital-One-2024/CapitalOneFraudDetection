@@ -1,7 +1,7 @@
 import React from "react";
 import type { Schema } from "../../amplify/data/resource";
 import classNames from "classnames";
-
+import { generateClient } from "aws-amplify/data";
 import { useNavigate } from "react-router-dom";
 
 // interface describing the shape of the transaction prop
@@ -39,10 +39,27 @@ const TransactionCard: React.FC<TransactionProps> = ({ transaction }) => {
         statusClass = "text-yellow-500";
     }
 
+    const client = generateClient<Schema>();
     const navigate = useNavigate();
 
-    const handleClick = () => {
-        navigate("/transaction-details", { state: transaction });
+    const handleClick = async () => {
+        if (!transaction.accountId) {
+            console.error("Transaction is missing accountId.");
+            return;
+        }
+        const { data: accountData } = await client.models.Account.get({
+            id: transaction.accountId,
+        });
+        if (!accountData || !accountData.accountName) {
+            console.error("Account name is missing or undefined.");
+            return;
+        }
+        navigate("/transaction-details", {
+            state: {
+                transaction,
+                accountName: accountData.accountName,
+            },
+        });
     };
 
     return (

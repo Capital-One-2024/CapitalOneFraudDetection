@@ -10,7 +10,12 @@ import tseslint from "typescript-eslint";
 export default [
     { files: ["**/*.{ts,tsx}"] },
     {
-        ignores: ["node_modules", "dist", ".amplify", "amplify/functions/check-transaction/graphql"]
+        ignores: [
+            "node_modules",
+            "dist",
+            ".amplify",
+            "amplify/functions/check-transaction/graphql",
+        ],
     },
     {
         languageOptions: {

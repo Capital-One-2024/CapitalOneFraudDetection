@@ -45,3 +45,7 @@
 .btn-wide {
     @apply px-10;
 }
+
+.inputClass {
+    @apply w-full p-2 border rounded-md focus:outline-none focus:ring-2;
+}

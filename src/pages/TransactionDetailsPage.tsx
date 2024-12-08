@@ -10,6 +10,7 @@ import { generateClient } from "aws-amplify/data";
 
 export default function TransactionDetailsPage() {
     const [transaction, setTransaction] = useState<Schema["Transaction"]["type"]>();
+    const [accountName, setAccountName] = useState<string>();
     const [loading, setLoading] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
@@ -19,7 +20,8 @@ export default function TransactionDetailsPage() {
     const client = generateClient<Schema>();
 
     useEffect(() => {
-        setTransaction(location.state);
+        setTransaction(location.state.transaction);
+        setAccountName(location.state.accountName);
     }, [location]);
 
     function formatDateTime() {
@@ -47,7 +49,7 @@ export default function TransactionDetailsPage() {
         return null;
     }
 
-    async function flipIsFradulent() {
+    async function flipIsFraudulent() {
         setLoading(true);
 
         if (transaction) {
@@ -97,7 +99,7 @@ export default function TransactionDetailsPage() {
                         </div>
                         <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
                             <div className="w-1/2 text-c1-blue">Account:</div>
-                            <div className="w-1/2">{transaction.accountId}</div>
+                            <div className="w-1/2">{accountName}</div>
                         </div>
                         <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
                             <div className="w-1/2 text-c1-blue">Amount:</div>
@@ -129,7 +131,7 @@ export default function TransactionDetailsPage() {
                         </div>
 
                         <button
-                            onClick={() => flipIsFradulent()}
+                            onClick={() => flipIsFraudulent()}
                             className={classNames(
                                 "w-full border bg-c1-red p-2 mb-2",
                                 "text-white rounded-lg hover:bg-red-700"
@@ -137,7 +139,7 @@ export default function TransactionDetailsPage() {
                             disabled={loading}
                         >
                             Report Transaction as{" "}
-                            {transaction.isFraudulent ? "Not Fradulent" : "Fraudulent"}
+                            {transaction.isFraudulent ? "Not Fraudulent" : "Fraudulent"}
                         </button>
                     </div>
                 ) : null}
@@ -146,7 +148,7 @@ export default function TransactionDetailsPage() {
                 show={showSuccess}
                 type="success"
                 message={`The transaction was reported as 
-                    ${transaction?.isFraudulent ? "fraudlent" : "not fraudulent"} 
+                    ${transaction?.isFraudulent ? "fraudulent" : "not fraudulent"} 
                     successfully.`}
                 onClose={() => setShowSuccess(false)}
             />

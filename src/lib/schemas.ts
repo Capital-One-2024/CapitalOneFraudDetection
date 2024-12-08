@@ -23,10 +23,27 @@ export const DOLLAR_SCHEMA = z.coerce
 export const TRANSACTION_SCHEMA = z.object({
     amount: DOLLAR_SCHEMA, // Reusing the existing dollar schema
     vendor: z.string().min(1, "Vendor is required"), // Ensure vendor is selected
-    accountID: z.string().min(1, "Account ID is required"),
+    accountId: z.string().min(1, "Account ID is required"),
 });
 
 export const ACCOUNT_SCHEMA = z.object({
     balance: DOLLAR_SCHEMA, // Reusing the existing dollar schema
     accountName: z.string().min(1, "Account Name is required"),
 });
+
+const DETAIL_SCHEMA = z
+    .string()
+    .trim()
+    .toLowerCase()
+    .min(1, { message: "Attribute cannot be empty." })
+    .max(24, { message: "Attribute must be 24 characters or less." });
+
+const EMAIL_SCHEMA = z
+    .string()
+    .toLowerCase() // Email wasn't automatically converting to lowercase
+    .email({ message: "Invalid email format." });
+
+// Factory function for attribute validation schema
+export const createProfileDetailValidationSchema = (attributeKey: string) => {
+    return attributeKey === "email" ? EMAIL_SCHEMA : DETAIL_SCHEMA;
+};

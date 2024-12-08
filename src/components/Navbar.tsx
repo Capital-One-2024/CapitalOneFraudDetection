@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import { Link, NavLink } from "react-router-dom";
 import { SITE_MAP } from "../lib/constants";
-import { signOut } from "aws-amplify/auth";
 
 interface NavbarProps {
     variant?: "loggedOut" | "loggedIn";
@@ -57,9 +56,9 @@ export default function Navbar({ variant = "loggedOut" }: NavbarProps) {
             </div>
             <div className="flex">
                 {variant === "loggedIn" ? (
-                    <button type="button" className="btn btn-blue" onClick={() => signOut()}>
-                        Sign Out
-                    </button>
+                    <NavLink to="/profile" className={classNames("btn btn-blue")}>
+                        Profile
+                    </NavLink>
                 ) : (
                     <Link to={SITE_MAP.auth({ initialAction: "signIn" })} className="btn btn-blue">
                         Sign In

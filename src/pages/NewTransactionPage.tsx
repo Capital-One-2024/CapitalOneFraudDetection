@@ -86,7 +86,7 @@ export default function NewTransactionPage() {
         defaultValues: {
             amount: undefined,
             vendor: "",
-            accountID: "",
+            accountId: "",
         },
     });
 
@@ -95,7 +95,7 @@ export default function NewTransactionPage() {
             setIsLoading(true);
             const [vendor, category] = data.vendor.split("|");
             // Fetch the selected account
-            const account = accounts.find((acc) => acc.id === data.accountID);
+            const account = accounts.find((acc) => acc.id === data.accountId);
             if (!account) {
                 setIsLoading(false);
                 setShowFailure(true);
@@ -119,7 +119,7 @@ export default function NewTransactionPage() {
             const creationResult = await client.models.Transaction.create({
                 type: "Transaction",
                 userId: user.userId,
-                accountId: data.accountID,
+                accountId: data.accountId,
                 vendor: vendor,
                 category: category,
                 amount: data.amount,
@@ -145,7 +145,7 @@ export default function NewTransactionPage() {
             }
 
             await client.models.Account.update({
-                id: data.accountID,
+                id: data.accountId,
                 balance: updatedBalance,
             });
 
@@ -209,7 +209,7 @@ export default function NewTransactionPage() {
                     onSubmit={handleSubmit(ON_SUBMIT)}
                     className={classNames(
                         "sm:w-3/5 w-full bg-red p-5 ",
-                        "border border-2 border-c1-blue rounded-xl"
+                        "border-2 border-c1-blue rounded-xl"
                     )}
                 >
                     <div className="mb-8 text-center text-c1-blue text-xl">
@@ -225,8 +225,8 @@ export default function NewTransactionPage() {
                     <div className="mb-2">
                         Account:
                         <select
-                            id="accountID"
-                            {...register("accountID")}
+                            id="accountId"
+                            {...register("accountId")}
                             className="w-full p-2 my-1 border border-1 border-c1-blue rounded-md"
                         >
                             <option value="" disabled>
@@ -238,8 +238,8 @@ export default function NewTransactionPage() {
                                 </option>
                             ))}
                         </select>
-                        {errors.accountID && (
-                            <p className="text-red-500">{errors.accountID.message}</p>
+                        {errors.accountId && (
+                            <p className="text-red-500">{errors.accountId.message}</p>
                         )}
                     </div>
 

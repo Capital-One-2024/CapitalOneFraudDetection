@@ -284,7 +284,6 @@ export const handler: SQSHandler = async (event: SQSEvent) => {
         // We use Promise.all to run the async operations concurrently.
         await Promise.all(
             predictions.map(async ({ id, isFraudulent }) => {
-
                 // Get the account ID for the transaction
                 const transaction = PARSED_TRANSACTION_LIST.find((t) => t.id === id)!;
 
