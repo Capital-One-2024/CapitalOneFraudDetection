@@ -37,12 +37,12 @@ const TransactionCard: React.FC<TransactionProps> = ({ transaction }) => {
         }
         const { data: accountData } = await client.models.Account.get({
             id: transaction.accountID,
-        });   
+        });
         if (!accountData || !accountData.accountName) {
             console.error("Account name is missing or undefined.");
             return;
         }
-            navigate("/transaction-details", {
+        navigate("/transaction-details", {
             state: {
                 transaction,
                 accountName: accountData.accountName,

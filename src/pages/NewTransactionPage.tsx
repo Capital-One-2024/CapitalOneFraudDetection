@@ -135,8 +135,7 @@ export default function NewTransactionPage() {
             setIsLoading(false);
             setShowSuccess(true);
             reset();
-        } catch (error) {
-            console.error("Error with transaction:", error);
+        } catch {
             setIsLoading(false);
             setShowFailure(true);
             reset();
