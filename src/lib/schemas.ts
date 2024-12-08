@@ -31,19 +31,19 @@ export const ACCOUNT_SCHEMA = z.object({
     accountName: z.string().min(1, "Account Name is required"),
 });
 
+const DETAIL_SCHEMA = z
+    .string()
+    .trim()
+    .toLowerCase()
+    .min(1, { message: "Attribute cannot be empty." })
+    .max(24, { message: "Attribute must be 24 characters or less." });
+
+const EMAIL_SCHEMA = z
+    .string()
+    .toLowerCase() // Email wasn't automatically converting to lowercase
+    .email({ message: "Invalid email format." });
+
+// Factory function for attribute validation schema
 export const createProfileDetailValidationSchema = (attributeKey: string) => {
-    // Default validation for general attributes
-    let schema = z
-        .string()
-        .trim()
-        .toLowerCase()
-        .min(1, { message: "Attribute cannot be empty." })
-        .max(24, { message: "Attribute must be 24 characters or less." });
-
-    // If the attributeKey is 'email', apply email validation
-    if (attributeKey === "email") {
-        schema = schema.email({ message: "Invalid email format." });
-    }
-
-    return schema;
-};
+    return attributeKey === "email" ? EMAIL_SCHEMA : DETAIL_SCHEMA;
+}

@@ -6,6 +6,7 @@ import { generateClient } from "aws-amplify/data";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import WelcomeSkeleton from "../components/WelcomeSkeleton";
 import TransactionsList from "../components/TransactionsList";
+import { capitalize } from "../lib/utils";
 
 const client = generateClient<Schema>();
 
@@ -48,7 +49,7 @@ function DashboardPage() {
                     ) : (
                         <div className="p-4 rounded-lg border bg-c1-blue shadow-md">
                             <h2 className="text-lg font-semibold text-white">
-                                Welcome, {userDetails?.given_name} {userDetails?.family_name}!
+                                Welcome, {capitalize(userDetails?.given_name)} {capitalize(userDetails?.family_name)}!
                             </h2>
                         </div>
                     )}
