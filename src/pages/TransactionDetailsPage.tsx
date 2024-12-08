@@ -92,17 +92,19 @@ export default function TransactionDetailsPage() {
                                 : "Processing"}
                         </TransactionDetailsAttribute>
 
-                        <button
-                            onClick={() => flipIsFraudulent()}
-                            className={classNames(
-                                "w-full border bg-c1-red p-2 mb-2",
-                                "text-white rounded-lg hover:bg-red-700"
-                            )}
-                            disabled={loading}
-                        >
-                            Report Transaction as{" "}
-                            {transaction.isFraudulent ? "Not Fraudulent" : "Fraudulent"}
-                        </button>
+                        {transaction.isProcessed && (
+                            <button
+                                onClick={() => flipIsFraudulent()}
+                                className={classNames(
+                                    "w-full border bg-c1-red p-2 mb-2",
+                                    "text-white rounded-lg hover:bg-red-700"
+                                )}
+                                disabled={loading}
+                            >
+                                Report Transaction as{" "}
+                                {transaction.isFraudulent ? "Not Fraudulent" : "Fraudulent"}
+                            </button>
+                        )}
                     </div>
                 )}
             </div>
