@@ -9,33 +9,34 @@ import { capitalize } from "../lib/utils";
 
 function DashboardPage() {
     const { user } = useAuthenticator();
-    const [userDetails, setUserDetails] = useState<FetchUserAttributesOutput>();
-    const [loading, setLoading] = useState(true);
+    const [userDetails, setUserDetails] = useState<FetchUserAttributesOutput | undefined>(
+        undefined
+    );
 
     useEffect(() => {
         if (user) {
             // get user attributes for welcome section
             fetchUserAttributes()
                 .then((result) => setUserDetails(result))
-                .catch((err) => console.error(err))
-                .finally(() => setLoading(false));
+                .catch((err) => console.error(err));
         }
     }, [user]);
 
+    console.log(userDetails);
     return (
         <Page title="Dashboard" isProtected={true}>
             <div className="p-8 font-sans">
                 {/* Welcome Section */}
                 <div className="mb-8">
-                    {loading ? (
-                        <WelcomeSkeleton />
-                    ) : (
+                    {userDetails ? (
                         <div className="p-4 rounded-lg border bg-c1-blue shadow-md">
                             <h2 className="text-lg font-semibold text-white">
                                 Welcome, {capitalize(userDetails?.given_name)}{" "}
                                 {capitalize(userDetails?.family_name)}!
                             </h2>
                         </div>
+                    ) : (
+                        <WelcomeSkeleton />
                     )}
                 </div>
 
