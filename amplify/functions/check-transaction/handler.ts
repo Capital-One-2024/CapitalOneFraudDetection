@@ -2,8 +2,8 @@ import { Amplify } from "aws-amplify";
 import { Schema } from "../../data/resource";
 import { generateClient } from "aws-amplify/data";
 import { env } from "$amplify/env/check-transaction";
-import { listTransactions, listByCreationDate } from "./graphql/queries";
-import { updateTransaction } from "./graphql/mutations";
+import { listTransactions, listByCreationDate, getAccount } from "./graphql/queries";
+import { updateTransaction, updateAccount } from "./graphql/mutations";
 import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
 import { SQSEvent, SQSHandler } from "aws-lambda";
 import { ModelSortDirection } from "./graphql/API";
@@ -286,6 +286,35 @@ export const handler: SQSHandler = async (event: SQSEvent) => {
             predictions.map(async ({ id, isFraudulent }) => {
                 // Get the account ID for the transaction
                 const transaction = PARSED_TRANSACTION_LIST.find((t) => t.id === id)!;
+
+                // If the transaction is fraudulent, update the account balance
+                // to reimburse the user for the fraudulent transaction
+
+                if (isFraudulent) {
+                    // Get the account associated with the transaction
+                    const account = await dataClient.graphql({
+                        query: getAccount,
+                        variables: {
+                            id: transaction.accountId,
+                        },
+                    });
+
+                    // If the account is not found, then error out so SQS retries
+                    if (!account.data.getAccount) {
+                        throw new Error("Could not find the account to reimburse.");
+                    }
+
+                    // Update the account balance
+                    await dataClient.graphql({
+                        query: updateAccount,
+                        variables: {
+                            input: {
+                                id: transaction.accountId,
+                                balance: account.data.getAccount.balance + transaction.amount,
+                            },
+                        },
+                    });
+                }
 
                 // Update the transaction with the prediction
                 await dataClient.graphql({
