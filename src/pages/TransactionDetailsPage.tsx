@@ -30,7 +30,6 @@ export default function TransactionDetailsPage() {
             filter: { id: { eq: transaction?.id } },
         }).subscribe({
             next: (updatedTransaction) => {
-                console.log("Transaction updated: ", updatedTransaction);
                 setTransaction(updatedTransaction);
             },
             error: (error) => {
