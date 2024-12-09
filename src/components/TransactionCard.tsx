@@ -3,11 +3,12 @@ import type { Schema } from "../../amplify/data/resource";
 import classNames from "classnames";
 import { generateClient } from "aws-amplify/data";
 import { useNavigate } from "react-router-dom";
-import { getFormattedCurrency } from "../lib/utils";
+import { getFormattedCurrency, getFormattedDate } from "../lib/utils";
 
 // interface describing the shape of the transaction prop
 interface TransactionProps {
     transaction: Schema["Transaction"]["type"];
+    accountName: string | null;
 }
 
 const cardClass = classNames(
@@ -23,7 +24,7 @@ const cardClass = classNames(
 );
 
 // Transaction component will use TransactionProps for type checking
-const TransactionCard: React.FC<TransactionProps> = ({ transaction }) => {
+const TransactionCard: React.FC<TransactionProps> = ({ transaction, accountName }) => {
     let statusLabel = "";
     let statusClass = "";
 
@@ -48,13 +49,16 @@ const TransactionCard: React.FC<TransactionProps> = ({ transaction }) => {
             console.error("Transaction is missing accountId.");
             return;
         }
+
         const { data: accountData } = await client.models.Account.get({
             id: transaction.accountId,
         });
+
         if (!accountData || !accountData.accountName) {
             console.error("Account name is missing or undefined.");
             return;
         }
+
         navigate("/transaction-details", {
             state: {
                 transaction,
@@ -65,10 +69,11 @@ const TransactionCard: React.FC<TransactionProps> = ({ transaction }) => {
 
     return (
         <button className={cardClass} onClick={handleClick}>
-            <div>
-                <div className="text-sm font-semibold text-left">{transaction.vendor}</div>
-                <div className="text-xs text-gray-500">
-                    {new Date(transaction.createdAt).toLocaleString()}
+            <div className="flex flex-col gap-1 items-start">
+                <div className="text-xs font-medium text-gray-500">{accountName}</div>
+                <div className="text-md font-semibold text-left">{transaction.vendor}</div>
+                <div className="text-xs font-medium text-gray-500">
+                    {getFormattedDate(new Date(transaction.createdAt))}
                 </div>
             </div>
             <div className={`text-sm font-bold ${statusClass}`}>

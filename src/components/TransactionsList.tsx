@@ -6,7 +6,11 @@ import TransactionCardSkeleton from "../components/TransactionCardSkeleton";
 
 const client = generateClient<Schema>();
 
-const TransactionsList: React.FC = () => {
+type TransactionsListProps = {
+    accounts: Schema["Account"]["type"][];
+};
+
+const TransactionsList: React.FC<TransactionsListProps> = ({ accounts }) => {
     const [transactions, setTransactions] = useState<Array<Schema["Transaction"]["type"]>>([]);
     const [loading, setLoading] = useState(true);
 
@@ -50,9 +54,20 @@ const TransactionsList: React.FC = () => {
 
     return (
         <div className="flex flex-col gap-4">
-            {transactions.map((transaction) => (
-                <TransactionCard key={transaction.id} transaction={transaction} />
-            ))}
+            {transactions.map((transaction) => {
+                const account = accounts.find((account) => account.id === transaction.accountId);
+                const accountName = account
+                    ? `${account.accountName} xxxx${account.id.substring(account.id.length - 4)}`
+                    : null;
+
+                return (
+                    <TransactionCard
+                        key={transaction.id}
+                        transaction={transaction}
+                        accountName={accountName}
+                    />
+                );
+            })}
         </div>
     );
 };

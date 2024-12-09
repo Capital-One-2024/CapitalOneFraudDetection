@@ -84,7 +84,8 @@ export default function TransactionDetailsPage() {
                         )}
                     >
                         <div className="mb-8 text-center text-c1-blue text-xl">
-                            Transaction: {transaction.id}
+                            Transaction: xxxx-xxxx-xxxx-
+                            {transaction.id.substring(transaction.id.length - 4)}
                         </div>
                         <TransactionDetailsAttribute label="Account">
                             {accountName}

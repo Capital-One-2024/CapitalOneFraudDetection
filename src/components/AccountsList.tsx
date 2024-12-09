@@ -1,42 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { generateClient } from "aws-amplify/data";
+import React from "react";
 import type { Schema } from "../../amplify/data/resource";
-import { useAuthenticator } from "@aws-amplify/ui-react";
 import AccountCard from "./AccountCard";
 import AccountCardSkeleton from "./AccountCardSkeleton";
 
-const client = generateClient<Schema>();
+type AccountProps = {
+    accounts: Schema["Account"]["type"][];
+    isLoading: boolean;
+    error: string | null;
+};
 
-const AccountsList: React.FC = () => {
-    const { user } = useAuthenticator();
-    const [accounts, setAccounts] = useState<Schema["Account"]["type"][]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        if (!user?.userId) {
-            setIsLoading(false);
-            return;
-        }
-
-        const subscription = client.models.Account.observeQuery({
-            filter: { userId: { eq: user.userId } },
-        }).subscribe({
-            next: (data) => {
-                const fetchedAccounts = data.items as Schema["Account"]["type"][];
-                setAccounts(fetchedAccounts);
-                setIsLoading(false);
-            },
-            error: (err) => {
-                console.error("Failed to fetch accounts:", err);
-                setError("Failed to fetch accounts. Please try again later.");
-                setIsLoading(false);
-            },
-        });
-
-        return () => subscription.unsubscribe();
-    }, [user?.userId]);
-
+const AccountsList: React.FC<AccountProps> = ({ accounts, isLoading, error }) => {
     if (isLoading) {
         return (
             <div className="flex flex-wrap gap-4">
