@@ -111,15 +111,23 @@ const getPreviousTransaction = async (accountId: string, currTransactionId: stri
             filter: {
                 and: [
                     {
+                        // We want to get the transactions for the given account
                         accountId: {
                             eq: accountId,
                         },
                     },
                     {
+                        // We don't want to compare with the current transaction
                         id: {
                             ne: currTransactionId,
                         },
                     },
+                    {
+                        // We don't care to compare with fraudulent transactions
+                        isFraudulent: {
+                            ne: true,
+                        }
+                    }
                 ],
             },
         },

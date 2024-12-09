@@ -3,12 +3,13 @@ import Page from "../components/Page";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import type { Schema } from "../../amplify/data/resource";
-
 import NewTransactionPopup from "../components/NewTransactionPopUp";
-
+import RotateRightIcon from "@mui/icons-material/RotateRight";
 import { generateClient } from "aws-amplify/data";
 import { getFormattedCoordinates, getFormattedCurrency, getFormattedDate } from "../lib/utils";
 import TransactionDetailsAttribute from "../components/TransactionDetailsAttribute";
+import GppBadIcon from "@mui/icons-material/GppBad";
+import GppGoodIcon from "@mui/icons-material/GppGood";
 
 export default function TransactionDetailsPage() {
     const [transaction, setTransaction] = useState<Schema["Transaction"]["type"]>();
@@ -50,16 +51,11 @@ export default function TransactionDetailsPage() {
 
     return (
         <Page title="Transaction Details" isProtected={true}>
-            <div
-                className={classNames(
-                    "flex-1 flex flex-col-reverse items-center",
-                    "justify-center p-5"
-                )}
-            >
+            <div className={"flex-1 flex flex-col items-center justify-center p-5"}>
                 {transaction && (
                     <div
                         className={classNames(
-                            "sm:w-3/5 w-full bg-red p-5 ",
+                            "sm:w-3/5 max-w-xl bg-red p-5 ",
                             "border-2 border-c1-blue rounded-xl"
                         )}
                     >
@@ -85,11 +81,23 @@ export default function TransactionDetailsPage() {
                             {getFormattedCoordinates(transaction.latitude, transaction.longitude)}
                         </TransactionDetailsAttribute>
                         <TransactionDetailsAttribute label="Status">
-                            {transaction.isProcessed
-                                ? transaction.isFraudulent
-                                    ? "Blocked - Suspected to be Fraudulent"
-                                    : "Processed"
-                                : "Processing"}
+                            {transaction.isProcessed ? (
+                                transaction.isFraudulent ? (
+                                    <span>
+                                        Blocked - Suspected to be Fraudulent{" "}
+                                        <GppBadIcon className="!text-c1-red" />
+                                    </span>
+                                ) : (
+                                    <span>
+                                        Processed <GppGoodIcon className="!text-emerald-600" />
+                                    </span>
+                                )
+                            ) : (
+                                <span>
+                                    Processing{" "}
+                                    <RotateRightIcon className="animate-spin !text-c1-blue" />
+                                </span>
+                            )}
                         </TransactionDetailsAttribute>
 
                         {transaction.isProcessed && (
