@@ -11,6 +11,7 @@ import NewTransactionPopup from "../components/NewTransactionPopUp";
 import Page from "../components/Page";
 import { TRANSACTION_SCHEMA } from "../lib/schemas";
 import { getFormattedDate } from "../lib/utils";
+import LocationSpoof from "../components/LocationSpoof";
 
 const client = generateClient<Schema>();
 
@@ -41,8 +42,9 @@ export default function NewTransactionPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
-    const [longitude, setLongitude] = useState<number>();
-    const [latitude, setLatitude] = useState<number>();
+    const [showSpoof, setShowSpoof] = useState(false);
+    const [longitude, setLongitude] = useState<number | null>(null);
+    const [latitude, setLatitude] = useState<number | null>(null);
     const [hasLocationAccess, setHasLocationAccess] = useState(true);
 
     const [accounts, setAccounts] = useState<Array<Schema["Account"]["type"]>>([]);
@@ -272,6 +274,14 @@ export default function NewTransactionPage() {
                         />
                         {errors.amount && <p className="text-red-500">{errors.amount?.message}</p>}
                     </div>
+                    <LocationSpoof
+                        show={showSpoof}
+                        setShow={setShowSpoof}
+                        latitude={latitude}
+                        setLatitude={setLatitude}
+                        longitude={longitude}
+                        setLongitude={setLongitude}
+                    />
                     <button
                         type="submit"
                         disabled={isLoading} // Disable button during loading
