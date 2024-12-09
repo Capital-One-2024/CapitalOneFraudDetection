@@ -25,6 +25,19 @@ export default function TransactionDetailsPage() {
     useEffect(() => {
         setTransaction(location.state.transaction);
         setAccountName(location.state.accountName);
+
+        client.models.Transaction.onUpdate({
+            filter: { id: { eq: transaction?.id } },
+        }).subscribe({
+            next: (updatedTransaction) => {
+                console.log("Transaction updated: ", updatedTransaction);
+                setTransaction(updatedTransaction);
+            },
+            error: (error) => {
+                console.error(error);
+            },
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location]);
 
     async function flipIsFraudulent() {
@@ -35,13 +48,12 @@ export default function TransactionDetailsPage() {
                 id: transaction.accountId,
             });
 
-            const { data: updatedTrans, errors: updateTransactionErrors } =
-                await client.models.Transaction.update({
-                    id: transaction.id,
-                    isFraudulent: !transaction.isFraudulent,
-                    isUserValidated: true,
-                    updatedAt: Date.now(),
-                });
+            const { errors: updateTransactionErrors } = await client.models.Transaction.update({
+                id: transaction.id,
+                isFraudulent: !transaction.isFraudulent,
+                isUserValidated: true,
+                updatedAt: Date.now(),
+            });
 
             if (account) {
                 await client.models.Account.update({
@@ -55,8 +67,7 @@ export default function TransactionDetailsPage() {
             if (getAccountErrors || updateTransactionErrors) {
                 setShowSuccess(false);
                 setLoading(false);
-            } else if (updatedTrans) {
-                setTransaction(updatedTrans);
+            } else {
                 setShowSuccess(true);
                 setLoading(false);
             }
