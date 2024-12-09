@@ -3,6 +3,7 @@ import type { Schema } from "../../amplify/data/resource";
 import classNames from "classnames";
 import { generateClient } from "aws-amplify/data";
 import { useNavigate } from "react-router-dom";
+import { getFormattedCurrency } from "../lib/utils";
 
 // interface describing the shape of the transaction prop
 interface TransactionProps {
@@ -71,7 +72,7 @@ const TransactionCard: React.FC<TransactionProps> = ({ transaction }) => {
                 </div>
             </div>
             <div className={`text-sm font-bold ${statusClass}`}>
-                - ${transaction.amount?.toFixed(2)} <span>({statusLabel})</span>
+                - {getFormattedCurrency(transaction.amount)} <span>({statusLabel})</span>
             </div>
         </button>
     );

@@ -1,6 +1,7 @@
 import React from "react";
 import type { Schema } from "../../amplify/data/resource";
 import classNames from "classnames";
+import { getFormattedCurrency } from "../lib/utils";
 
 // Interface describing the shape of the account prop
 interface AccountProps {
@@ -28,8 +29,8 @@ const AccountCard: React.FC<AccountProps> = ({ account }) => {
                 <div className="text-sm font-semibold text-left">
                     {account.accountName || "Unnamed Account"}
                 </div>
-                <div className="text-xs text-gray-500">
-                    Balance: ${account.balance?.toFixed(2) || "0.00"}
+                <div className="font-medium text-xs text-gray-500">
+                    Balance: {getFormattedCurrency(account.balance)}
                 </div>
             </div>
         </div>

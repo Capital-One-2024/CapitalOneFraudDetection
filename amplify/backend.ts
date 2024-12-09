@@ -5,6 +5,7 @@ import { auth } from "./auth/resource";
 import { data } from "./data/resource";
 import { checkTransaction } from "./functions/check-transaction/resource";
 import { queueTransaction } from "./functions/queue-transaction/resource";
+import { Duration } from "aws-cdk-lib";
 
 /**
  * @see https://docs.amplify.aws/react/build-a-backend/ to add storage, functions, and more
@@ -20,7 +21,12 @@ const backend = defineBackend({
 const resourceStack = backend.createStack("CapitalOneResourceStack");
 
 // Create an SQS queue to store the transaction messages
-const capitalOneQueue = new sqs.Queue(resourceStack, "CapitalOneQueue");
+const capitalOneQueue = new sqs.Queue(resourceStack, "CapitalOneQueue", {
+    // Enable FIFO queue - will help us deduplicate messages
+    fifo: true,
+    contentBasedDeduplication: true,
+    visibilityTimeout: Duration.minutes(5),
+});
 
 // Add the queue URL to the queueTransaction function environment variables
 // to access the queue URL from the function

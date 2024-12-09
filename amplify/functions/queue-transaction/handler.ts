@@ -10,6 +10,8 @@ export const handler: Schema["queueTransaction"]["functionHandler"] = async (eve
     const command = new SendMessageCommand({
         QueueUrl: process.env.CAPITAL_ONE_QUEUE_URL,
         MessageBody: payload,
+        MessageGroupId: "CapitalOne",
+        MessageDeduplicationId: transactionID,
     });
 
     try {
