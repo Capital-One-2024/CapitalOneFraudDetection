@@ -210,7 +210,7 @@ export default function NewTransactionPage() {
                 <form
                     onSubmit={handleSubmit(ON_SUBMIT)}
                     className={classNames(
-                        "sm:w-3/5 w-full bg-red p-5 ",
+                        "sm:w-3/5 max-w-xl bg-red p-5 shadow-xl",
                         "border-2 border-c1-blue rounded-xl"
                     )}
                 >

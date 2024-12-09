@@ -10,7 +10,7 @@ export default function TransactionDetailsAttribute({
     children,
 }: TransactionDetailsAttributeProps) {
     return (
-        <div className="border border-c1-blue p-2 mb-2 sm:flex rounded-lg">
+        <div className="flex-1 flex w-full border border-c1-blue p-2 mb-2 rounded-lg">
             <div className="w-1/2 text-c1-blue">{label}:</div>
             <div className="w-1/2">{children}</div>
         </div>
