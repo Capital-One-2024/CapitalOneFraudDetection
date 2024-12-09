@@ -23,7 +23,6 @@ const cardClass = classNames(
     "sm:flex-row", // Side by side on larger screens
     "gap-4", // Add gap between stacked elements
     "bg-white",
-    "shadow-md",
     "rounded-lg",
     "p-4", // Reduced padding for small screens
     "sm:p-8", // Original padding for larger screens
@@ -100,8 +99,8 @@ export default function ProfileDetail({
 
     return (
         <div className={cardClass}>
-            <div className="sm:w-1/2 flex items-center">{description}</div>
-            <div className="sm:w-1/2 flex-1 items-center">
+            <div className="sm:w-2/6 flex items-center">{description}:</div>
+            <div className="sm:w-4/6 flex-1 items-center">
                 {isEditing ? (
                     <div className="w-full flex items-center gap-2 font-normal">
                         <input

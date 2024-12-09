@@ -25,6 +25,7 @@ const capitalOneQueue = new sqs.Queue(resourceStack, "CapitalOneQueue", {
     // Enable FIFO queue - will help us deduplicate messages
     fifo: true,
     contentBasedDeduplication: true,
+    visibilityTimeout: Duration.minutes(5),
 });
 
 // Add the queue URL to the queueTransaction function environment variables

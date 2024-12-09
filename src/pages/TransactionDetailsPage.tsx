@@ -31,14 +31,28 @@ export default function TransactionDetailsPage() {
         setLoading(true);
 
         if (transaction) {
-            const { data: updatedTrans, errors } = await client.models.Transaction.update({
-                id: transaction.id,
-                isFraudulent: !transaction.isFraudulent,
-                isUserValidated: true,
-                updatedAt: Date.now(),
+            const { data: account, errors: getAccountErrors } = await client.models.Account.get({
+                id: transaction.accountId,
             });
 
-            if (errors) {
+            const { data: updatedTrans, errors: updateTransactionErrors } =
+                await client.models.Transaction.update({
+                    id: transaction.id,
+                    isFraudulent: !transaction.isFraudulent,
+                    isUserValidated: true,
+                    updatedAt: Date.now(),
+                });
+
+            if (account) {
+                await client.models.Account.update({
+                    id: transaction.accountId,
+                    balance:
+                        account.balance +
+                        (transaction.isFraudulent ? -transaction.amount : transaction.amount),
+                });
+            }
+
+            if (getAccountErrors || updateTransactionErrors) {
                 setShowSuccess(false);
                 setLoading(false);
             } else if (updatedTrans) {
@@ -55,7 +69,7 @@ export default function TransactionDetailsPage() {
                 {transaction && (
                     <div
                         className={classNames(
-                            "sm:w-3/5 max-w-xl bg-red p-5 ",
+                            "flex flex-col items-center sm:w-3/5 max-w-xl bg-red p-5 shadow-xl",
                             "border-2 border-c1-blue rounded-xl"
                         )}
                     >
@@ -103,10 +117,7 @@ export default function TransactionDetailsPage() {
                         {transaction.isProcessed && (
                             <button
                                 onClick={() => flipIsFraudulent()}
-                                className={classNames(
-                                    "w-full border bg-c1-red p-2 mb-2",
-                                    "text-white rounded-lg hover:bg-red-700"
-                                )}
+                                className={"btn btn-red"}
                                 disabled={loading}
                             >
                                 Report Transaction as{" "}
